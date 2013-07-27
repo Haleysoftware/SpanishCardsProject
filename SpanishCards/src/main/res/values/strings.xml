@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- General -->
+
+	<string name="app_name" >Spanish Flashcards</string>
+
+	<string name="langEnglish">English</string>
+	<string name="langSpanish">Spanish</string>
+
+	<!-- User Name List -->
+	<string name="gName">Guest</string>
+	<string name="nUName">New User</string>
+
+	<!-- TTS -->
+	<string name="badTTS">Could not start Text to Speech.</string>
+
+	<!-- User DB -->
+	<string name="scoreNameUnlimited">Unlimited %1$s / %2$s</string>
+	<string name="scoreNameLimited">Limited %1$s / %2$s</string>
+
+	<!-- Hint Text -->
+	<string name="hintText">Hint: %1$s</string>
+	<string name="hintM">Masculine</string>
+	<string name="hintF">Feminine</string>
+
+	<!-- Used for the old settings -->
+	<string name="title_activity_old_set_delete">Resets</string>
+
+
+	<!-- Dialogs -->
+
+	<!-- New User Dialog -->
+	<string name="NTitle">New User</string>
+	<string name="NText">Please enter your name.</string>
+	<string name="Nmind">Never Mind</string>
+	<string name="Nenter">Enter</string>
+
+	<!-- Enter Text Dialog -->
+	<string name="ETitle">Enter the correct word.</string>
+	<string name="Cancel">Cancel</string>
+	<string name="Submit">Submit</string>
+
+	<!-- Wrong Word Dialog -->
+	<string name="WTitleSaid">The correct word was not heard.</string>
+	<string name="WTitleEnter">The correct word was not entered.</string>
+	<string name="ErrorWords">I heard you say the following words,</string>
+	<string name="Okay">Okay</string>
+	<string name="Retry">Retry</string>
+
+	<!-- Wrong text Dialog -->
+	<string name="WText">Please try again.</string>
+
+	<!-- Word List Hint Dialog -->
+	<string name="HintTitleText">No Hint found</string>
+	<string name="HintButtonText">Done</string>
+
+	<!-- No TTS Installed Dialog -->
+	<string name="NoTtsTitle">TTS is not fully installed</string>
+	<string name="NoTtsText">Would you like to install or turn off TTS?</string>
+	<string name="NoTtsInstallButton">Install</string>
+	<string name="NoTtsOffButton">Turn Off</string>
+
+	<!-- Info Action Dialog -->
+	<string name="InfoOkButton">I understand</string>
+
+	<!-- Warning Action Dialog -->
+	<string name="WarningOkButtion">Do It</string>
+	<string name="WarningNoButtion">No</string>
+
+
+	<!-- Word List -->
+
+	<string name="wList">Study Sheet</string>
+
+	<string name="missing_egg">Space: the final frontier. \n \nThese are the voyages of the starship Enterprise. \n \nIts five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.</string>
+
+	<string name="tagEnglish">@string/langEnglish</string>
+	<string name="tagSpanish">@string/langSpanish</string>
+	<string name="tagCategory">Category</string>
+
+	<string name="AllWordTab">All Words</string>
+	<string name="SearchWordTab">Search</string>
+	<string name="WordSearchButton">Find</string>
+	<string name="NoWords">No words were found.</string>
+	<string name="CategorySpinText">Select a Category</string>
+	<!-- Spinner Data for Sorting Words -->
+	<string name="SortSpinText">Select Sort Option</string>
+
+
+	<!-- Test Screen -->
+
+	<string name="test">Test</string>
+	<string name="NextWord">Next</string>
+	<string name="SkipWord">Skip</string>
+	<string name="Speak">Answer</string>
+	<string name="ShowWord">Show</string>
+	<string name="markOn">Marked</string>
+	<string name="markOff">Not Marked</string>
+	<string name="wordCata">Word category</string>
+	<string name="selectCata">Selected category</string>
+	<string name="WordSelect">Select a Category</string>
+	<string name="testScore">Score = %1$d</string>
+	<string name="testLevel">Level %1$d</string>
+	<string name="testPoints">Points: %1$d / %2$d</string>
+	<string name="levelMaxed">The maximum level has been reached.</string>
+	<string name="levelUp">Level %1$d!</string>
+	<string name="noWordsFound">No words found: %1$s</string>
+	<string name="englishSay">Please say the word in English.</string>
+	<string name="spanishSay">Please say the word in Spanish.</string>
+	<string name="notifyHigh">New Test High Score!</string>
+	<string name="notifyMost">New High Score!</string>
+	<string name="noVoice">No voice input installed.</string>
+	<string name="wordRight">Correct!</string>
+	<string name="wordPoint">Correct! Received point!</string>
+	<string name="wordNoPoint">Correct! No points received.</string>
+
+
+	<!-- Select Screen -->
+
+	<string name="select_title">Test Select</string>
+
+	<string name="go_test">Start Test</string>
+	<string name="toggle_hard_on">Hard Mode: On</string>
+	<string name="toggle_hard_off">Hard Mode: Off</string>
+	<string name="middleWord">to</string>
+
+	<string name="showLevel">Your Level = %1$d</string>
+	<string name="showPoints">Level Points = %1$d / %2$d</string>
+
+	<!-- Spinner Prompts -->
+	<string name="userSelect">Select User</string>
+	<string name="langSelect">Select Language</string>
+
+
+	<!-- Settings -->
+
+	<string name="setPage">Settings</string>
+
+
+	<string name="settoptest">Test Options</string>
+
+	<string name="setnotemain">Show Hints</string>
+	<string name="setnoteon">Hints are shown</string>
+	<string name="setnoteoff">Hints are hidden</string>
+
+	<string name="setcatemain">Show Categories</string>
+	<string name="setcateon">Categories are shown</string>
+	<string name="setcateoff">Categories are hidden</string>
+
+
+	<string name="settopsound">Voice and Audio</string>
+
+	<string name="setspeakmain">Use Voice Input</string>
+	<string name="setspeakon">Voice is on</string>
+	<string name="setspeakoff">Voice is off</string>
+
+	<string name="setttsmain">Use Text to Speech</string>
+	<string name="setttson">TTS is on</string>
+	<string name="setttsoff">TTS is off</string>
+
+
+	<string name="settopfun">Function</string>
+
+	<string name="setgamemain">Free Play Mode</string>
+	<string name="setgameon">All words unlocked, no level ups</string>
+	<string name="setgameoff">The game is on, time to level up</string>
+
+	<string name="setonepointmain">Hard Mode</string>
+	<string name="setonepointon">Receive one point per word</string>
+	<string name="setonepointoff">Always get points</string>
+
+	<string name="setkeepmain">Remember Score</string>
+	<string name="setkeepon">The score will go on</string>
+	<string name="setkeepoff">Score clears each start</string>
+
+	<string name="setsearchmain">Change Search Options</string>
+	<string name="setsearchsum">Change how the search works</string>
+	<string name="setsearchdialog">Please pick one</string>
+
+	<string name="setautomain">Auto Next</string>
+	<string name="setautoon">Next word will be picked if correct</string>
+	<string name="setautooff">Go to next word manually</string>
+
+	<string name="setswipmain">Use Swipe Gestures</string>
+	<string name="setswipon">Swipe is on</string>
+	<string name="setswipoff">Swipe is off</string>
+
+
+	<string name="settopadj">Adjustments</string>
+
+	<string name="setthememain">Use Light Theme</string>
+	<string name="setthemesum">Exit Settings to take effect</string>
+	<string name="setthemeon">The Light Side</string>
+	<string name="setthemeoff">The Dark Side</string>
+
+	<string name="setscoretopmain">Number of Scores to Keep</string>
+	<string name="setscoretopsum">Only affects your scores</string>
+	<string name="setscoretopdialog">Please pick one</string>
+
+	<string name="sethandmain">Flip Screen Layout</string>
+	<string name="sethandon">Alternate Layout</string>
+	<string name="sethandoff">Primary Layout</string>
+
+	<string name="setoriemain">Set Orientation</string>
+	<string name="setoriesum">Set your orientation</string>
+	<string name="setoriedialog">Please pick one</string>
+
+
+	<string name="settopreset">Application Resets</string>
+
+	<string name="settopresetdialog">Do you really want to?</string>
+
+	<string name="setresetmarksmain">Reset Marked Words</string>
+	<string name="setresetmarkstext">All marked words will be reset</string>
+
+	<string name="setresetlevelmain">Reset User Level</string>
+	<string name="setresetleveltext">Your level will go back to one</string>
+
+	<string name="setclearuserscoremain">Clear User Scores</string>
+	<string name="setclearuserscoretext">Only your scores will be cleared</string>
+
+	<string name="setclearallscoresmain">Clear All Scores</string>
+	<string name="setclearallscorestext">All scores will be cleared</string>
+
+	<string name="setremoveusermain">Delete a User</string>
+	<string name="setremoveusertext">Remove another user, not yourself</string>
+	<string name="setremoveuserdialog">Select a user to delete</string>
+
+	<string name="setremovedialogtitle">Remove User</string>
+	<string name="setremovedialogtext">Would you like to clear their scores?</string>
+	<string name="setremovedialogconform">Delete this user?</string>
+	<string name="setremovedialogyes">Yes</string>
+	<string name="setremovedialogno">No</string>
+	<!-- for old only -->
+	<string name="setresetgrouptitle">Reset Menu</string>
+	<string name="setresetgrouptext">View Reset Options</string>
+
+
+	<string name="settopmore">More</string>
+
+	<string name="sethowmain">Directions</string>
+	<string name="sethowsum">Display how to page</string>
+
+	<string name="setaboutmain">About</string>
+	<string name="setaboutsum">Know more about me</string>
+
+	<string name="setdatasendmain">Google Analytics</string>
+	<string name="setdatasendtexton">Thanks for helping. Anonymous data will help me improve this application.</string>
+	<string name="setdatasendtextoff">Sending anonymous data is off.</string>
+
+
+	<!-- Menus -->
+
+	<string name="menugoselect">Change Test Mode</string>
+
+	<string name="menuchangenote">Change Note</string>
+
+	<string name="menuchangecate">Change Category</string>
+
+	<string name="menugolist">Study Sheet</string>
+
+	<string name="menugoscores">Scores</string>
+
+	<string name="menusettings">Settings</string>
+
+	<string name="menukey">Change Key</string>
+
+	<string name="menutheme">Change Theme</string>
+
+
+	<!-- Scores Screen -->
+
+	<string name="hScore">Scores</string>
+
+	<string name="tagScore">Score</string>
+	<string name="tagUser">User</string>
+	<string name="tagMode">Test Mode</string>
+	<string name="tagDate">Date</string>
+
+	<string name="HighTabText">High Scores</string>
+	<string name="UserTabText">User Scores</string>
+	<string name="ModeTabText">Test Scores</string>
+	<string name="NoScores">No scores were found.</string>
+	<string name="NameSpinText">Select a User</string>
+	<string name="ModeSpinText">Select a Test Mode</string>
+
+</resources>

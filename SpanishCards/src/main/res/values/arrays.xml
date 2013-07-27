@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- English Arrays -->
+
+	<!-- Spinner Data For Spanish/English Test Screens -->
+	<string-array name="Selectarray">
+		<item >@string/arrayAll</item>
+		<item >@string/arrayMarked</item>
+		<item >@string/arrayAction</item>
+		<item >@string/arrayAnimal</item>
+		<item >@string/arrayDefine</item>
+		<item >@string/arrayExpress</item>
+		<item >@string/arrayFood</item>
+		<item >@string/arrayHealth</item>
+		<item >@string/arrayTalk</item>
+		<item >@string/arrayNum</item>
+		<item >@string/arrayObject</item>
+		<item >@string/arrayPeople</item>
+		<item >@string/arrayPlace</item>
+		<item >@string/arrayTime</item>
+	</string-array>
+	<string-array name="Pointarray">
+		<item >@string/arrayAll</item>
+		<item >@string/arrayMarked</item>
+		<item >@string/arrayPoints</item>
+		<item >@string/arrayAction</item>
+		<item >@string/arrayAnimal</item>
+		<item >@string/arrayDefine</item>
+		<item >@string/arrayExpress</item>
+		<item >@string/arrayFood</item>
+		<item >@string/arrayHealth</item>
+		<item >@string/arrayTalk</item>
+		<item >@string/arrayNum</item>
+		<item >@string/arrayObject</item>
+		<item >@string/arrayPeople</item>
+		<item >@string/arrayPlace</item>
+		<item >@string/arrayTime</item>
+	</string-array>
+	<string-array name="Levelarray">
+		<item >@string/arrayAll</item>
+		<item >@string/arrayMarked</item>
+		<item >@string/arrayLevel</item>
+		<item >@string/arrayAction</item>
+		<item >@string/arrayAnimal</item>
+		<item >@string/arrayDefine</item>
+		<item >@string/arrayExpress</item>
+		<item >@string/arrayFood</item>
+		<item >@string/arrayHealth</item>
+		<item >@string/arrayTalk</item>
+		<item >@string/arrayNum</item>
+		<item >@string/arrayObject</item>
+		<item >@string/arrayPeople</item>
+		<item >@string/arrayPlace</item>
+		<item >@string/arrayTime</item>
+	</string-array>
+	<string-array name="PointLevelarray">
+		<item >@string/arrayAll</item>
+		<item >@string/arrayMarked</item>
+		<item >@string/arrayLevel</item>
+		<item >@string/arrayPoints</item>
+		<item >@string/arrayAction</item>
+		<item >@string/arrayAnimal</item>
+		<item >@string/arrayDefine</item>
+		<item >@string/arrayExpress</item>
+		<item >@string/arrayFood</item>
+		<item >@string/arrayHealth</item>
+		<item >@string/arrayTalk</item>
+		<item >@string/arrayNum</item>
+		<item >@string/arrayObject</item>
+		<item >@string/arrayPeople</item>
+		<item >@string/arrayPlace</item>
+		<item >@string/arrayTime</item>
+	</string-array>
+
+	<string name="arrayAll">All</string>
+	<string name="arrayMarked">Marked</string>
+	<string name="arrayLevel">Level</string>
+	<string name="arrayPoints">Points Only</string>
+	<string name="arrayAction">Action</string>
+	<string name="arrayAnimal">Animal</string>
+	<string name="arrayDefine">Define</string>
+	<string name="arrayExpress">Expression</string>
+	<string name="arrayFood">Food</string>
+	<string name="arrayHealth">Health</string>
+	<string name="arrayTalk">Language</string>
+	<string name="arrayNum">Numeral</string>
+	<string name="arrayObject">Object</string>
+	<string name="arrayPeople">Person</string>
+	<string name="arrayPlace">Place</string>
+	<string name="arrayTime">Time</string>
+
+
+	<!-- Spinner Data for Test Mode Picker -->
+	<string-array name="ModeArray">
+		<item>@string/ModeSetup</item>
+		<item>Unlimited English / Spanish</item>
+		<item>Unlimited Spanish / Spanish</item>
+		<item>Unlimited English / English</item>
+		<item>Limited Spanish / English</item>
+		<item>Limited English / Spanish</item>
+		<item>Limited Spanish / Spanish</item>
+		<item>Limited English / English</item>
+	</string-array>
+
+	<string name="ModeSetup">Unlimited Spanish / English</string>
+
+	<!-- Spinner Data for Sorting Words -->
+	<string-array name="SortArray">
+		<item>@string/sortArrayEAsc</item>
+		<item>@string/sortArrayEDes</item>
+		<item>@string/sortArraySAsc</item>
+		<item>@string/sortArraySDes</item>
+	</string-array>
+
+	<string name="sortArrayEAsc">English Ascending</string>
+	<string name="sortArrayEDes">English Descending</string>
+	<string name="sortArraySAsc">Spanish Ascending</string>
+	<string name="sortArraySDes">Spanish Descending</string>
+
+
+	<!-- List data for orientation setting -->
+	<string-array name="setorielistname">
+		<item>Device Sensor</item>
+		<item>Portrait</item>
+		<item>Landscape</item>
+	</string-array>
+	<string-array name="setorielistvalue">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
+
+	<!-- List data for scores to keep -->
+	<string-array name="setscorelist">
+		<item>5</item>
+		<item>10</item>
+		<item>15</item>
+		<item>20</item>
+		<item>25</item>
+		<item>30</item>
+		<item>35</item>
+		<item>40</item>
+		<item>45</item>
+		<item>50</item>
+	</string-array>
+
+	<!-- List data for search options -->
+	<string-array name="setsearchlist">
+		<item>Start of word</item>
+		<item>Anywhere in word</item>
+	</string-array>
+	<string-array name="setsearchvalue">
+		<item>0</item>
+		<item>1</item>
+	</string-array>
+
+	<!-- Word Pick Startup -->
+	<string-array name="startwordlist">
+		<item>@string/langEnglish</item>
+		<item>@string/langSpanish</item>
+	</string-array>
+
+</resources>

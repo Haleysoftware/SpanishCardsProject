@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+	<TextView
+			android:id="@+id/modeScoreText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:textIsSelectable="false" />
+
+	<LinearLayout
+			android:id="@+id/linearLayout2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+		<TextView
+				android:id="@+id/modeNameText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:layout_weight="1"
+				android:textIsSelectable="false" />
+
+		<TextView
+				android:id="@+id/modeDateText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="right"
+				android:layout_weight="1"
+				android:textIsSelectable="false" />
+
+	</LinearLayout>
+
+</LinearLayout>

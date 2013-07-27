@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- Spanish Arrays -->
+
+	<!-- Spinner Data For Spanish/English Test Screens -->
+	<string-array name="Selectarray">
+		<item>@string/arrayAll</item> <!-- All -->
+		<item>@string/arrayMarked</item> <!-- Marked -->
+		<item>@string/arrayAction</item> <!-- Action -->
+		<item>@string/arrayFood</item> <!-- Food -->
+		<item>@string/arrayAnimal</item> <!-- Animal -->
+		<item>@string/arrayDefine</item> <!-- Define -->
+		<item>@string/arrayExpress</item> <!-- Expression -->
+		<item>@string/arrayTalk</item> <!-- Language -->
+		<item>@string/arrayPlace</item> <!-- Place -->
+		<item>@string/arrayNum</item> <!-- Numeral -->
+		<item>@string/arrayObject</item> <!-- Object -->
+		<item>@string/arrayPeople</item> <!-- Person -->
+		<item >@string/arrayHealth</item> <!-- Health -->
+		<item>@string/arrayTime</item> <!-- Time -->
+	</string-array>
+	<string-array name="Pointarray">
+		<item>@string/arrayAll</item> <!-- All -->
+		<item>@string/arrayMarked</item> <!-- Marked -->
+		<item>@string/arrayPoints</item> <!-- Points Only -->
+		<item>@string/arrayAction</item> <!-- Action -->
+		<item>@string/arrayFood</item> <!-- Food -->
+		<item>@string/arrayAnimal</item> <!-- Animal -->
+		<item>@string/arrayDefine</item> <!-- Define -->
+		<item>@string/arrayExpress</item> <!-- Expression -->
+		<item>@string/arrayTalk</item> <!-- Language -->
+		<item>@string/arrayPlace</item> <!-- Place -->
+		<item>@string/arrayNum</item> <!-- Numeral -->
+		<item>@string/arrayObject</item> <!-- Object -->
+		<item>@string/arrayPeople</item> <!-- Person -->
+		<item >@string/arrayHealth</item> <!-- Health -->
+		<item>@string/arrayTime</item> <!-- Time -->
+	</string-array>
+	<string-array name="Levelarray">
+		<item>@string/arrayAll</item> <!-- All -->
+		<item>@string/arrayMarked</item> <!-- Marked -->
+		<item>@string/arrayLevel</item> <!-- Level -->
+		<item>@string/arrayAction</item> <!-- Action -->
+		<item>@string/arrayFood</item> <!-- Food -->
+		<item>@string/arrayAnimal</item> <!-- Animal -->
+		<item>@string/arrayDefine</item> <!-- Define -->
+		<item>@string/arrayExpress</item> <!-- Expression -->
+		<item>@string/arrayTalk</item> <!-- Language -->
+		<item>@string/arrayPlace</item> <!-- Place -->
+		<item>@string/arrayNum</item> <!-- Numeral -->
+		<item>@string/arrayObject</item> <!-- Object -->
+		<item>@string/arrayPeople</item> <!-- Person -->
+		<item >@string/arrayHealth</item> <!-- Health -->
+		<item>@string/arrayTime</item> <!-- Time -->
+	</string-array>
+	<string-array name="PointLevelarray">
+		<item>@string/arrayAll</item> <!-- All -->
+		<item>@string/arrayMarked</item> <!-- Marked -->
+		<item>@string/arrayLevel</item> <!-- Level -->
+		<item>@string/arrayPoints</item> <!-- Points Only -->
+		<item>@string/arrayAction</item> <!-- Action -->
+		<item>@string/arrayFood</item> <!-- Food -->
+		<item>@string/arrayAnimal</item> <!-- Animal -->
+		<item>@string/arrayDefine</item> <!-- Define -->
+		<item>@string/arrayExpress</item> <!-- Expression -->
+		<item>@string/arrayTalk</item> <!-- Language -->
+		<item>@string/arrayPlace</item> <!-- Place -->
+		<item>@string/arrayNum</item> <!-- Numeral -->
+		<item>@string/arrayObject</item> <!-- Object -->
+		<item>@string/arrayPeople</item> <!-- Person -->
+		<item >@string/arrayHealth</item> <!-- Health -->
+		<item>@string/arrayTime</item> <!-- Time -->
+	</string-array>
+
+	<string name="arrayAll">Todos</string> <!-- All -->
+	<string name="arrayMarked">Marcado</string> <!-- Marked -->
+	<string name="arrayLevel">Nivel</string> <!-- Level -->
+	<string name="arrayPoints">Puntos Sólo</string> <!-- Points Only -->
+	<string name="arrayAction">Acción</string> <!-- Action -->
+	<string name="arrayAnimal">Animal</string> <!-- Animal -->
+	<string name="arrayDefine">Definir</string> <!-- Define -->
+	<string name="arrayExpress">Expresión</string> <!-- Expression -->
+	<string name="arrayFood">Alimento</string> <!-- Food -->
+	<string name="arrayHealth">Salud</string> <!-- Health -->
+	<string name="arrayTalk">Idioma</string> <!-- Language -->
+	<string name="arrayNum">Numeral</string> <!-- Numeral -->
+	<string name="arrayObject">Objeto</string> <!-- Object -->
+	<string name="arrayPeople">Persona</string> <!-- Person -->
+	<string name="arrayPlace">Lugar</string> <!-- Place -->
+	<string name="arrayTime">Tiempo</string> <!-- Time -->
+
+
+	<!-- Spinner Data for Test Mode Picker -->
+	<string-array name="ModeArray">
+		<item>@string/ModeSetup</item>
+		<item>Ilimitada Inglés / Español</item>
+		<item>Ilimitada Español / Español</item>
+		<item>Ilimitada Inglés / Inglés</item>
+		<item>Limitado Español / Inglés</item>
+		<item>Limitado Inglés / Español</item>
+		<item>Limitado Español / Español</item>
+		<item>Limitado Inglés / Inglés</item>
+	</string-array>
+
+	<string name="ModeSetup">Ilimitada Español / Inglés</string>
+
+	<!-- Spinner Data for Sorting Words -->
+	<string-array name="SortArray">
+		<item>@string/sortArrayEAsc</item>
+		<item>@string/sortArrayEDes</item>
+		<item>@string/sortArraySAsc</item>
+		<item>@string/sortArraySDes</item>
+	</string-array>
+
+	<string name="sortArrayEAsc">Inglés Ascendente</string>
+	<string name="sortArrayEDes">Inglés Descendente</string>
+	<string name="sortArraySAsc">Español Ascendente</string>
+	<string name="sortArraySDes">Español Descendente</string>
+
+
+	<!-- List data for orientation setting -->
+	<string-array name="setorielistname">
+		<item>El Dispositivo Sensor</item>
+		<item>retrato</item>
+		<item>paisaje</item>
+	</string-array>
+	<string-array name="setorielistvalue">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
+
+	<!-- List data for scores to keep -->
+	<string-array name="setscorelist">
+		<item>5</item>
+		<item>10</item>
+		<item>15</item>
+		<item>20</item>
+		<item>25</item>
+		<item>30</item>
+		<item>35</item>
+		<item>40</item>
+		<item>45</item>
+		<item>50</item>
+	</string-array>
+
+	<!-- List data for search options -->
+	<string-array name="setsearchlist">
+		<item>Inicio de palabra</item>
+		<item>En cualquier parte de la palabra</item>
+	</string-array>
+	<string-array name="setsearchvalue">
+		<item>0</item>
+		<item>1</item>
+	</string-array>
+
+	<!-- Word Pick Startup -->
+	<string-array name="startwordlist">
+		<item>@string/langEnglish</item>
+		<item>@string/langSpanish</item>
+	</string-array>
+
+	<string name="langEnglish">Inglés</string>
+	<string name="langSpanish">Español</string>
+
+</resources>

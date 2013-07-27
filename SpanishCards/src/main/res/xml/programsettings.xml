@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- This is used to keep main program items that are not per user -->
+
+	<PreferenceCategory
+			android:title="Hidden Setup Options">
+
+		<EditTextPreference
+				android:key="last_user_set"
+				android:defaultValue="Guest" />
+
+		<CheckBoxPreference
+				android:key="license_pass"
+				android:defaultValue="false"/>
+
+		<EditTextPreference
+				android:key="last_license_check"
+				android:defaultValue="01-01-2013" />
+
+		<CheckBoxPreference
+				android:key="remove_ads"
+				android:defaultValue="false"/>
+
+	</PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,25 @@
+<resources>
+
+	<style
+			name="ActivityTheme"
+			parent="android:Theme.Black">
+		<!-- android:Theme -->
+	</style>
+
+	<style
+			name="ActivityThemeAlt"
+			parent="android:Theme.Light">
+		<!-- <item name="android:background">@android:color/white</item> -->
+	</style>
+
+	<style
+			name="DialogTheme"
+			parent="android:Theme.Dialog">
+	</style>
+
+	<style
+			name="DialogThemeAlt"
+			parent="android:Theme.Dialog">
+	</style>
+
+</resources>

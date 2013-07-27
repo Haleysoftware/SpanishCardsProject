@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- This is used to create the settings menu on the test select screen -->
+
+	<PreferenceCategory
+			android:title="@string/settoptest">
+
+		<CheckBoxPreference
+				android:key="note_set"
+				android:defaultValue="true"
+				android:title="@string/setnotemain"
+				android:summaryOn="@string/setnoteon"
+				android:summaryOff="@string/setnoteoff" />
+
+		<CheckBoxPreference
+				android:key="cata_set"
+				android:defaultValue="true"
+				android:title="@string/setcatemain"
+				android:summaryOn="@string/setcateon"
+				android:summaryOff="@string/setcateoff" />
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+			android:title="@string/settopsound">
+
+		<CheckBoxPreference
+				android:key="speak_set"
+				android:defaultValue="true"
+				android:title="@string/setspeakmain"
+				android:summaryOn="@string/setspeakon"
+				android:summaryOff="@string/setspeakoff" />
+
+		<CheckBoxPreference
+				android:key="tts_set"
+				android:defaultValue="true"
+				android:title="@string/setttsmain"
+				android:summaryOn="@string/setttson"
+				android:summaryOff="@string/setttsoff"/>
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+			android:title="@string/settopfun">
+
+		<CheckBoxPreference
+				android:key="game_set"
+				android:defaultValue="false"
+				android:title="@string/setgamemain"
+				android:summaryOn="@string/setgameon"
+				android:summaryOff="@string/setgameoff" />
+
+		<CheckBoxPreference
+				android:key="point_set"
+				android:defaultValue="false"
+				android:title="@string/setonepointmain"
+				android:summaryOn="@string/setonepointon"
+				android:summaryOff="@string/setonepointoff" />
+
+		<CheckBoxPreference
+				android:key="keep_score"
+				android:defaultValue="false"
+				android:title="@string/setkeepmain"
+				android:summaryOn="@string/setkeepon"
+				android:summaryOff="@string/setkeepoff" />
+
+		<ListPreference
+				android:key="search_list_set"
+				android:defaultValue="1"
+				android:title="@string/setsearchmain"
+				android:summary="@string/setsearchsum"
+				android:dialogTitle="@string/setsearchdialog"
+				android:entries="@array/setsearchlist"
+				android:entryValues="@array/setsearchvalue" />
+
+		<CheckBoxPreference
+				android:key="auto_set"
+				android:defaultValue="false"
+				android:title="@string/setautomain"
+				android:summaryOn="@string/setautoon"
+				android:summaryOff="@string/setautooff" />
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+			android:title="@string/settopadj">
+
+		<ListPreference
+				android:key="score_list_set"
+				android:defaultValue="15"
+				android:title="@string/setscoretopmain"
+				android:summary="@string/setscoretopsum"
+				android:dialogTitle="@string/setscoretopdialog"
+				android:entries="@array/setscorelist"
+				android:entryValues="@array/setscorelist" />
+
+		<CheckBoxPreference
+				android:key="hand_set"
+				android:defaultValue="false"
+				android:title="@string/sethandmain"
+				android:summaryOn="@string/sethandon"
+				android:summaryOff="@string/sethandoff" />
+
+		<ListPreference
+				android:key="orie_list_set"
+				android:defaultValue="0"
+				android:title="@string/setoriemain"
+				android:summary="@string/setoriesum"
+				android:dialogTitle="@string/setoriedialog"
+				android:entries="@array/setorielistname"
+				android:entryValues="@array/setorielistvalue" />
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+			android:title="@string/settopreset">
+
+		<Preference
+				android:key="mark_reset_set"
+				android:defaultValue="false"
+				android:title="@string/setresetgrouptitle"
+				android:summary="@string/setresetgrouptext"/>
+
+	</PreferenceCategory>
+
+</PreferenceScreen>

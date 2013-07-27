@@ -1,0 +1,23 @@
+<resources>
+
+	<style
+			name="ActivityTheme"
+			parent="android:Theme.Holo">
+	</style>
+
+	<style
+			name="ActivityThemeAlt"
+			parent="android:Theme.Holo.Light">
+	</style>
+
+	<style
+			name="DialogTheme"
+			parent="android:Theme.Holo.Dialog">
+	</style>
+
+	<style
+			name="DialogThemeAlt"
+			parent="android:Theme.Holo.Light.Dialog">
+	</style>
+
+</resources>

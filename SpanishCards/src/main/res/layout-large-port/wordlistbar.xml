@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+	<LinearLayout
+			android:id="@+id/topLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+		<TextView
+				android:id="@+id/englishBar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:layout_weight="1"
+				android:textIsSelectable="false" />
+
+		<TextView
+				android:id="@+id/spanishBar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="right"
+				android:layout_weight="1"
+				android:textIsSelectable="false" />
+
+		<TextView
+				android:id="@+id/spanishTwoBar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:layout_weight="1"
+				android:visibility="gone"
+				android:textIsSelectable="false" />
+
+		<TextView
+				android:id="@+id/englishTwoBar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="right"
+				android:layout_weight="1"
+				android:visibility="gone"
+				android:textIsSelectable="false" />
+
+	</LinearLayout>
+
+	<LinearLayout
+			android:id="@+id/bottomLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+		<TextView
+				android:id="@+id/categoryBar"
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:layout_weight="1"
+				android:textIsSelectable="false" />
+
+		<!-- Not on screen -->
+		<TextView
+				android:id="@+id/hintBar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="gone" />
+
+		<!-- Not on screen -->
+		<TextView
+				android:id="@+id/markBar"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="gone" />
+
+	</LinearLayout>
+
+</LinearLayout>

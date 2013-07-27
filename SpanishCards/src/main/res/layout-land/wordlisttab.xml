@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal" >
+
+		<Spinner
+				android:id="@+id/spinnerWordsSort"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:prompt="@string/SortSpinText" />
+
+		<Spinner
+				android:id="@+id/spinnerWordsList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:prompt="@string/CategorySpinText" />
+
+	</LinearLayout>
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:weightSum="10" >
+
+		<TextView
+				android:id="@+id/leftKey"
+				android:layout_weight="4"
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:visibility="gone"
+				android:textStyle="bold"
+				android:text="@string/tagEnglish" />
+
+		<TextView
+				android:id="@+id/rightKey"
+				android:layout_weight="4"
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:visibility="gone"
+				android:textStyle="bold"
+				android:text="@string/tagSpanish" />
+
+		<TextView
+				android:id="@+id/categoryKey"
+				android:layout_weight="2"
+				android:layout_width="0sp"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:visibility="gone"
+				android:textStyle="bold"
+				android:text="@string/tagCategory" />
+
+	</LinearLayout>
+
+	<ListView
+			android:id="@android:id/list"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:dividerHeight="2sp"
+			android:fastScrollEnabled="true" />
+
+	<TextView
+			android:id="@id/android:empty"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:text="@string/NoWords"/>
+
+</LinearLayout>
