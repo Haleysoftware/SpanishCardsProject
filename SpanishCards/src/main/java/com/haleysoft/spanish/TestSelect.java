@@ -23,12 +23,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 
 public class TestSelect extends FragmentActivity implements OnItemSelectedListener
 {
@@ -43,6 +49,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 	private boolean newUser = false;
 	private int spinman = 0;
 	private int lastSpin = 0;
+    private AdView adView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -70,11 +77,14 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		{
 			lastSpin = savedInstanceState.getInt("last");
 		}
+        boolean paidAds = masterPref.getBoolean("remove_ads", false);
+        if (!paidAds) {
+            addAds();
+        }
 	}
 
 	@Override
-	public void onStart()
-	{
+	public void onStart() {
 		super.onStart();
 		updateLevel();
 		uiUpdate();
@@ -86,16 +96,22 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 	}
 
 	@Override
-	public void onResume()
-	{
+	public void onResume() {
 		super.onResume();
 	}
 
 	@Override
-	public void onPostResume()
-	{
+	public void onPostResume() {
 		super.onPostResume();
 	}
+
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
 
 	@Override
 	public void onSaveInstanceState (Bundle savedState)
@@ -103,6 +119,22 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		savedState.putInt("last", lastSpin);
 		super.onSaveInstanceState(savedState);
 	}
+
+    private void addAds() {
+        adView = new AdView(this, AdSize.BANNER, AdListen.ADS_ID);
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.selectRelative);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        layout.addView(adView, params);
+        AdRequest adRequest = new AdRequest();
+        //This code is for testing only
+        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+        adRequest.addTestDevice(""); //This is for a real phone. It needs the Device ID from logcat
+        //End of testing code
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListen());
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
