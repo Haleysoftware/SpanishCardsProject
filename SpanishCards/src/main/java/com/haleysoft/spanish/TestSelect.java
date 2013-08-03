@@ -7,7 +7,6 @@ package com.haleysoft.spanish;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,26 +20,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
 import com.google.ads.AdView;
 
 public class TestSelect extends FragmentActivity implements OnItemSelectedListener
 {
 	private static final String MASTER_SETTINGS = "haley_master_set";
+	private AdView adView;
 	FragmentManager theManager = getSupportFragmentManager();
 	private static final int SETTING_REQUEST_CODE = 2010;
 	public String userName = "Guest";
@@ -51,7 +47,6 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 	private boolean newUser = false;
 	private int spinman = 0;
 	private int lastSpin = 0;
-    private AdView adView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -79,10 +74,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		{
 			lastSpin = savedInstanceState.getInt("last");
 		}
-        boolean paidAds = masterPref.getBoolean("remove_ads", false);
-        if (!paidAds) {
-            addAds();
-        }
+        addAds(masterPref.getBoolean("remove_ads", false));
 	}
 
 	@Override
@@ -110,6 +102,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
     @Override
     public void onDestroy() {
         if (adView != null) {
+	        adView.removeAllViews();
             adView.destroy();
         }
         super.onDestroy();
@@ -122,22 +115,28 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		super.onSaveInstanceState(savedState);
 	}
 
-    private void addAds() {
-        adView = new AdView(this, AdSize.BANNER, AdListen.ADS_ID);
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.selectRelative);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        layout.addView(adView, params);
-        AdRequest adRequest = new AdRequest();
-        //This code is for testing only
-        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-        adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
-	    adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
-	    //adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
-        //End of testing code
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListen());
+    private void addAds(boolean paid) {
+	    adView = (AdView) this.findViewById(R.id.adView);
+        if (paid) {
+			adView.setVisibility(View.INVISIBLE);
+	        if (adView != null) {
+		        adView.removeAllViews();
+		        adView.destroy();
+		        adView = null;
+	        }
+        }
+	    else {
+	        adView.setVisibility(View.VISIBLE);
+	        AdRequest adRequest = new AdRequest();
+	        //This code is for testing only
+	        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+	        adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
+	        adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
+	        //adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
+	        //End of testing code
+	        adView.loadAd(adRequest);
+	        adView.setAdListener(new AdListen());
+        }
     }
 
 	@Override

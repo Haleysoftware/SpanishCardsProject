@@ -44,8 +44,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
+
 public class TestMain extends FragmentActivity implements OnItemSelectedListener
 {
+	private static final String MASTER_SETTINGS = "haley_master_set";
+	private AdView adView;
 	private static final int demoLevel = 30;
 	private static final int maxLevel = 150;
 	FragmentManager theManager = getSupportFragmentManager();
@@ -53,8 +58,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private String hideWord;
 	private String showWord;
 	private String MODE = "Test";
-	private static final int VISIBLE = 0;
-	private static final int INVISIBLE = 4;
 	private static final int VOICE_REQUEST_CODE = 2040;
 	private static final int SETTING_REQUEST_CODE = 1010;
 	public static String userSaid = "Help me, I'm trapped in the phone";
@@ -93,6 +96,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	{
 		super.onCreate(savedInstanceState);
 		this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		Bundle extras = this.getIntent().getExtras();
 		if (extras != null)
 		{
@@ -157,6 +161,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			ActionBar actionBar = this.getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
+		addAds(masterPref.getBoolean("remove_ads", false));
 	}
 
 	/*
@@ -267,8 +272,11 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	}
 
 	@Override
-	public void onDestroy()
-	{
+	public void onDestroy() {
+		if (adView != null) {
+			adView.removeAllViews();
+			adView.destroy();
+		}
 		super.onDestroy();
 	}
 
@@ -301,6 +309,30 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		savedState.putBoolean("show", shown);
 		savedState.putBoolean("topType", topTypeNotify);
 		savedState.putBoolean("topMost", topMostNotify);
+	}
+
+	private void addAds(boolean paid) {
+		adView = (AdView) this.findViewById(R.id.adView);
+		if (paid) {
+			adView.setVisibility(View.INVISIBLE);
+			if (adView != null) {
+				adView.removeAllViews();
+				adView.destroy();
+				adView = null;
+			}
+		}
+		else {
+			adView.setVisibility(View.VISIBLE);
+			AdRequest adRequest = new AdRequest();
+			//This code is for testing only
+			adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+			adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
+			adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
+			//adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
+			//End of testing code
+			adView.loadAd(adRequest);
+			adView.setAdListener(new AdListen());
+		}
 	}
 
 	private boolean checkPaid()
@@ -884,7 +916,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		noteText.setText(showHint);
 		catText.setText(category);
 		//Sets the unknown text to invisible.
-		textHide.setVisibility(INVISIBLE);
+		textHide.setVisibility(View.INVISIBLE);
 		changeCata(cataTest);
 		changeNote(noteTest);
 		//Toggles the mark button depending if the word is marked in the database.
@@ -908,16 +940,16 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			//If the note word is 0 then it will not be shown.
 			if (note.contains("0"))
 			{
-				noteText.setVisibility(INVISIBLE);
+				noteText.setVisibility(View.INVISIBLE);
 			}
 			else
 			{
-				noteText.setVisibility(VISIBLE);
+				noteText.setVisibility(View.VISIBLE);
 			}
 		}
 		else
 		{
-			noteText.setVisibility(INVISIBLE);
+			noteText.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -928,13 +960,13 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		TextView catText = (TextView) findViewById(R.id.catText);
 		if (current)
 		{
-			catText.setVisibility(VISIBLE);
-			catCurrent.setVisibility(VISIBLE);
+			catText.setVisibility(View.VISIBLE);
+			catCurrent.setVisibility(View.VISIBLE);
 		}
 		else
 		{
-			catText.setVisibility(INVISIBLE);
-			catCurrent.setVisibility(INVISIBLE);
+			catText.setVisibility(View.INVISIBLE);
+			catCurrent.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -1128,7 +1160,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		Button speakB = (Button) findViewById(R.id.speakButton);
 		Button showB = (Button) findViewById(R.id.showButton);
 		nextWord.setText(R.string.NextWord);
-		wordHide.setVisibility(VISIBLE);
+		wordHide.setVisibility(View.VISIBLE);
 		speakB.setEnabled(false);
 		showB.setEnabled(false);
 		shown = true;
