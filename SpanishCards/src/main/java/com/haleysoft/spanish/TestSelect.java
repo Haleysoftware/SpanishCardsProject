@@ -7,6 +7,7 @@ package com.haleysoft.spanish;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -130,7 +132,9 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
         AdRequest adRequest = new AdRequest();
         //This code is for testing only
         adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-        adRequest.addTestDevice(""); //This is for a real phone. It needs the Device ID from logcat
+        adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
+	    adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
+	    //adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
         //End of testing code
         adView.loadAd(adRequest);
         adView.setAdListener(new AdListen());
