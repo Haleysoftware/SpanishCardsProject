@@ -20,6 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TabHost;
+
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import com.haleysoft.spanish.WordList.TabManager.TabInfo;
 
 import java.util.HashMap;
@@ -29,6 +32,8 @@ import java.util.HashMap;
 @TargetApi(14)
 public class WordList extends FragmentActivity
 {
+	private static final String MASTER_SETTINGS = "haley_master_set";
+	private AdView adView;
 	public static Boolean ttsErrorDialog = false;
 	private static final String MODES = "Word List";
 	private static String userName;
@@ -42,6 +47,7 @@ public class WordList extends FragmentActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
@@ -128,6 +134,7 @@ public class WordList extends FragmentActivity
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
+		addAds(masterPref.getBoolean("remove_ads", false));
 	}
 
 	@Override
@@ -152,6 +159,39 @@ public class WordList extends FragmentActivity
 	public void onResume()
 	{
 		super.onResume();
+	}
+
+	@Override
+	public void onDestroy() {
+		if (adView != null) {
+			adView.removeAllViews();
+			adView.destroy();
+		}
+		super.onDestroy();
+	}
+
+	private void addAds(boolean paid) {
+		adView = (AdView) this.findViewById(R.id.adView);
+		if (paid) {
+			adView.setVisibility(View.INVISIBLE);
+			if (adView != null) {
+				adView.removeAllViews();
+				adView.destroy();
+				adView = null;
+			}
+		}
+		else {
+			adView.setVisibility(View.VISIBLE);
+			AdRequest adRequest = new AdRequest();
+			//This code is for testing only
+			adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+			adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
+			adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
+			//adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
+			//End of testing code
+			adView.loadAd(adRequest);
+			adView.setAdListener(new AdListen());
+		}
 	}
 
 	private void addFragments()
