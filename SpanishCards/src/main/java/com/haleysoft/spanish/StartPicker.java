@@ -14,8 +14,6 @@ public class StartPicker extends FragmentActivity
 {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	private String userName = "Guest";
-	//private String licenseFree = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhf7caMdtA37LLLSVLOrH4DbBU/8VpODxmetrLvVbimpZ7pzadIw/8UcZW9LFSihOcHQkel5Y3qu9QAFH/t87fwAYRbKeRY9nyZ8pNS4eqB+JpKKbI+jUm2aKZ4DYkTG8E8NP4w7FtFioH7+QTGBbLlZh0xz8mHNmHRPm50TIauyDq8x5ULh+me7XbJyfis2m3rzWAQIe9d2U51yMw51DEYN0+yccMKHTrhiA/72veinMfd6WBs3dGNT2jaVzUZ74Sr0iSPNSbuNftQBTwqI7ICFrDXsy5eUz6OsMfiQXKq+9HtgQAAlUuZZnVvGZUCCVY129Tlw6nNt0sODHOfOjmwIDAQAB";
-	//private String licensePaid;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

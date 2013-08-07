@@ -238,6 +238,9 @@
 
 	<string name="settopmore">Más</string>
 
+    <string name="setbuymain">La Tienda</string>
+    <string name="setbuysum">Vea lo que se puede quitar o añadirse.</string>
+
 	<string name="sethowmain">Instrucciones</string>
 	<string name="sethowsum">Muestra cómo a la página</string>
 

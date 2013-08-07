@@ -149,18 +149,24 @@
 
 	</PreferenceCategory>
 
-	<!--
+
 	<PreferenceCategory
 		android:title="@string/settopmore">
 
-		 NOTE Will bring up how to activity
+        <!-- Will go to a page to buy items -->
+        <Preference android:key="buy_set"
+                    android:defaultValue="false"
+                    android:title="@string/setbuymain"
+                    android:summary="@string/setbuysum"/>
+
+		 <!-- NOTE Will bring up how to activity -->
 		<Preference
 			android:key="howto_set"
 			android:defaultValue="true"
 			android:title="@string/sethowmain"
 			android:summary="@string/sethowsum"/>
 
-		 NOTE Will bring up about Haley Software activity
+		 <!-- NOTE Will bring up about Haley Software activity -->
 		<Preference
 			android:key="about_set"
 			android:defaultValue="true"
@@ -175,6 +181,5 @@
 			android:summaryOff="@string/setdatasendtextoff"/>
 
 	</PreferenceCategory>
-	 -->
 
 </PreferenceScreen>

@@ -239,11 +239,14 @@
 
 	<string name="settopmore">More</string>
 
+    <string name="setbuymain">Shop</string>
+    <string name="setbuysum">See what can be removed or added.</string>
+
 	<string name="sethowmain">Directions</string>
-	<string name="sethowsum">Display how to page</string>
+	<string name="sethowsum">Display how to page.</string>
 
 	<string name="setaboutmain">About</string>
-	<string name="setaboutsum">Know more about me</string>
+	<string name="setaboutsum">A little about the developer.</string>
 
 	<string name="setdatasendmain">Google Analytics</string>
 	<string name="setdatasendtexton">Thanks for helping. Anonymous data will help me improve this application.</string>
