@@ -240,6 +240,7 @@
 
     <string name="setbuymain">La Tienda</string>
     <string name="setbuysum">Vea lo que se puede quitar o añadirse.</string>
+	<string name="setbuyoff">Google Play Facturación V3 no es compatible.</string>
 
 	<string name="sethowmain">Instrucciones</string>
 	<string name="sethowsum">Muestra cómo a la página</string>
@@ -250,6 +251,14 @@
 	<string name="setdatasendmain">Google Analytics</string>
 	<string name="setdatasendtexton">Gracias por ayudarnos. Datos anónimos me ayudará a mejorar esta aplicación.</string>
 	<string name="setdatasendtextoff">El envío de datos anónimos está apagado.</string>
+
+	<!-- Shop -->
+
+	<string name="shopmoney">$1.99</string>
+	<string name="shoptitle">La Tienda</string>
+	<string name="shopadtext">Retire Anuncios</string>
+	<string name="shopadbuttonno">Compra</string>
+	<string name="shopadbuttonyes">Comprado</string>
 
 	<!-- Test Screen -->
 

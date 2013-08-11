@@ -20,6 +20,7 @@ import java.util.List;
 
 public class SettingsMenuOld extends PreferenceActivity
 {
+	private static final String MASTER_SETTINGS = "haley_master_set";
 	public static String prefName = "Guest";
 	private int mode = 0;
 
@@ -28,10 +29,13 @@ public class SettingsMenuOld extends PreferenceActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle extras = getIntent().getExtras();
-		prefName = extras.getString("prefUser");
-		mode = extras.getInt("mode");
-		SharedPreferences preferences = getSharedPreferences(prefName, MODE_PRIVATE);
+		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
+		Bundle extras = this.getIntent().getExtras();
+		if (extras != null) {
+			prefName = extras.getString("prefUser");
+			mode = extras.getInt("mode");
+		}
+		SharedPreferences preferences = this.getSharedPreferences(prefName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
 		if (theme)
 		{
@@ -44,16 +48,16 @@ public class SettingsMenuOld extends PreferenceActivity
 		String orientationTest = preferences.getString("orie_list_set", "0");
 		orientation(orientationTest);
 
-		getPreferenceManager().setSharedPreferencesName(prefName);
+		this.getPreferenceManager().setSharedPreferencesName(prefName);
 
 		switch (mode)
 		{
 			default:
 			case 0:
-				addPreferencesFromResource(R.xml.oldmainsettings);
+				this.addPreferencesFromResource(R.xml.oldmainsettings);
 				break;
 			case 1:
-				addPreferencesFromResource(R.xml.testsettings);
+				this.addPreferencesFromResource(R.xml.testsettings);
 				break;
 
 		}
@@ -72,25 +76,50 @@ public class SettingsMenuOld extends PreferenceActivity
 			}
 		}
 
+		Preference shopButton = this.findPreference("buy_set");
+		if (shopButton != null) {
+			if (masterPref.getBoolean("buy_okay", false)) {
+				shopButton.setEnabled(true);
+				shopButton.setSummary(R.string.setbuysum);
+				shopButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+				{
+					@Override
+					public boolean onPreferenceClick(Preference arg0)
+					{
+						Intent goShop = new Intent(SettingsMenuOld.this, AppPurchasing.class);
+						startActivity(goShop);
+						return true;
+					}
+				});
+			} else {
+				shopButton.setEnabled(false);
+				shopButton.setSummary(R.string.setbuyoff);
+			}
+		}
+
+
+
 		switch (mode)
 		{
 			case 0: //This is to setup the main settings
 
-				Preference resetButton = (Preference)findPreference("mark_reset_set");
-				resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-				{
-					@Override
-					public boolean onPreferenceClick(Preference arg0) {
-						//Code goes here
-						Intent reset = new Intent(SettingsMenuOld.this, OldSetDelete.class);
-						reset.putExtra("uName", prefName);
-						startActivity(reset);
-						return true;
-					}
-				});
+				Preference resetButton = this.findPreference("mark_reset_set");
+				if (resetButton != null) {
+					resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+					{
+						@Override
+						public boolean onPreferenceClick(Preference arg0) {
+							//Code goes here
+							Intent reset = new Intent(SettingsMenuOld.this, OldSetDelete.class);
+							reset.putExtra("uName", prefName);
+							startActivity(reset);
+							return true;
+						}
+					});
+				}
 
 				/*
-				Preference resetMarkButton = (Preference)findPreference("mark_reset_set");
+				Preference resetMarkButton = findPreference("mark_reset_set");
 				resetMarkButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
 					{
 						@Override
@@ -103,7 +132,7 @@ public class SettingsMenuOld extends PreferenceActivity
 							return true;
 						}
 					});
-				Preference resetLevelButton = (Preference)findPreference("level_reset_set");
+				Preference resetLevelButton = findPreference("level_reset_set");
 				resetLevelButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
 					{
 						@Override
@@ -116,7 +145,7 @@ public class SettingsMenuOld extends PreferenceActivity
 							return true;
 						}
 					});
-				Preference clearUserScoreButton = (Preference)findPreference("clear_user_score_set");
+				Preference clearUserScoreButton = findPreference("clear_user_score_set");
 				clearUserScoreButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
 					{
 						@Override
@@ -213,16 +242,18 @@ public class SettingsMenuOld extends PreferenceActivity
 
 		//This is where to setup that is common to all settings
 
-		Preference changeOrie = (Preference)findPreference("orie_list_set");
-		changeOrie.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-		{
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue)
+		Preference changeOrie = findPreference("orie_list_set");
+		if (changeOrie != null) {
+			changeOrie.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 			{
-				orientation(newValue.toString());
-				return true;
-			}
-		});
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue)
+				{
+					orientation(newValue.toString());
+					return true;
+				}
+			});
+		}
 
 	}
 
@@ -243,33 +274,21 @@ public class SettingsMenuOld extends PreferenceActivity
 		voiceCheck();
 	}
 
-	@Override
-	public void onSaveInstanceState (Bundle savedState)
-	{
-		switch (mode)
-		{
-			case 0: //for main settings
-
-				break;
-			case 1: //for test settings
-
-				break;
-			default:
-		}
-		super.onSaveInstanceState(savedState);
-	}
-
 	@SuppressWarnings("deprecation")
 	private void voiceCheck()
 	{
 		PackageManager pm = getPackageManager();
-		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
-		if (activities.size() == 0)
-		{
-			//Disabled
-			Preference voice = (Preference)findPreference("speak_set");
-			voice.setEnabled(false);
-			//voice.setSummary(R.string.noVoice);
+		if (pm != null) {
+			List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+			if (activities.size() == 0)
+			{
+				//Disabled
+				Preference voice = findPreference("speak_set");
+				if (voice !=null) {
+					voice.setEnabled(false);
+					voice.setSummary(R.string.noVoice);
+				}
+			}
 		}
 	}
 

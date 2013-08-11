@@ -241,6 +241,7 @@
 
     <string name="setbuymain">Shop</string>
     <string name="setbuysum">See what can be removed or added.</string>
+	<string name="setbuyoff">Google Play Billing V3 is not supported.</string>
 
 	<string name="sethowmain">Directions</string>
 	<string name="sethowsum">Display how to page.</string>
@@ -252,6 +253,13 @@
 	<string name="setdatasendtexton">Thanks for helping. Anonymous data will help me improve this application.</string>
 	<string name="setdatasendtextoff">Sending anonymous data is off.</string>
 
+	<!-- Shop -->
+
+	<string name="shopmoney">$1.99</string>
+	<string name="shoptitle">Shop</string>
+	<string name="shopadtext">Remove Ads</string>
+	<string name="shopadbuttonno">Purchase</string>
+	<string name="shopadbuttonyes">Purchased</string>
 
 	<!-- Menus -->
 
