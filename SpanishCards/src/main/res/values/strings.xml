@@ -256,6 +256,7 @@
 	<!-- Shop -->
 
 	<string name="shopmoney">$1.99</string>
+	<string name="shopwait">Please wait. Updating items.</string>
 	<string name="shoptitle">Shop</string>
 	<string name="shopadtext">Remove Ads</string>
 	<string name="shopadbuttonno">Purchase</string>
