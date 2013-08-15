@@ -32,10 +32,12 @@ import android.widget.ToggleButton;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class TestSelect extends FragmentActivity implements OnItemSelectedListener
 {
 	private static final String MASTER_SETTINGS = "haley_master_set";
+	private boolean analytics = true;
 	private AdView adView;
 	FragmentManager theManager = getSupportFragmentManager();
 	private static final int SETTING_REQUEST_CODE = 2010;
@@ -55,6 +57,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		userName = masterPref.getString("last_user_set", "Guest");
 		SharedPreferences pref = getSharedPreferences(userName, MODE_PRIVATE);
+		analytics = pref.getBoolean("analytics_set", true);
 		boolean theme = pref.getBoolean("theme_set", false);
 		if (theme)
 		{
@@ -86,17 +89,17 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		showSpinSetup();
 		wordSpinUpdate();
 		nameSpinUpdate();
-
+		if (analytics) {
+			EasyTracker.getInstance().activityStart(this);
+		}
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	public void onPostResume() {
-		super.onPostResume();
+	public void onStop() {
+		super.onStop();
+		if (analytics) {
+			EasyTracker.getInstance().activityStop(this);
+		}
 	}
 
     @Override

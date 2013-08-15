@@ -1,6 +1,7 @@
 package com.haleysoft.spanish;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +44,7 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 
 	private void inAppCheck() {
 		billHelper = new IabHelper(this, AppPurchasing.LICENSE_KEY);
-		billHelper.enableDebugLogging(true); //Need to change to false before release
+		billHelper.enableDebugLogging(false); //Need to change to false before release
 		billHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
 			public void onIabSetupFinished(IabResult result) {
 				if (!result.isSuccess()) {
@@ -95,6 +96,30 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 			};
 	*/
 
+	//Listener for when a purchase is finished
+	IabHelper.OnIabPurchaseFinishedListener billPurchaseFinishListener =
+			new IabHelper.OnIabPurchaseFinishedListener() {
+				public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+					if (result.isFailure()) {
+						//complain("Error purchasing: " + result);
+						setWaitScreen(false);
+						return;
+					}
+					if (!verifyDeveloperPayload(purchase)) {
+						//complain("Error purchasing. Authenticity verification failed.");
+						setWaitScreen(false);
+						return;
+					}
+					//Purchase was successful!
+					if (purchase.getSku().equals(SKU_ADS)) {
+						//alert("Thank you for your the purchase!");
+						masterPref.edit().putBoolean("remove_ads", true).commit();
+						checkBuys();
+						setWaitScreen(false);
+					}
+				}
+			};
+
 	private void checkBuys () {
 		Button adButton = (Button) this.findViewById(R.id.shop_adButton);
 		if (masterPref.getBoolean("remove_ads", false)) {
@@ -124,17 +149,32 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 
 	//Verifies if purchase is real
 	public static boolean verifyDeveloperPayload(Purchase purchase) {
-		boolean isReal = true;
+		boolean isReal;
 		String payload = purchase.getDeveloperPayload();
-
+		isReal = payload.contentEquals("s6f54safa5f4as65f46s54fas65f4ff4a6sf7s1fs35f4a6");
 		return isReal;
 	}
 
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.shop_adButton:
-				
+				setWaitScreen(true);
+				String payload = "s6f54safa5f4as65f46s54fas65f4ff4a6sf7s1fs35f4a6";
+				billHelper.launchPurchaseFlow(this, SKU_ADS, REQUEST_CODE, billPurchaseFinishListener, payload);
 				break;
 		}
 	}
+
+	/*
+	void complain(String message) {
+		alert("Error: " + message);
+	}
+
+	void alert(String message) {
+		AlertDialog.Builder bld = new AlertDialog.Builder(this);
+		bld.setMessage(message);
+		bld.setNeutralButton("OK", null);
+		bld.create().show();
+	}
+	*/
 }

@@ -46,10 +46,12 @@ import android.widget.ToggleButton;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class TestMain extends FragmentActivity implements OnItemSelectedListener
 {
 	private static final String MASTER_SETTINGS = "haley_master_set";
+	private boolean analytics = true;
 	private AdView adView;
 	private static final int demoLevel = 30;
 	private static final int maxLevel = 150;
@@ -104,6 +106,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 		SharedPreferences preferences = this.getSharedPreferences(userName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
+		analytics = preferences.getBoolean("analytics_set", true);
 		if (theme)
 		{
 			this.setTheme(R.style.ActivityThemeAlt);
@@ -213,6 +216,9 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			}
 			this.nextWord();
 		}
+		if (analytics) {
+			EasyTracker.getInstance().activityStart(this);
+		}
 	}
 
 	@Override
@@ -268,6 +274,14 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		{
 			startDialog(1, userSaid, 2); //2 = null
 			wrongDialog = false;
+		}
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		if (analytics) {
+			EasyTracker.getInstance().activityStop(this);
 		}
 	}
 

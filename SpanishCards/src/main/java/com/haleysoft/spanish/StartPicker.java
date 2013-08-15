@@ -14,11 +14,14 @@ import com.android.vending.billing.util.IabHelper;
 import com.android.vending.billing.util.IabResult;
 import com.android.vending.billing.util.Inventory;
 import com.android.vending.billing.util.Purchase;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class StartPicker extends Activity
 {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	private SharedPreferences masterPref;
+	private SharedPreferences preferences;
+	private boolean analytics = true;
 	private IabHelper billHelper;
 	private String userName = "Guest";
 
@@ -30,7 +33,8 @@ public class StartPicker extends Activity
 		masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		userName = masterPref.getString("last_user_set", "Guest");
 		inAppCheck();
-		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
+		preferences = getSharedPreferences(userName, MODE_PRIVATE);
+		/*
 		boolean testing = preferences.getBoolean("return_test_set", false);
 		if (testing)
 		{
@@ -40,7 +44,33 @@ public class StartPicker extends Activity
 		{
 			goSelect();
 		}
+		*/
+	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		boolean testing = preferences.getBoolean("return_test_set", false);
+		analytics = preferences.getBoolean("analytics_set", true);
+		if (analytics) {
+			EasyTracker.getInstance().activityStart(this);
+		}
+		if (testing)
+		{
+			goTest();
+		}
+		else
+		{
+			goSelect();
+		}
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		if (analytics) {
+			EasyTracker.getInstance().activityStop(this);
+		}
 	}
 
 	@Override
@@ -58,7 +88,7 @@ public class StartPicker extends Activity
 
 	private void inAppCheck() {
 		billHelper = new IabHelper(this, AppPurchasing.LICENSE_KEY);
-		billHelper.enableDebugLogging(true);
+		billHelper.enableDebugLogging(false);
 		billHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
 			public void onIabSetupFinished(IabResult result) {
 				if (!result.isSuccess()) {

@@ -159,19 +159,21 @@
                     android:title="@string/setbuymain"
                     android:summary="@string/setbuysum"/>
 
-		 <!-- NOTE Will bring up how to activity -->
+
+		<!-- NOTE Will bring up how to activity
 		<Preference
 			android:key="howto_set"
 			android:defaultValue="true"
 			android:title="@string/sethowmain"
 			android:summary="@string/sethowsum"/>
 
-		 <!-- NOTE Will bring up about Haley Software activity -->
+		  NOTE Will bring up about Haley Software activity
 		<Preference
 			android:key="about_set"
 			android:defaultValue="true"
 			android:title="@string/setaboutmain"
 			android:summary="@string/setaboutsum"/>
+		-->
 
 		<CheckBoxPreference
 			android:key="analytics_set"
