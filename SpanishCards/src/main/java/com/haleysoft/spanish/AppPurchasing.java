@@ -23,6 +23,7 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
     public static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhf7caMdtA37LLLSVLOrH4DbBU/8VpODxmetrLvVbimpZ7pzadIw/8UcZW9LFSihOcHQkel5Y3qu9QAFH/t87fwAYRbKeRY9nyZ8pNS4eqB+JpKKbI+jUm2aKZ4DYkTG8E8NP4w7FtFioH7+QTGBbLlZh0xz8mHNmHRPm50TIauyDq8x5ULh+me7XbJyfis2m3rzWAQIe9d2U51yMw51DEYN0+yccMKHTrhiA/72veinMfd6WBs3dGNT2jaVzUZ74Sr0iSPNSbuNftQBTwqI7ICFrDXsy5eUz6OsMfiQXKq+9HtgQAAlUuZZnVvGZUCCVY129Tlw6nNt0sODHOfOjmwIDAQAB";
 	private IabHelper billHelper;
 	public static final String SKU_ADS = "removeads";
+	public static final String BUY_CODE = "s6f54safa5f4as65f46s54fas65f4ff4a6sf7s1fs35f4a6";
 	private static final int REQUEST_CODE = 7589;
 
 	@Override
@@ -30,7 +31,7 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 		super.onCreate(savedState);
 		this.setContentView(R.layout.shoplayout);
 		masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
-		setWaitScreen(true);
+		//setWaitScreen(true);
 		inAppCheck();
 		checkBuys();
 	}
@@ -38,7 +39,9 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (billHelper != null) billHelper.dispose();
+		if (billHelper != null) {
+			billHelper.dispose();
+		}
 		billHelper = null;
 	}
 
@@ -79,7 +82,7 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 					*/
 
 					checkBuys();
-					setWaitScreen(false);
+					//setWaitScreen(false);
 				}
 			};
 
@@ -102,12 +105,12 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 				public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
 					if (result.isFailure()) {
 						//complain("Error purchasing: " + result);
-						setWaitScreen(false);
+						//setWaitScreen(false);
 						return;
 					}
 					if (!verifyDeveloperPayload(purchase)) {
 						//complain("Error purchasing. Authenticity verification failed.");
-						setWaitScreen(false);
+						//setWaitScreen(false);
 						return;
 					}
 					//Purchase was successful!
@@ -115,7 +118,7 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 						//alert("Thank you for your the purchase!");
 						masterPref.edit().putBoolean("remove_ads", true).commit();
 						checkBuys();
-						setWaitScreen(false);
+						//setWaitScreen(false);
 					}
 				}
 			};
@@ -124,9 +127,11 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 		Button adButton = (Button) this.findViewById(R.id.shop_adButton);
 		if (masterPref.getBoolean("remove_ads", false)) {
 			adButton.setClickable(false);
+			adButton.setEnabled(false);
 			adButton.setText(R.string.shopadbuttonyes);
 		} else {
 			adButton.setClickable(true);
+			adButton.setEnabled(true);
 			adButton.setText(R.string.shopadbuttonno);
 			adButton.setOnClickListener(this);
 		}
@@ -136,6 +141,7 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 		}
 	}
 
+	/*
 	private void setWaitScreen(boolean state) {
 		TextView wait = (TextView) this.findViewById(R.id.shop_Wait);
 		if (wait != null) {
@@ -146,21 +152,21 @@ public class AppPurchasing extends Activity implements View.OnClickListener {
 			adLayout.setVisibility(state ? View.INVISIBLE : View.VISIBLE);
 		}
 	}
+	*/
 
 	//Verifies if purchase is real
 	public static boolean verifyDeveloperPayload(Purchase purchase) {
 		boolean isReal;
 		String payload = purchase.getDeveloperPayload();
-		isReal = payload.contentEquals("s6f54safa5f4as65f46s54fas65f4ff4a6sf7s1fs35f4a6");
+		isReal = payload.contentEquals(BUY_CODE);
 		return isReal;
 	}
 
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.shop_adButton:
-				setWaitScreen(true);
-				String payload = "s6f54safa5f4as65f46s54fas65f4ff4a6sf7s1fs35f4a6";
-				billHelper.launchPurchaseFlow(this, SKU_ADS, REQUEST_CODE, billPurchaseFinishListener, payload);
+				//setWaitScreen(true);
+				billHelper.launchPurchaseFlow(this, SKU_ADS, REQUEST_CODE, billPurchaseFinishListener, BUY_CODE);
 				break;
 		}
 	}

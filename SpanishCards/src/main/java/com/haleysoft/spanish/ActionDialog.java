@@ -12,8 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class ActionDialog extends DialogFragment
-{
+public class ActionDialog extends DialogFragment {
 	private int preferenceID;
 	private int actionID;
 	private String userName;
@@ -21,8 +20,7 @@ public class ActionDialog extends DialogFragment
 	private String dialogText;
 	private String dataExtra;
 
-	public static ActionDialog newInstance (int prefId, int actionId, String uName, String dTitle, String dText, String extra)
-	{
+	public static ActionDialog newInstance (int prefId, int actionId, String uName, String dTitle, String dText, String extra) {
 		ActionDialog dialog = new ActionDialog();
 		Bundle args = new Bundle();
 		args.putInt("pref", prefId);
@@ -36,8 +34,7 @@ public class ActionDialog extends DialogFragment
 	}
 
 	@Override
-	public void onCreate (Bundle savedInstanceState)
-	{
+	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		preferenceID = getArguments().getInt("pref");
 		actionID = getArguments().getInt("action");
@@ -45,75 +42,56 @@ public class ActionDialog extends DialogFragment
 		dialogTitle = getArguments().getString("title");
 		dialogText = getArguments().getString("text");
 		dataExtra = getArguments().getString("bouns");
-		//setRetainInstance(true);
 		SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
 		boolean userTheme = pref.getBoolean("theme_set", false);
 		int theme;
-		if (userTheme)
-		{
+		if (userTheme) {
 			theme = (R.style.DialogThemeAlt);
-		}
-		else
-		{
+		} else {
 			theme = (R.style.DialogTheme);
 		}
-		int style = DialogFragment.STYLE_NORMAL;
-		setStyle(style, theme);
+		setStyle(DialogsFragment.STYLE_NORMAL, theme);
 	}
 
 	@Override
-	public void onPause()
-	{
+	public void onPause() {
 		super.onPause();
 		dismiss();
 	}
 
 	@Override
-	public Dialog onCreateDialog (Bundle savedInstanceState)
-	{
-		//preferenceID = getArguments().getInt("pref");
-		//userName = getArguments().getString("name");
-		//dialogTitle = getArguments().getString("title");
-		//dialogText = getArguments().getString("text");
-
+	public Dialog onCreateDialog (Bundle savedInstanceState) {
 		return new AlertDialog.Builder(getActivity())
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(dialogTitle)
 				.setMessage(dialogText)
-				.setPositiveButton(R.string.WarningOkButtion,
-				                   new DialogInterface.OnClickListener()
-				                   {
-					                   public void onClick(DialogInterface dialog, int whichButton)
-					                   {
-						                   switch (preferenceID)
-						                   {
-							                   case 0: //3.0 up Settings
-								                   ((SettingsMenu)getActivity()).onDialogOkay(actionID, dialogTitle, dataExtra);
-								                   dismiss();
-								                   break;
-							                   case 1: //2.3 down Settings
-								                   ((OldSetDelete)getActivity()).onDialogOkay(actionID, dialogTitle, dataExtra);
-								                   dismiss();
-								                   break;
-							                   case 2: //Test Select Screen
+				.setPositiveButton(R.string.WarningOkButtion, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int whichButton) {
+		                   switch (preferenceID) {
+			                   case 0: //3.0 up Settings
+				                   ((SettingsMenu)getActivity()).onDialogOkay(actionID, dialogTitle, dataExtra);
+				                   dismiss();
+				                   break;
+			                   case 1: //2.3 down Settings
+				                   ((OldSetDelete)getActivity()).onDialogOkay(actionID, dialogTitle, dataExtra);
+				                   dismiss();
+				                   break;
+			                   case 2: //Test Select Screen
 
-								                   dismiss();
-								                   break;
-							                   case 3: //Score Screen
+				                   dismiss();
+				                   break;
+			                   case 3: //Score Screen
 
-								                   dismiss();
-								                   break;
-							                   default: //nothing
-								                   dismiss();
-						                   }
-					                   }
-				                   }
+				                   dismiss();
+				                   break;
+			                   default: //nothing
+				                   dismiss();
+		                   }
+	                   }
+                   }
 				)
-				.setNegativeButton(R.string.WarningNoButtion,
-				                   new DialogInterface.OnClickListener()
-				                   {
-					                   public void onClick(DialogInterface dialog, int whichButton)
-					                   {
+				.setNegativeButton(R.string.WarningNoButtion, new DialogInterface.OnClickListener() {
+					                   public void onClick(DialogInterface dialog, int whichButton) {
 						                   dismiss();
 					                   }
 				                   }

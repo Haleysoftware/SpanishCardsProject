@@ -6,6 +6,7 @@ package com.haleysoft.spanish;
 
 import java.util.Locale;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,18 +25,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-public class DialogsFragment extends DialogFragment
-{
+public class DialogsFragment extends DialogFragment {
 	private static String userName;
 	private String hintText; //Used to pass the hint word from the word list and search
 	private String userSaid;
 	private String userTyped;
 	private int extraData;
 	private int ID;
-	//Sets the values for changing view visibility
-	private int VISIBLE = 0;
-	private int INVISIBLE = 4;
-
 
 	static DialogsFragment newInstance(String hint, int id, String userSaid2, int extra, String userName) {
 		DialogsFragment dialog = new DialogsFragment();
@@ -50,8 +46,7 @@ public class DialogsFragment extends DialogFragment
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		userName = getArguments().getString("name");
 		hintText = getArguments().getString("hint");
@@ -62,12 +57,9 @@ public class DialogsFragment extends DialogFragment
 		SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
 		boolean userTheme = pref.getBoolean("theme_set", false);
 		int theme;
-		if (userTheme)
-		{
+		if (userTheme) {
 			theme = (R.style.DialogThemeAlt);
-		}
-		else
-		{
+		} else {
 			theme = (R.style.DialogTheme);
 		}
 		int style = DialogFragment.STYLE_NORMAL;
@@ -77,17 +69,17 @@ public class DialogsFragment extends DialogFragment
 	//Dirty workaround for fixing on rotate
 	@Override
 	public void onDestroyView() {
-		if (getDialog() != null && getRetainInstance())
-			getDialog().setOnDismissListener(null);
+		Dialog dialog = getDialog();
+		if (dialog != null && getRetainInstance()) {
+			dialog.setOnDismissListener(null);
+		}
 		super.onDestroyView();
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View dialog = null;
-		if (ID == 0) //Dialog for the user to enter text
-		{
+		if (ID == 0) { //Dialog for the user to enter text
 			dialog = inflater.inflate(R.layout.enterdialoglayout, container, false);
 			getDialog().setTitle(R.string.ETitle);
 			Button submit = (Button) dialog.findViewById(R.id.submitbutton);
@@ -95,16 +87,11 @@ public class DialogsFragment extends DialogFragment
 			final EditText text = (EditText) dialog.findViewById(R.id.enteredText);
 
 			//On Enter press
-			text.setOnKeyListener(new OnKeyListener()
-			{
-				public boolean onKey(View V, int keyCode, KeyEvent event)
-				{
-					if (event.getAction() == KeyEvent.ACTION_DOWN)
-					{
-						if (keyCode == KeyEvent.KEYCODE_ENTER)
-						{
-							if (text.getText().length() != 0)
-							{
+			text.setOnKeyListener(new OnKeyListener() {
+				public boolean onKey(View V, int keyCode, KeyEvent event) {
+					if (event.getAction() == KeyEvent.ACTION_DOWN) {
+						if (keyCode == KeyEvent.KEYCODE_ENTER) {
+							if (text.getText().length() != 0) {
 								userTyped = text.getText().toString().trim().toLowerCase(Locale.US);
 								((TestMain)getActivity()).UserText(userTyped);
 								dismiss();
@@ -117,91 +104,74 @@ public class DialogsFragment extends DialogFragment
 			});
 
 			//On button press
-			submit.setOnClickListener(new OnClickListener()
-			{
+			submit.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
-					if (text.getText().length() != 0)
-					{
+				public void onClick(View v) {
+					if (text.getText().length() != 0) {
 						userTyped = text.getText().toString().trim().toLowerCase(Locale.US);
 						((TestMain)getActivity()).UserText(userTyped);
 						dismiss();
 					}
 				}
 			});
-			cancel.setOnClickListener(new OnClickListener()
-			{
+			cancel.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
+				public void onClick(View v) {
 					dismiss();
 				}
 			});
 		}
-		else if (ID == 1) //Dialog for when the wrong word was said
-		{
+		else if (ID == 1) { //Dialog for when the wrong word was said
 			dialog = inflater.inflate(R.layout.wrongdialoglayout, container, false);
 			getDialog().setTitle(R.string.WTitleSaid);
 			TextView error = (TextView) dialog.findViewById(R.id.errortext);
 			TextView said = (TextView) dialog.findViewById(R.id.saidthis);
-			error.setVisibility(VISIBLE);
+			error.setVisibility(View.VISIBLE);
 			said.setText(userSaid);
-
 
 			//On button press
 			Button ok = (Button) dialog.findViewById(R.id.okbutton);
 			Button retry = (Button) dialog.findViewById(R.id.retrybutton);
-			ok.setOnClickListener(new OnClickListener()
-			{
+			ok.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
+				public void onClick(View v) {
 					dismiss();
 				}
 			});
-			retry.setOnClickListener(new OnClickListener()
-			{
+			retry.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
+				public void onClick(View v) {
 					((TestMain)getActivity()).startVoice();
 					dismiss();
 				}
 			});
 		}
-		else if (ID == 2) //Dialog for when the wrong text was entered
-		{
+		else if (ID == 2) { //Dialog for when the wrong text was entered
 			dialog = inflater.inflate(R.layout.wrongdialoglayout, container, false);
 			getDialog().setTitle(R.string.WTitleEnter);
 			TextView error = (TextView) dialog.findViewById(R.id.errortext);
 			TextView said = (TextView) dialog.findViewById(R.id.saidthis);
-			error.setVisibility(INVISIBLE);
+			error.setVisibility(View.INVISIBLE);
 			said.setText(R.string.WText);
 
 			//On button press
 			Button ok = (Button) dialog.findViewById(R.id.okbutton);
 			Button retry = (Button) dialog.findViewById(R.id.retrybutton);
-			ok.setOnClickListener(new OnClickListener()
-			{
+			ok.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
+				public void onClick(View v) {
 					dismiss();
 				}
 			});
-			retry.setOnClickListener(new OnClickListener()
-			{
+			retry.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
+				public void onClick(View v) {
 					((TestMain)getActivity()).startText();
 					dismiss();
 				}
 			});
 		}
-		else if (ID == 3) //Dialog for the user to enter their name
-		{
+		else if (ID == 3) { //Dialog for the user to enter their name
 			dialog = inflater.inflate(R.layout.namedialoglayout, container, false);
 			getDialog().setTitle(R.string.NTitle);
 			final EditText text = (EditText) dialog.findViewById(R.id.editName);
@@ -211,16 +181,11 @@ public class DialogsFragment extends DialogFragment
 			spinner.setSelection(extraData);
 
 			//On Enter press
-			text.setOnKeyListener(new OnKeyListener()
-			{
-				public boolean onKey(View V, int keyCode, KeyEvent event)
-				{
-					if (event.getAction() == KeyEvent.ACTION_DOWN)
-					{
-						if (keyCode == KeyEvent.KEYCODE_ENTER)
-						{
-							if (text.getText().length() != 0)
-							{
+			text.setOnKeyListener(new OnKeyListener() {
+				public boolean onKey(View V, int keyCode, KeyEvent event) {
+					if (event.getAction() == KeyEvent.ACTION_DOWN) {
+						if (keyCode == KeyEvent.KEYCODE_ENTER) {
+							if (text.getText().length() != 0) {
 								userTyped = text.getText().toString().trim();
 								((TestSelect)getActivity()).addUser(userTyped);
 								dismiss();
@@ -233,65 +198,47 @@ public class DialogsFragment extends DialogFragment
 			});
 
 			//On button press
-			enter.setOnClickListener(new OnClickListener()
-			{
+			enter.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
-					if (text.getText().length() != 0)
-					{
+				public void onClick(View v) {
+					if (text.getText().length() != 0) {
 						userTyped = text.getText().toString().trim();
 						((TestSelect)getActivity()).addUser(userTyped);
 						dismiss();
 					}
 				}
 			});
-			mind.setOnClickListener(new OnClickListener()
-			{
+			mind.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
+				public void onClick(View v) {
 					dismiss();
 				}
 			});
 		}
-		else if (ID == 4) //Dialog for when the user wants to see the hint in the word list
-		{
+		else if (ID == 4) { //Dialog for when the user wants to see the hint in the word list
 			dialog = inflater.inflate(R.layout.hintdialoglayout, container, false);
 			Button done = (Button) dialog.findViewById(R.id.hintOkButton);
 			ToggleButton mark = (ToggleButton) dialog.findViewById(R.id.hintMarkButton);
 
-			if (hintText.contains("0")) //No hint for word
-			{
+			if (hintText.contains("0")) { //No hint for word
 				getDialog().setTitle(R.string.HintTitleText);
-			}
-			else
-			{
+			} else {
 				getDialog().setTitle(hintText); //Word has a hint
 			}
 
-			if (extraData == 1)
-			{
+			if (extraData == 1) {
 				mark.setChecked(true);
-			}
-			else if (extraData == 0)
-			{
+			} else if (extraData == 0) {
 				mark.setChecked(false);
 			}
 
-
 			//On button press
-			mark.setOnClickListener(new OnClickListener()
-			{
+			mark.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v)
-				{
-					if (extraData == 1)
-					{
+				public void onClick(View v) {
+					if (extraData == 1) {
 						extraData = 0;
-					}
-					else if (extraData == 0)
-					{
+					} else if (extraData == 0) {
 						extraData = 1;
 					}
 					WordListFragment.markChange(extraData);

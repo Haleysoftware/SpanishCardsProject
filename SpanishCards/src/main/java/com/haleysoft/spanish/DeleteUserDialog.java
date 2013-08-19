@@ -12,15 +12,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class DeleteUserDialog extends DialogFragment
-{
+public class DeleteUserDialog extends DialogFragment {
 	private int preferenceID;
-	private String userName;
 	private String delName;
 	private String delRow;
 
-	public static DeleteUserDialog newInstance (int prefId, String uName, String dName, String dRow)
-	{
+	public static DeleteUserDialog newInstance (int prefId, String uName, String dName, String dRow) {
 		DeleteUserDialog dialog = new DeleteUserDialog();
 		Bundle args = new Bundle();
 		args.putInt("pref", prefId);
@@ -32,92 +29,77 @@ public class DeleteUserDialog extends DialogFragment
 	}
 
 	@Override
-	public void onCreate (Bundle savedInstanceState)
-	{
+	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		preferenceID = getArguments().getInt("pref");
-		userName = getArguments().getString("name");
+		String userName = getArguments().getString("name");
 		delName = getArguments().getString("delete");
 		delRow = getArguments().getString("row");
 		//setRetainInstance(true);
 		SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
 		boolean userTheme = pref.getBoolean("theme_set", false);
 		int theme;
-		if (userTheme)
-		{
+		if (userTheme) {
 			theme = (R.style.DialogThemeAlt);
-		}
-		else
-		{
+		} else {
 			theme = (R.style.DialogTheme);
 		}
-		int style = DialogFragment.STYLE_NORMAL;
-		setStyle(style, theme);
+		this.setStyle(DialogFragment.STYLE_NORMAL, theme);
 	}
 
 	@Override
-	public void onPause()
-	{
+	public void onPause() {
 		super.onPause();
-		dismiss();
+		this.dismiss();
 	}
 
 	@Override
-	public Dialog onCreateDialog (Bundle savedInstanceState)
-	{
+	public Dialog onCreateDialog (Bundle savedInstanceState) {
 		return new AlertDialog.Builder(getActivity())
 				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(R.string.setremovedialogtitle)
 				.setMessage(R.string.setremovedialogtext)
-				.setPositiveButton(R.string.setremovedialogyes,
-				                   new DialogInterface.OnClickListener()
-				                   {
-					                   public void onClick(DialogInterface dialog, int whichButton)
-					                   {
-						                   dismiss();
-						                   switch (preferenceID)
-						                   {
-							                   case 0: //3.0 up Settings
-								                   ((SettingsMenu)getActivity()).removeUser(delName, delRow, true);
-								                   break;
-							                   case 1: //2.3 down Settings
-								                   ((OldSetDelete)getActivity()).removeUser(delName, delRow, true);
-								                   break;
-							                   case 2: //Test Select Screen
+				.setPositiveButton(R.string.setremovedialogyes, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int whichButton) {
+		                   dismiss();
+		                   switch (preferenceID) {
+			                   case 0: //3.0 up Settings
+				                   ((SettingsMenu)getActivity()).removeUser(delName, delRow, true);
+				                   break;
+			                   case 1: //2.3 down Settings
+				                   ((OldSetDelete)getActivity()).removeUser(delName, delRow, true);
+				                   break;
+			                   case 2: //Test Select Screen
 
-								                   break;
-							                   case 3: //Score Screen
+				                   break;
+			                   case 3: //Score Screen
 
-								                   break;
-							                   default: //nothing
-						                   }
-					                   }
-				                   }
+				                   break;
+			                   default: //nothing
+		                   }
+	                   }
+                   }
 				)
-				.setNegativeButton(R.string.setremovedialogno,
-				                   new DialogInterface.OnClickListener()
-				                   {
-					                   public void onClick(DialogInterface dialog, int whichButton)
-					                   {
-						                   dismiss();
-						                   switch (preferenceID)
-						                   {
-							                   case 0: //3.0 up Settings
-								                   ((SettingsMenu)getActivity()).removeUser(delName, delRow, false);
-								                   break;
-							                   case 1: //2.3 down Settings
-								                   ((OldSetDelete)getActivity()).removeUser(delName, delRow, false);
-								                   break;
-							                   case 2: //Test Select Screen
+				.setNegativeButton(R.string.setremovedialogno, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int whichButton) {
+		                   dismiss();
+		                   switch (preferenceID) {
+			                   case 0: //3.0 up Settings
+				                   ((SettingsMenu)getActivity()).removeUser(delName, delRow, false);
+				                   break;
+			                   case 1: //2.3 down Settings
+				                   ((OldSetDelete)getActivity()).removeUser(delName, delRow, false);
+				                   break;
+			                   case 2: //Test Select Screen
 
-								                   break;
-							                   case 3: //Score Screen
+				                   break;
+			                   case 3: //Score Screen
 
-								                   break;
-							                   default: //nothing
-						                   }
-					                   }
-				                   }
+				                   break;
+			                   default: //nothing
+		                   }
+	                   }
+                   }
 				).create();
 	}
 }
