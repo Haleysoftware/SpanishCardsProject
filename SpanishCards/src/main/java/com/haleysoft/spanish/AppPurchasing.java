@@ -1,22 +1,21 @@
 package com.haleysoft.spanish;
 
+/**
+ * Created by mhaley on 8/6/13.
+ * Cleaned by Mike Haley on 8/25/13.
+ */
+
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.vending.billing.util.IabHelper;
 import com.android.vending.billing.util.IabResult;
 import com.android.vending.billing.util.Inventory;
 import com.android.vending.billing.util.Purchase;
 
-/**
- * Created by mhaley on 8/6/13.
- */
 public class AppPurchasing extends Activity implements View.OnClickListener {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	private SharedPreferences masterPref;

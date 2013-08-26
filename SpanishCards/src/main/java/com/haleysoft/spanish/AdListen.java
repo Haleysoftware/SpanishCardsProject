@@ -7,6 +7,7 @@ import com.google.ads.AdRequest.ErrorCode;
 /**
  * Created by mhaley on 7/30/13.
  */
+
 public class AdListen implements AdListener {
     //public static final String ADS_ID = "a151f170c1c5283";
 

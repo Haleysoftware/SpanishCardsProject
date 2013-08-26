@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on ?.
  */
 
 import android.content.Context;
@@ -19,79 +20,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class HighScoreFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>
-{
+public class HighScoreFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	private String userName = "Guest";
 	private static ScoreAdapter cAdapter;
-	private static Cursor scores;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.hightab, container, false);
 	}
 
 	@Override
-	public void onActivityCreated (Bundle savedInstanceState)
-	{
+	public void onActivityCreated (Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		userName = getArguments().getString("user");
-		cAdapter = new ScoreAdapter(getActivity(), scores);
+		cAdapter = new ScoreAdapter(getActivity(), null);
 		setListAdapter(cAdapter);
 		getLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
-	public void onPause ()
-	{
+	public void onPause () {
 		super.onPause();
 	}
 
 	@Override
-	public void onResume()
-	{
+	public void onResume() {
 		super.onResume();
 		changeView();
 	}
 
-	@Override
-	public void onDestroyView()
-	{
-		super.onDestroyView();
-	}
-
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-	}
-
-	public void toggleKey()
-	{
+	public void toggleKey() {
 		SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
 		boolean keyShow = pref.getBoolean("score_key_set", true);
-		boolean newKey;
-		if (keyShow)
-		{
-			newKey = false;
-		}
-		else
-		{
-			newKey = true;
-		}
-		pref.edit().putBoolean("score_key_set", newKey).commit();
+		pref.edit().putBoolean("score_key_set", !keyShow).commit();
 		changeView();
 	}
 
-	public void changeView()
-	{
+	public void changeView() {
 		SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
 		boolean keyShow = pref.getBoolean("score_key_set", true);
 		TextView scoreKey = (TextView) getActivity().findViewById(R.id.highScoreTag);

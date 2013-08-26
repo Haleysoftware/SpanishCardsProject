@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 8/25/13.
  */
 
 import android.app.AlertDialog;
