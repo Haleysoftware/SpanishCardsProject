@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 8/26/13.
  */
 
 import android.annotation.SuppressLint;
@@ -113,23 +114,35 @@ public class HighScoresList extends FragmentActivity
 		theManager.addTab(theHost.newTabSpec("user").setIndicator(getText(R.string.UserTabText)), HighUserFragment.class, arg);
 		theManager.addTab(theHost.newTabSpec("mode").setIndicator(getText(R.string.ModeTabText)), HighModeFragment.class, arg);
 
-		theHost.getTabWidget().getChildAt(0).getLayoutParams().height = 50;
-		theHost.getTabWidget().getChildAt(1).getLayoutParams().height = 50;
-		theHost.getTabWidget().getChildAt(2).getLayoutParams().height = 50;
+        /*
+        TabWidget widget = theHost.getTabWidget();
+        if (widget != null) {
+            View childZero = widget.getChildAt(0);
+            View childOne = widget.getChildAt(1);
+            View childTwo = widget.getChildAt(2);
+            if (childZero != null)
+		    childZero.getLayoutParams().height = 50;
+		    widget.getChildAt(1).getLayoutParams().height = 50;
+		    widget.getChildAt(2).getLayoutParams().height = 50;
+        }
+        */
 
-		if (savedInstanceState != null)
-		{
+		if (savedInstanceState != null) {
 			theHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
-		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.ICE_CREAM_SANDWICH) //For ICS and up
-		{
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+		    //For ICS and up
 			ActionBar actionBar = getActionBar();
-			actionBar.setHomeButtonEnabled(true);
+            if (actionBar != null) {
+			    actionBar.setHomeButtonEnabled(true);
+            }
 		}
-		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) //For ICS and up
-		{
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+		    //For HC and up
 			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
+            if (actionBar != null) {
+			    actionBar.setDisplayHomeAsUpEnabled(true);
+            }
 		}
 		addAds(masterPref.getBoolean("remove_ads", false));
 	}
@@ -144,8 +157,7 @@ public class HighScoresList extends FragmentActivity
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
+	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString("tab", theHost.getCurrentTabTag());
 	}
@@ -174,48 +186,32 @@ public class HighScoresList extends FragmentActivity
 		}
 	}
 
-	private void addFragments()
-	{
+	private void addFragments() {
 		FragmentTransaction theTransaction = theFManager.beginTransaction();
-
-		UserDBFragment userdb = new UserDBFragment();
-		theTransaction.add(userdb, "userFragment");
-
+		UserDBFragment userDB = new UserDBFragment();
+		theTransaction.add(userDB, "userFragment");
 		theTransaction.commit();
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu (Menu menu)
-	{
+	public boolean onCreateOptionsMenu (Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.scoremenu, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected (MenuItem item)
-	{
-		switch (item.getItemId())
-		{
+	public boolean onOptionsItemSelected (MenuItem item) {
+		switch (item.getItemId()) {
 			case android.R.id.home: //This is the up button
-			/*
-			Intent intent = new Intent(this, TestSelect.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			*/
 				finish();
 				return true;
 			case R.id.menukey:
-				if (currentStringTab.contains("mode"))
-				{
+				if (currentStringTab.contains("mode")) {
 					((HighModeFragment) currentTab.fragment).toggleKey();
-				}
-				else if (currentStringTab.contains("high"))
-				{
+				} else if (currentStringTab.contains("high")) {
 					((HighScoreFragment) currentTab.fragment).toggleKey();
-				}
-				else if (currentStringTab.contains("user"))
-				{
+				} else if (currentStringTab.contains("user")) {
 					((HighUserFragment) currentTab.fragment).toggleKey();
 				}
 				return true;
@@ -225,41 +221,35 @@ public class HighScoresList extends FragmentActivity
 	}
 
 	//Tab helper class
-	public static class TabManager implements TabHost.OnTabChangeListener
-	{
+	public static class TabManager implements TabHost.OnTabChangeListener {
 		private final FragmentActivity mActivity;
 		private final TabHost mTabHost;
 		private final int mContainerId;
 		private final HashMap<String, TabInfo> mTabs = new HashMap<String, TabInfo>();
 		TabInfo mLastTab;
 
-		static final class TabInfo
-		{
+		static final class TabInfo {
 			private final String tag;
 			private final Class<?> clss;
 			private final Bundle args;
 			private Fragment fragment;
 
-			TabInfo(String _tag, Class<?> _class, Bundle _args)
-			{
+			TabInfo(String _tag, Class<?> _class, Bundle _args) {
 				tag = _tag;
 				clss = _class;
 				args = _args;
 			}
 		}
 
-		static class DummyTabFactory implements TabHost.TabContentFactory
-		{
+		static class DummyTabFactory implements TabHost.TabContentFactory {
 			private final Context mContext;
 
-			public DummyTabFactory(Context context)
-			{
+			public DummyTabFactory(Context context) {
 				mContext = context;
 			}
 
 			@Override
-			public View createTabContent(String tag)
-			{
+			public View createTabContent(String tag) {
 				View v = new View(mContext);
 				v.setMinimumWidth(0);
 				v.setMinimumHeight(0);
@@ -267,16 +257,14 @@ public class HighScoresList extends FragmentActivity
 			}
 		}
 
-		public TabManager(FragmentActivity activity, TabHost tabHost, int containerId)
-		{
+		public TabManager(FragmentActivity activity, TabHost tabHost, int containerId) {
 			mActivity = activity;
 			mTabHost = tabHost;
 			mContainerId = containerId;
 			mTabHost.setOnTabChangedListener(this);
 		}
 
-		public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args)
-		{
+		public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
 			tabSpec.setContent(new DummyTabFactory(mActivity));
 			String tag = tabSpec.getTag();
 
@@ -286,8 +274,7 @@ public class HighScoresList extends FragmentActivity
 			// from a previously saved state.  If so, deactivate it, because our
 			// initial state is that a tab isn't shown.
 			info.fragment = mActivity.getSupportFragmentManager().findFragmentByTag(tag);
-			if (info.fragment != null && !info.fragment.isDetached())
-			{
+			if (info.fragment != null && !info.fragment.isDetached()) {
 				FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
 				ft.detach(info.fragment);
 				ft.commit();
@@ -298,30 +285,22 @@ public class HighScoresList extends FragmentActivity
 		}
 
 		@Override
-		public void onTabChanged(String tabId)
-		{
+		public void onTabChanged(String tabId) {
 			HighScoresList.currentStringTab = tabId;
 			HighScoresList.currentTab = mTabs.get(tabId);
 			TabInfo newTab = mTabs.get(tabId);
-			if (mLastTab != newTab)
-			{
+			if (mLastTab != newTab) {
 				FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-				if (mLastTab != null)
-				{
-					if (mLastTab.fragment != null)
-					{
+				if (mLastTab != null) {
+					if (mLastTab.fragment != null) {
 						ft.detach(mLastTab.fragment);
 					}
 				}
-				if (newTab != null)
-				{
-					if (newTab.fragment == null)
-					{
+				if (newTab != null) {
+					if (newTab.fragment == null) {
 						newTab.fragment = Fragment.instantiate(mActivity, newTab.clss.getName(), newTab.args);
 						ft.add(mContainerId, newTab.fragment, newTab.tag);
-					}
-					else
-					{
+					} else {
 						ft.attach(newTab.fragment);
 					}
 				}

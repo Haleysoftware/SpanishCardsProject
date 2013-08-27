@@ -2,7 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
- * Cleaned by Mike Haley on ?.
+ * Cleaned by Mike Haley on 8/26/13.
  */
 
 import android.content.Context;
@@ -69,15 +69,12 @@ public class HighScoreFragment extends ListFragment implements LoaderManager.Loa
 		TextView userKey = (TextView) getActivity().findViewById(R.id.highUserTag);
 		TextView modeKey = (TextView) getActivity().findViewById(R.id.highModeTag);
 		TextView dateKey = (TextView) getActivity().findViewById(R.id.highDateTag);
-		if (keyShow)
-		{
+		if (keyShow) {
 			scoreKey.setVisibility(View.VISIBLE);
 			userKey.setVisibility(View.VISIBLE);
 			modeKey.setVisibility(View.VISIBLE);
 			dateKey.setVisibility(View.VISIBLE);
-		}
-		else
-		{
+		} else {
 			scoreKey.setVisibility(View.GONE);
 			userKey.setVisibility(View.GONE);
 			modeKey.setVisibility(View.GONE);
@@ -90,73 +87,64 @@ public class HighScoreFragment extends ListFragment implements LoaderManager.Loa
 	}
 
 	@Override //LoadManager
-	public Loader<Cursor> onCreateLoader(int id, Bundle pack)
-	{
+	public Loader<Cursor> onCreateLoader(int id, Bundle pack) {
 		Uri scoreUri = UserDBCP.CONTENT_URI;
 		String[] getColumns = {UserDBCP.KEY_ROWB, UserDBCP.KEY_NAME, UserDBCP.KEY_DATE, UserDBCP.KEY_SCORE, UserDBCP.KEY_MODE};
 		String where = null;
 		String[] key = null;
 		String sort = UserDBCP.KEY_SCORE + " DESC";
-		CursorLoader wordCursor = new CursorLoader(getActivity(), scoreUri, getColumns, where, key, sort);
-		return wordCursor;
+		return new CursorLoader(getActivity(), scoreUri, getColumns, where, key, sort);
 	}
 
 	@Override //LoadManager
-	public void onLoadFinished(Loader<Cursor> loader, Cursor data)
-	{
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		cAdapter.swapCursor(data);
 	}
 
 	@Override //LoadManager
-	public void onLoaderReset(Loader<Cursor> cursor)
-	{
+	public void onLoaderReset(Loader<Cursor> cursor) {
 		cAdapter.swapCursor(null);
 	}
 
-	class ScoreAdapter extends CursorAdapter
-	{
-		ScoreAdapter (Context ctx, Cursor theScore)
-		{
-			super(getActivity(), theScore,  FLAG_REGISTER_CONTENT_OBSERVER);
+	class ScoreAdapter extends CursorAdapter {
+		ScoreAdapter (Context ctx, Cursor theScore) {
+			super(ctx, theScore,  FLAG_REGISTER_CONTENT_OBSERVER);
 		}
 
 		@Override
-		public void bindView(View row, Context ctx, Cursor score)
-		{
+		public void bindView(View row, Context ctx, Cursor score) {
 			changeView();
 			RowHolder holder = (RowHolder) row.getTag();
 			holder.populateFrom(score);
 		}
 
 		@Override
-		public View newView(Context ctx, Cursor score, ViewGroup group)
-		{
+		public View newView(Context ctx, Cursor score, ViewGroup group) {
 			changeView();
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			View row = inflater.inflate(R.layout.highbar, group, false);
-			RowHolder holder = new RowHolder(row);
-			row.setTag(holder);
+            if (row != null) {
+                RowHolder holder = new RowHolder(row);
+                row.setTag(holder);
+            }
 			return row;
 		}
 	}
 
-	static class RowHolder
-	{
+	static class RowHolder {
 		private TextView gName = null;
 		private TextView gMode = null;
 		private TextView gScore = null;
 		private TextView gDate = null;
 
-		RowHolder(View row)
-		{
+		RowHolder(View row) {
 			gName = (TextView) row.findViewById(R.id.highUserText);
 			gMode = (TextView) row.findViewById(R.id.highModeText);
 			gScore = (TextView) row.findViewById(R.id.highScoreText);
 			gDate = (TextView) row.findViewById(R.id.highDateText);
 		}
 
-		void populateFrom(Cursor score)
-		{
+		void populateFrom(Cursor score) {
 			gName.setText(score.getString(score.getColumnIndex("name")));
 			gDate.setText(score.getString(score.getColumnIndex("date")));
 			gScore.setText(String.valueOf(score.getInt(score.getColumnIndex("score"))));
