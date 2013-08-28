@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 8/27/13.
  */
 
 import android.annotation.TargetApi;
@@ -16,67 +17,50 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SettingsMenu extends FragmentActivity
-{
+public class SettingsMenu extends FragmentActivity {
 	FragmentManager theManager = getSupportFragmentManager();
 	SettingsMenuFragment setting;
-	public UserDBFragment userdb;
+	public UserDBFragment userDB;
 	private String prefName = "Guest";
 	private int mode = 0;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState == null)
-		{
+		if (savedInstanceState == null) {
 			addFragments();
 		}
-		prefName = getIntent().getExtras().getString("prefUser");
-		mode = getIntent().getExtras().getInt("mode");
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			prefName = extras.getString("prefUser");
+			mode = extras.getInt("mode");
+		}
 		SharedPreferences preferences = getSharedPreferences(prefName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
 		String orientationTest = preferences.getString("orie_list_set", "0");
-
-		if (theme)
-		{
-			setTheme(R.style.ActivityThemeAlt);
-		}
-		else
-		{
-			setTheme(R.style.ActivityTheme);
-		}
+		setTheme(theme? R.style.ActivityThemeAlt : R.style.ActivityTheme);
 		updateOrie(orientationTest);
-
 	}
 
 	@Override
-	public void onStart()
-	{
+	public void onStart() {
 		super.onStart();
-		userdb = (UserDBFragment) theManager.findFragmentByTag("userFragment");
+		userDB = (UserDBFragment) theManager.findFragmentByTag("userFragment");
 	}
 
-	private void addFragments()
-	{
-
+	private void addFragments() {
 		FragmentTransaction theTransaction = theManager.beginTransaction();
-
-		//I don't know why the wordDB is added
-		WordDBFragment worddb = new WordDBFragment();
-		theTransaction.add(worddb, "wordFragment");
-
-		UserDBFragment userdb = new UserDBFragment();
-		theTransaction.add(userdb, "userFragment");
-
+		//Word DB is for resetting marked words
+		WordDBFragment words = new WordDBFragment();
+		UserDBFragment users = new UserDBFragment();
+		theTransaction.add(words, "wordFragment");
+		theTransaction.add(users, "userFragment");
 		theTransaction.commit();
 	}
 
-	public void updateOrie(String orientationTest)
-	{
+	public void updateOrie(String orientationTest) {
 		int orieTest = Integer.parseInt(orientationTest);
-		switch (orieTest)
-		{
+		switch (orieTest) {
 			case 0:
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 				break;
@@ -97,13 +81,11 @@ public class SettingsMenu extends FragmentActivity
 		getFragmentManager().beginTransaction().replace(android.R.id.content, setting).commit();
 	}
 
-	public void onDialogOkay(int actionID, String dTitle, String extra)
-	{
-		switch (actionID)
-		{
+	public void onDialogOkay(int actionID, String dTitle, String extra) {
+		switch (actionID) {
 			case 0: //Reset marked words
-				WordDBFragment worddb = (WordDBFragment) theManager.findFragmentByTag("wordFragment");
-				worddb.resetMark();
+				WordDBFragment wordDB = (WordDBFragment) theManager.findFragmentByTag("wordFragment");
+				wordDB.resetMark();
 				break;
 			case 1: //Reset user level
 				SharedPreferences pref = getSharedPreferences(prefName, MODE_PRIVATE);
@@ -111,12 +93,12 @@ public class SettingsMenu extends FragmentActivity
 				pref.edit().putInt("level_points", 0).commit();
 				break;
 			case 2: //Clear user scores
-				userdb.open();
-				userdb.removeScore(prefName);
-				userdb.close();
+				userDB.open();
+				userDB.removeScore(prefName);
+				userDB.close();
 				break;
 			case 3: //Clear all scores
-				userdb.emptyScore();
+				userDB.emptyScore();
 				break;
 			case 4: //Delete user verify
 				DialogFragment newDialog = DeleteUserDialog.newInstance(0, prefName, dTitle, extra);
@@ -127,23 +109,17 @@ public class SettingsMenu extends FragmentActivity
 		}
 	}
 
-	public void removeUser(String noName, String noRow, boolean clearScores)
-	{
-		userdb.open();
-
-		if (clearScores)
-		{
-			userdb.removeScore(noName);
+	public void removeUser(String noName, String noRow, boolean clearScores) {
+		userDB.open();
+		if (clearScores) {
+			userDB.removeScore(noName);
 		}
-		if (userdb.deleteUser(noRow))
-		{
+		if (userDB.deleteUser(noRow)) {
 			Toast.makeText(this, noName  + " was removed!", Toast.LENGTH_SHORT).show();
-		}
-		else
-		{
+		} else {
 			Toast.makeText(this, noName + " at " + noRow + " was not removed!", Toast.LENGTH_SHORT).show();
 		}
-		userdb.close();
+		userDB.close();
 		setting.fillUserList();
 	}
 }

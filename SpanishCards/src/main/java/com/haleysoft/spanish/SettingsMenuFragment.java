@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on ?.
  */
 
 import java.util.ArrayList;
@@ -25,8 +26,7 @@ import android.speech.RecognizerIntent;
 import android.support.v4.app.DialogFragment;
 
 @TargetApi(12)
-public class SettingsMenuFragment extends PreferenceFragment implements OnPreferenceChangeListener, OnPreferenceClickListener
-{
+public class SettingsMenuFragment extends PreferenceFragment implements OnPreferenceChangeListener, OnPreferenceClickListener {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	private String prefName = "Guest";
 	private Context ctx;
@@ -38,12 +38,11 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	private ArrayList<String> rowList;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ctx = getActivity();
 		if (ctx != null) {
-		masterPref = ctx.getSharedPreferences(MASTER_SETTINGS, Context.MODE_PRIVATE);
+			masterPref = ctx.getSharedPreferences(MASTER_SETTINGS, Context.MODE_PRIVATE);
 		}
 		Bundle arg = getArguments();
 		if (arg != null) {
@@ -54,8 +53,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 		if (prefMan != null && prefName != null) {
 			prefMan.setSharedPreferencesName(prefName);
 		}
-		switch (mode)
-		{
+		switch (mode) {
 			default:
 			case 0: //This is to show the main settings
 				addPreferencesFromResource(R.xml.mainsettings);
@@ -64,10 +62,8 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 				addPreferencesFromResource(R.xml.testsettings);
 				break;
 		}
-		if (savedInstanceState != null)
-		{
-			switch (mode)
-			{
+		if (savedInstanceState != null) {
+			switch (mode) {
 				case 0: //This is for the main settings
 					rowList = new ArrayList<String>();
 					nameList = new ArrayList<String>();
@@ -85,11 +81,9 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	}
 
 	@Override
-	public void onStart()
-	{
+	public void onStart() {
 		super.onStart();
-		switch (mode)
-		{
+		switch (mode) {
 			case 0: //This is for the main settings
 				fillUserList();
 				break;
@@ -153,60 +147,8 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 				if (clearAllScoreButton != null) {
 					clearAllScoreButton.setOnPreferenceClickListener(this);
 				}
-
-				/*
-				Preference howToButton = findPreference("howto_set");
-				howToButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-					{
-						@Override
-						public boolean onPreferenceClick(Preference arg0)
-						{
-							//this is for testing
-							String title = "Test How To";
-							String text = "This will be for the how to activity to be called.";
-							showInfoDialog(prefName, title, text);
-							return true;
-						}
-					});
-				Preference aboutButton = findPreference("about_set");
-				aboutButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-					{
-						@Override
-						public boolean onPreferenceClick(Preference arg0)
-						{
-							//this is for testing
-							String title = "Test about";
-							String text = "This will be for the how to activity to be called.";
-							showInfoDialog(prefName, title, text);
-							return true;
-						}
-					});
-
-				Preference analyticsCheckButton = findPreference("analytics_set");
-				analyticsCheckButton.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-				{
-					@Override
-					public boolean onPreferenceChange(Preference preference, Object newValue)
-					{
-						GoogleAnalytics myInstance = GoogleAnalytics.getInstance(ctx);
-						myInstance.requestAppOptOut(new AppOptOutCallback()
-						{
-							   @Override
-							   public void reportAppOptOut(boolean optOut)
-							   {
-							     if (optOut)
-							     {
-							     // Alert the user that they've opted out.
-							     }
-							   });
-						}
-						return true;
-					}
-				});
-				*/
 				Preference userGone = findPreference("delete_user_set");
-				if (userGone != null)
-				{
+				if (userGone != null) {
 					userGone.setOnPreferenceChangeListener(this);
 				}
 				break;
@@ -298,7 +240,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 
 	public void fillUserList() {
 		ListPreference deleteUser = (ListPreference) findPreference("delete_user_set");
-		Cursor cNames = ((SettingsMenu)ctx).userdb.getUsers();
+		Cursor cNames = ((SettingsMenu)ctx).userDB.getUsers();
 		rowList = new ArrayList<String>();
 		nameList = new ArrayList<String>();
 		while (cNames.moveToNext())	{
@@ -312,7 +254,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 			}
 		}
 		cNames.close();
-		((SettingsMenu)ctx).userdb.close();
+		((SettingsMenu)ctx).userDB.close();
 		if (deleteUser != null) {
 			if (nameList.size()>0) {
 				deleteUser.setEnabled(true);

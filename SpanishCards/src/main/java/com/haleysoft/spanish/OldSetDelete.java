@@ -109,6 +109,7 @@ public class OldSetDelete extends FragmentActivity implements OnItemSelectedList
 				text = getString(R.string.settopresetdialog);
 				id = 3;
 				break;
+			default:
 		}
 		if (title != null && text != null) {
 			showActionDialog(id, prefName, title, text, null);
