@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<TextView
-			android:id="@+id/userText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/NText" />
+		android:id="@+id/userText"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/NText"/>
 
 	<EditText
-			android:id="@+id/editName"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:inputType="textNoSuggestions" >
+		android:id="@+id/editName"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inputType="textNoSuggestions">
 	</EditText>
 
 	<LinearLayout
-			android:id="@+id/nameLinearLayout"
-			android:layout_width="match_parent"
+		android:id="@+id/nameLinearLayout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<Button
+			android:id="@+id/nMindButton"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal" >
+			android:text="@string/Nmind"/>
 
 		<Button
-				android:id="@+id/nMindButton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/Nmind" />
-
-		<Button
-				android:id="@+id/enterButton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/Nenter" />
+			android:id="@+id/enterButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/Nenter"/>
 
 	</LinearLayout>
 

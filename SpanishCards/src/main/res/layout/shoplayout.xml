@@ -1,49 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/shop_Scroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+			android:id="@+id/shop_Scroll"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
 
-	<LinearLayout android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-				  android:orientation="vertical">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
 
-		<TextView android:id="@+id/shop_Wait"
-		          android:layout_height="wrap_content"
-		          android:layout_width="match_parent"
-		          android:gravity="center"
-		          android:visibility="gone"
-		          android:text="@string/shopwait"/>
+		<TextView
+			android:id="@+id/shop_Wait"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:gravity="center"
+			android:visibility="gone"
+			android:text="@string/shopwait"/>
 
-		<LinearLayout android:id="@+id/shop_AdLayout"
-					  android:layout_width="match_parent"
-					  android:layout_height="wrap_content"
-					  android:padding="5dp"
-					  android:orientation="horizontal"
-					  android:visibility="visible"
-					  android:weightSum="10">
+		<LinearLayout
+			android:id="@+id/shop_AdLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="5dp"
+			android:orientation="horizontal"
+			android:visibility="visible"
+			android:weightSum="10">
 
-			<TextView android:layout_width="wrap_content"
-					  android:layout_height="match_parent"
-					  android:text="@string/shopadtext"
-					  android:id="@+id/shop_adText"
-					  android:layout_weight="6"
-					  android:gravity="center"/>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:text="@string/shopadtext"
+				android:id="@+id/shop_adText"
+				android:layout_weight="6"
+				android:gravity="center"/>
 
-			<TextView android:layout_width="wrap_content"
-					  android:layout_height="match_parent"
-					  android:text="@string/shopmoney"
-					  android:id="@+id/shop_price"
-					  android:layout_weight="2"
-					  android:gravity="center"/>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:text="@string/shopmoney"
+				android:id="@+id/shop_price"
+				android:layout_weight="2"
+				android:gravity="center"/>
 
-			<Button android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:text="@string/shopadbuttonno"
-					android:id="@+id/shop_adButton"
-					android:layout_weight="2"
-					android:gravity="center"/>
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:text="@string/shopadbuttonno"
+				android:id="@+id/shop_adButton"
+				android:layout_weight="2"
+				android:gravity="center"/>
 		</LinearLayout>
 	</LinearLayout>
 </ScrollView>

@@ -18,15 +18,13 @@
 				android:id="@+id/setmarkbutton"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/setresetmarksmain"
-				android:onClick="markReset" />
+				android:text="@string/setresetmarksmain" />
 
 		<Button
 				android:id="@+id/setlevelbutton"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/setresetlevelmain"
-				android:onClick="levelReset" />
+				android:text="@string/setresetlevelmain" />
 
 		<Spinner
 				android:id="@+id/deleteSpinner"
@@ -46,15 +44,13 @@
 				android:id="@+id/setscorebutton"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/setclearuserscoremain"
-				android:onClick="userScores" />
+				android:text="@string/setclearuserscoremain" />
 
 		<Button
 				android:id="@+id/setscoresbutton"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/setclearallscoresmain"
-				android:onClick="allScores" />
+				android:text="@string/setclearallscoresmain" />
 
 	</LinearLayout>
 
