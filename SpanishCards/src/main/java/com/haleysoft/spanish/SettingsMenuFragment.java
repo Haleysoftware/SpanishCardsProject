@@ -2,11 +2,8 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
- * Cleaned by Mike Haley on ?.
+ * Cleaned by Mike Haley on 8/28/13.
  */
-
-import java.util.ArrayList;
-import java.util.List;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -24,6 +21,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.DialogFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @TargetApi(12)
 public class SettingsMenuFragment extends PreferenceFragment implements OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -96,11 +96,9 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	}
 
 	@Override
-	public void onSaveInstanceState (Bundle savedState)
-	{
+	public void onSaveInstanceState (Bundle savedState) {
 		super.onSaveInstanceState(savedState);
-		switch (mode)
-		{
+		switch (mode) {
 			case 0: //for main settings
 				savedState.putStringArrayList("listName", nameList);
 				savedState.putStringArrayList("listRow", rowList);
@@ -128,8 +126,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 		if (changeOrie != null) {
 			changeOrie.setOnPreferenceChangeListener(this);
 		}
-		switch (mode)
-		{
+		switch (mode) {
 			case 0: //This is to setup the main settings
 				Preference resetMarkButton = findPreference("mark_reset_set");
 				if (resetMarkButton != null) {
@@ -160,45 +157,48 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	}
 
 	public boolean onPreferenceClick(Preference pref) {
+		boolean usedClick = false;
 		String key = pref.getKey();
+		String title = null;
+		String text = null;
+		int id = 0;
 		if (key != null) {
 			if (key.contentEquals("mark_reset_set")) {
-				String title = getString(R.string.setresetmarksmain);
-				String text = getString(R.string.settopresetdialog);
-				int id = 0;
-				showActionDialog(id, prefName, title, text, null);
-				return true;
+				title = getString(R.string.setresetmarksmain);
+				text = getString(R.string.settopresetdialog);
+				id = 0;
+				usedClick = true;
 			} else if (key.contentEquals("level_reset_set")) {
-				String title = getString(R.string.setresetlevelmain);
-				String text = getString(R.string.settopresetdialog);
-				int id = 1;
-				showActionDialog(id, prefName, title, text, null);
-				return true;
+				title = getString(R.string.setresetlevelmain);
+				text = getString(R.string.settopresetdialog);
+				id = 1;
+				usedClick = true;
 			} else if (key.contentEquals("clear_user_score_set")) {
-				String title = getString(R.string.setclearuserscoremain);
-				String text = getString(R.string.settopresetdialog);
-				int id = 2;
-				showActionDialog(id, prefName, title, text, null);
-				return true;
+				title = getString(R.string.setclearuserscoremain);
+				text = getString(R.string.settopresetdialog);
+				id = 2;
+				usedClick = true;
 			} else if (key.contentEquals("clear_all_score_set")) {
-				String title = getString(R.string.setclearallscoresmain);
-				String text = getString(R.string.settopresetdialog);
-				int id = 3;
-				showActionDialog(id, prefName, title, text, null);
-				return true;
+				title = getString(R.string.setclearallscoresmain);
+				text = getString(R.string.settopresetdialog);
+				id = 3;
+				usedClick = true;
 			} else if (key.contentEquals("howto_set")) {
 
-				return true;
+				usedClick = true;
 			} else if (key.contentEquals("about_set")) {
 
-				return true;
+				usedClick = true;
 			} else if (key.contentEquals("buy_set")) {
 				Intent goShop = new Intent(ctx, AppPurchasing.class);
 				startActivity(goShop);
-				return true;
+				usedClick = true;
+			}
+			if (title != null && text != null) {
+				showActionDialog(id, prefName, title, text, null);
 			}
 		}
-		return false;
+		return usedClick;
 	}
 
 	public boolean onPreferenceChange(Preference pref, Object newValue) {
@@ -215,8 +215,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 				String newName = nameList.get(arrayRow);
 
 				String text = getString(R.string.setremovedialogconform);
-				int id = 4;
-				showActionDialog(id, prefName, newName, text, newValue.toString());
+				showActionDialog(4, prefName, newName, text, newValue.toString());
 				return true;
 			}
 		}
@@ -282,17 +281,9 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 		}
 	}
 
-	/*
-	private void showInfoDialog(String uName, String dTitle, String dText)
-	{
-		DialogFragment newDialog = InfoDialog.newInstance(uName, dTitle, dText);
-		newDialog.show(((SettingsMenu)getActivity()).theManager, "infoDialog");
-	}
-	*/
-
 	private void showActionDialog(int action, String userN, String title, String text, String extra) {
-		int pref = 0; //settings for 3.0 and up
-		DialogFragment newDialog = ActionDialog.newInstance(pref, action, userN, title, text, extra);
+		//0 is for settings 3.0 and up
+		DialogFragment newDialog = ActionDialog.newInstance(0, action, userN, title, text, extra);
 		newDialog.show(((SettingsMenu)ctx).theManager, "actionDialog");
 	}
 }
