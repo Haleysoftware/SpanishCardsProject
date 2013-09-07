@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 9/6/13.
  */
 
 import java.io.IOException;
@@ -9,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -48,8 +47,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class TestMain extends FragmentActivity implements OnItemSelectedListener
-{
+public class TestMain extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	private boolean analytics = true;
 	private AdView adView;
@@ -59,7 +57,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private boolean startNull = false;
 	private String hideWord;
 	private String showWord;
-	private String MODE = "Test";
 	private static final int VOICE_REQUEST_CODE = 2040;
 	private static final int SETTING_REQUEST_CODE = 1010;
 	public static String userSaid = "Help me, I'm trapped in the phone";
@@ -67,8 +64,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private WordDBFragment dBHelp;
 	private Long scoreId;
 	public int score = 0;
-	private int spinman = 0;
-	private boolean spinset = true;
+	private int spinMan = 0;
+	private boolean spinSet = true;
 	private String selected;
 	private boolean shown = false;
 	private boolean ttsChange = false;
@@ -76,14 +73,13 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private boolean topMostNotify = false;
 	public boolean wrongDialog = false;
 	public static boolean ttsErrorDialog = false;
-	private ArrayAdapter<CharSequence> adapter;
 	//Holds the cursor from Word Database
 	private Long wordID;
 	private String category = "";
 	private String type = "";
 	private int wordLevel = 0;
 	private int theMark = 0;
-	private int gotPoint = 0;
+	private int gotPoint = 0; //Needs to be int since pulls from DB
 	private String note = "0";
 	private String english = "";
 	private String altEnglish = "";
@@ -92,34 +88,27 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 
 
 	//Called when the activity is first created.
-	@SuppressLint("NewApi")
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		Bundle extras = this.getIntent().getExtras();
-		if (extras != null)
-		{
+		if (extras != null) {
 			userName = extras.getString("user");
 		}
 		SharedPreferences preferences = this.getSharedPreferences(userName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
 		analytics = preferences.getBoolean("analytics_set", true);
-		if (theme)
-		{
+		if (theme) {
 			this.setTheme(R.style.ActivityThemeAlt);
-		}
-		else
-		{
+		} else {
 			this.setTheme(R.style.ActivityTheme);
 		}
 		updateOrie();
 		hideWord = preferences.getString("hide_word_set", "English");
 		showWord = preferences.getString("show_word_set", "Spanish");
-		if (savedInstanceState != null)
-		{
+		if (savedInstanceState != null) {
 			wordID = savedInstanceState.getLong("id");
 			category = savedInstanceState.getString("cate");
 			type = savedInstanceState.getString("type");
@@ -134,84 +123,51 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 
 			userSaid = savedInstanceState.getString("said");
 			scoreId = savedInstanceState.getLong("sID");
-			spinset = savedInstanceState.getBoolean("spin");
+			spinSet = savedInstanceState.getBoolean("spin");
 			score = savedInstanceState.getInt("score");
 			shown = savedInstanceState.getBoolean("show");
 			topTypeNotify = savedInstanceState.getBoolean("topType");
 			topMostNotify = savedInstanceState.getBoolean("topMost");
 		}
-		spinman = 0;
-		this.setupspin();
-		if (savedInstanceState == null)
-		{
+		spinMan = 0;
+		this.setupSpin();
+		if (savedInstanceState == null) {
 			startNull = true;
 			this.addFragments();
 			this.addTTS();
 		}
-
 		boolean voiceTest = preferences.getBoolean("speak_set", true);
-		if (voiceTest)
-		{
+		if (voiceTest) {
 			this.voiceCheck();
 		}
-		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.ICE_CREAM_SANDWICH) //For ICS and up
-		{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = this.getActionBar();
-			actionBar.setHomeButtonEnabled(true);
+			if (actionBar != null) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					actionBar.setDisplayHomeAsUpEnabled(true);
+				}
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					actionBar.setHomeButtonEnabled(true);
+				}
+			}
 		}
-		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) //For HC and up
-		{
-			ActionBar actionBar = this.getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-		}
+		setButtonListen();
 		addAds(masterPref.getBoolean("remove_ads", false));
 	}
 
-	/*
 	@Override
-	public void onPostCreate(Bundle savedInstanceState)
-	{
-		super.onPostCreate(savedInstanceState);
-		dBHelp = (WordDBFragment) theManager.findFragmentByTag("wordFragment");
-
-		if (savedInstanceState == null)
-		{
-			SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
-			UserDBFragment userdb = (UserDBFragment) theManager.findFragmentByTag("userFragment");
-			boolean scoreCheck = preferences.getBoolean("score_saved", false);
-			if (scoreCheck)
-			{
-				scoreId = preferences.getLong("score_id", 1);
-				score = preferences.getInt("last_score", 0);
-			}
-			else
-			{
-				userdb.cleanScore();
-				dBHelp.resetPoint();
-			}
-			nextWord();
-		}
-	}
-	*/
-
-	@Override
-	public void onStart()
-	{
+	public void onStart() {
 		super.onStart();
 		dBHelp = (WordDBFragment) theManager.findFragmentByTag("wordFragment");
-		if (startNull)
-		{
+		if (startNull) {
 			SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
-			UserDBFragment userdb = (UserDBFragment) theManager.findFragmentByTag("userFragment");
+			UserDBFragment userDB = (UserDBFragment) theManager.findFragmentByTag("userFragment");
 			boolean scoreCheck = preferences.getBoolean("score_saved", false);
-			if (scoreCheck)
-			{
+			if (scoreCheck) {
 				scoreId = preferences.getLong("score_id", 1);
 				score = preferences.getInt("last_score", 0);
-			}
-			else
-			{
-				userdb.cleanScore();
+			} else {
+				userDB.cleanScore();
 				dBHelp.resetPoint();
 			}
 			this.nextWord();
@@ -222,22 +178,12 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	}
 
 	@Override
-	public void onPause()
-	{
-		super.onPause();
-	}
-
-	@Override
-	public void onResume()
-	{
+	public void onResume() {
 		super.onResume();
 		this.getWord();
-		if (shown)
-		{
+		if (shown) {
 			this.showWord();
-		}
-		else
-		{
+		} else {
 			Button nextWord = (Button) this.findViewById(R.id.newButton);
 			nextWord.setText(R.string.SkipWord);
 		}
@@ -245,34 +191,26 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	}
 
 	@Override
-	public void onPostResume()
-	{
+	public void onPostResume() {
 		super.onPostResume();
 
-		if (ttsChange) //This is for when TTS is changed on the settings page.
-		{
+		if (ttsChange) { //This is for when TTS is changed on the settings page.
 			SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 			boolean ttsTest = preferences.getBoolean("tts_set", true);
-			if (ttsTest) //TTS is on
-			{
+			if (ttsTest) { //TTS is on
 				addTTS();
-			}
-			else //TTS is off
-			{
+			} else { //TTS is off
 				removeTTS();
 			}
 			ttsChange = false;
 		}
 
 		//This is for Android HC and up
-		if (ttsErrorDialog)
-		{
-			startDialog(5, null, 2); //2 = null
+		if (ttsErrorDialog) {
+			startDialog(5, null);
 			ttsErrorDialog = false;
-		}
-		if (wrongDialog)
-		{
-			startDialog(1, userSaid, 2); //2 = null
+		} else if (wrongDialog) {
+			startDialog(1, userSaid);
 			wrongDialog = false;
 		}
 	}
@@ -295,11 +233,9 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	}
 
 	@Override
-	public void onSaveInstanceState (Bundle savedState)
-	{
+	public void onSaveInstanceState(Bundle savedState) {
 		super.onSaveInstanceState(savedState);
-		if (wordID != null)
-		{
+		if (wordID != null) {
 			savedState.putLong("id", wordID);
 		}
 		savedState.putString("cate", category);
@@ -314,15 +250,91 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		savedState.putString("aSpan", altSpanish);
 
 		savedState.putString("said", userSaid);
-		if (scoreId != null)
-		{
+		if (scoreId != null) {
 			savedState.putLong("sID", scoreId);
 		}
-		savedState.putBoolean("spin", spinset);
+		savedState.putBoolean("spin", spinSet);
 		savedState.putInt("score", score);
 		savedState.putBoolean("show", shown);
 		savedState.putBoolean("topType", topTypeNotify);
 		savedState.putBoolean("topMost", topMostNotify);
+	}
+
+	@Override
+	public void onClick(View v) {
+		SharedPreferences preferences = getSharedPreferences(userName, 0);
+		boolean ttsTest = preferences.getBoolean("tts_set", true);
+		switch (v.getId()) {
+			case R.id.newButton:
+				nextWord();
+				getWord();
+				break;
+			case R.id.speakButton:
+				boolean voiceTest = preferences.getBoolean("speak_set", true);
+				if (networkCheck()) { //Network check pass, ok to use voice
+					if (voiceTest) { //Voice is true. Using the voice
+						startVoice();
+					} else { //Voice is False. Using the text
+						startText();
+					}
+				} else { //Network check failed, should use text
+					startText();
+				}
+				break;
+			case R.id.showButton: //show
+				showWord();
+				break;
+			case R.id.showText: //wordSpeak
+				if (ttsTest) {
+					TTSFragment ttsRun = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
+					if (ttsRun.goodTTS) {
+						if (showWord.matches("English")) {
+							ttsRun.sayWord("English", english);
+						} else if (showWord.matches("Spanish")) {
+							ttsRun.sayWord("Spanish", spanish);
+						}
+					}
+				}
+				break;
+			case R.id.hideText: //wordSpeak
+				if (ttsTest) {
+					TTSFragment ttsRun = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
+					if (ttsRun.goodTTS) {
+						if (hideWord.matches("English")) {
+							ttsRun.sayWord("English", english);
+						} else if (hideWord.matches("Spanish")) {
+							ttsRun.sayWord("Spanish", spanish);
+						}
+					}
+				}
+				break;
+			case R.id.markButton: //marks
+				if (theMark == 0) { //Should be 0.
+					//If the word is not marked right now, this will run.
+					theMark = 1;
+				} else if (theMark == 1) { //Should be 1.
+					//If the word is marked right now, this will run.
+					theMark = 0;
+				}
+				//Updates the database.
+				dBHelp.updateMark(wordID, theMark);
+				break;
+		}
+	}
+
+	private void setButtonListen() {
+		Button newWord = (Button) this.findViewById(R.id.newButton);
+		Button answer = (Button) this.findViewById(R.id.speakButton);
+		Button showWord = (Button) this.findViewById(R.id.showButton);
+		TextView showText = (TextView) this.findViewById(R.id.showText);
+		TextView hideText = (TextView) this.findViewById(R.id.hideText);
+		ToggleButton markWord = (ToggleButton) this.findViewById(R.id.markButton);
+		newWord.setOnClickListener(this);
+		answer.setOnClickListener(this);
+		showWord.setOnClickListener(this);
+		showText.setOnClickListener(this);
+		hideText.setOnClickListener(this);
+		markWord.setOnClickListener(this);
 	}
 
 	private void addAds(boolean paid) {
@@ -334,8 +346,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				adView.destroy();
 				adView = null;
 			}
-		}
-		else {
+		} else {
 			adView.setVisibility(View.VISIBLE);
 			AdRequest adRequest = new AdRequest();
 			//This code is for testing only
@@ -349,31 +360,24 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 	}
 
-	private boolean checkPaid()
-	{
+	//This needs to be removed later!!
+	private boolean checkPaid() {
 		String mainAppPkg = "com.haleysoft.spanish";
 		String keyPkg = "com.haleysoft.spanish.key";
-		String cardKeyPkg = "com.haleysoft.card.key";
-		String haleyKeyPkg = "com.haleysoft.master.key";
 		PackageManager manager = getPackageManager();
-		int sigMatch = manager.checkSignatures(mainAppPkg, keyPkg);
-		int sigCardMatch = manager.checkSignatures(mainAppPkg, cardKeyPkg);
-		int sigHaleyMatch = manager.checkSignatures(mainAppPkg, haleyKeyPkg);
-		return sigMatch == PackageManager.SIGNATURE_MATCH
-				|| sigCardMatch == PackageManager.SIGNATURE_MATCH
-				|| sigHaleyMatch == PackageManager.SIGNATURE_MATCH;
+		int sigMatch = 22;
+		if (manager != null) {
+			sigMatch = manager.checkSignatures(mainAppPkg, keyPkg);
+		}
+		return sigMatch == PackageManager.SIGNATURE_MATCH;
 	}
 
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	private void updateOrie()
-	{
+	private void updateOrie() {
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		String orientationTest = preferences.getString("orie_list_set", "0");
 		int orieTest = Integer.parseInt(orientationTest);
-		if (Build.VERSION.SDK_INT<Build.VERSION_CODES.GINGERBREAD) //For old OS
-		{
-			switch (orieTest)
-			{
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) { //For old OS
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;
@@ -385,11 +389,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 					break;
 				default:
 			}
-		}
-		else
-		{
-			switch (orieTest)
-			{
+		} else {
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;
@@ -403,149 +404,120 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			}
 		}
 		boolean flipTest = preferences.getBoolean("hand_set", false);
-		if (flipTest)
-		{
+		if (flipTest) {
 			setContentView(R.layout.testlayoutflip);
-		}
-		else
-		{
+		} else {
 			setContentView(R.layout.testlayout);
 		}
 	}
 
-	private void addFragments()
-	{
+	private void addFragments() {
 		Spinner spinner = (Spinner) findViewById(R.id.select);
-		selected = spinner.getSelectedItem().toString();
-
+		Object spinItem = spinner.getSelectedItem();
+		if (spinItem != null) {
+			selected = spinItem.toString();
+		}
 		FragmentTransaction theTransaction = theManager.beginTransaction();
-
-		WordDBFragment worddb = new WordDBFragment();
-		theTransaction.add(worddb, "wordFragment");
-
-		UserDBFragment userdb = new UserDBFragment();
-		theTransaction.add(userdb, "userFragment");
-
+		UserDBFragment userDB = new UserDBFragment();
+		WordDBFragment wordDB = new WordDBFragment();
+		theTransaction.add(wordDB, "wordFragment");
+		theTransaction.add(userDB, "userFragment");
 		theTransaction.commit();
 	}
 
-	private void addTTS()
-	{
+	private void addTTS() {
 		SharedPreferences preferences = getSharedPreferences(userName, 0);
 		boolean ttsTest = preferences.getBoolean("tts_set", true);
-		if (ttsTest)
-		{
-			TTSFragment ttscheck = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
-			if (ttscheck == null)
-			{
+		if (ttsTest) {
+			TTSFragment ttsCheck = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
+			if (ttsCheck == null) {
 				FragmentTransaction theTransaction = theManager.beginTransaction();
-
-				TTSFragment ttsset = new TTSFragment();
+				TTSFragment ttsSet = new TTSFragment();
 				Bundle arg = new Bundle();
-				arg.putString("mode", MODE);
+				arg.putString("mode", "Test");
 				arg.putString("hide", showWord);
 				arg.putString("show", hideWord);
-				ttsset.setArguments(arg);
-				theTransaction.add(ttsset, "ttsFragment");
-
+				ttsSet.setArguments(arg);
+				theTransaction.add(ttsSet, "ttsFragment");
 				theTransaction.commit();
 			}
 		}
 	}
 
-	private void removeTTS()
-	{
-		TTSFragment ttsset = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
-		if (ttsset != null)
-		{
+	private void removeTTS() {
+		TTSFragment ttsSet = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
+		if (ttsSet != null) {
 			FragmentTransaction theTransaction = theManager.beginTransaction();
-			theTransaction.remove(ttsset);
+			theTransaction.remove(ttsSet);
 
 			theTransaction.commit();
 		}
 	}
 
-	private void setupspin()
-	{
+	private void setupSpin() {
 		SharedPreferences preferences = getSharedPreferences(userName, 0);
 		boolean pointTest = preferences.getBoolean("point_set", false);
 		boolean freePlay = preferences.getBoolean("game_set", false);
 		String spinRemember = preferences.getString("remember_spin", "All");
+		ArrayAdapter<CharSequence> adapter;
 		Spinner spinner = (Spinner) findViewById(R.id.select);
-		if (pointTest) //User wants to get points once a word
-		{
-			if (freePlay)
-			{
+		if (pointTest) { //User wants to get points once a word
+			if (freePlay) {
 				adapter = ArrayAdapter.createFromResource(this, R.array.PointLevelarray, android.R.layout.simple_spinner_item);
-			}
-			else
-			{
+			} else {
 				adapter = ArrayAdapter.createFromResource(this, R.array.Pointarray, android.R.layout.simple_spinner_item);
 			}
-		}
-		else //User wants to gets points for every word
-		{
-			if (freePlay)
-			{
+		} else { //User wants to gets points for every word
+			if (freePlay) {
 				adapter = ArrayAdapter.createFromResource(this, R.array.Levelarray, android.R.layout.simple_spinner_item);
-			}
-			else
-			{
+			} else {
 				adapter = ArrayAdapter.createFromResource(this, R.array.Selectarray, android.R.layout.simple_spinner_item);
 			}
 		}
-		this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(this);
-		if (spinRemember.matches("Points Only") && !pointTest || spinRemember.matches("Level") && !freePlay)
-		{
+		if (spinRemember.matches("Points Only") && !pointTest || spinRemember.matches("Level") && !freePlay) {
 			spinRemember = "All";
 			preferences.edit().putString("remember_spin", "All").commit();
 		}
-
 		spinner.setSelection(adapter.getPosition(WordSwapHelper.cateCodeToString(this, spinRemember)));
 	}
 
 	//This is for when the spinner is selected.
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-	{
+	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 		Spinner spinner = (Spinner) findViewById(R.id.select);
-		if (spinman == 0)
-		{
-			if (pos == 0)
-			{
+		Object spinItem = spinner.getSelectedItem();
+		if (spinMan == 0) {
+			if (pos == 0) {
 				//Do nothing and spinner is ready for use
-				spinman = 2;
-				selected = spinner.getSelectedItem().toString();
+				spinMan = 2;
+				if (spinItem != null) {
+					selected = spinItem.toString();
+				}
 				getSharedPreferences(userName, MODE_PRIVATE).edit().putString("remember_spin", WordSwapHelper.cateStringToCode(this, selected)).commit();
-			}
-			else
-			{
+			} else {
 				//Do nothing and spinner is not yet ready
-				if (spinset)
-				{
-					spinman = 2; //spinner on first boot and ready
-					spinset = false;
+				if (spinSet) {
+					spinMan = 2; //spinner on first boot and ready
+					spinSet = false;
+				} else {
+					spinMan = 1; //phone rotated or returned from settings, not ready yet
 				}
-				else
-				{
-					spinman = 1; //phone rotated or returned from settings, not ready yet
-				}
-
 			}
-		}
-		else if (spinman == 1)
-		{
+		} else if (spinMan == 1) {
 			//Do nothing and spinner is ready for use
-			spinman = 2;
-			selected = spinner.getSelectedItem().toString();
+			spinMan = 2;
+			if (spinItem != null) {
+				selected = spinItem.toString();
+			}
 			getSharedPreferences(userName, MODE_PRIVATE).edit().putString("remember_spin", WordSwapHelper.cateStringToCode(this, selected)).commit();
-		}
-		else if (spinman == 2)
-		{
+		} else if (spinMan == 2) {
 			//Do nothing and spinner is ready for use
-			selected = spinner.getSelectedItem().toString();
+			if (spinItem != null) {
+				selected = spinItem.toString();
+			}
 			getSharedPreferences(userName, MODE_PRIVATE).edit().putString("remember_spin", WordSwapHelper.cateStringToCode(this, selected)).commit();
 			nextWord();
 			getWord();
@@ -553,33 +525,28 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> parent)
-	{
+	public void onNothingSelected(AdapterView<?> parent) {
 		//Do Nothing
 	}
 
-	private boolean networkCheck()
-	{
+	private boolean networkCheck() {
 		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null;
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu (Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.testmenu, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected (MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		SharedPreferences preferences = getSharedPreferences(userName, 0);
-		switch (item.getItemId())
-		{
-			case android.R.id.home: //This is the up button
+		switch (item.getItemId()) {
+			case android.R.id.home: //This is the up button. Does the same at menu go home
 			case R.id.menugohome:
 				SharedPreferences pref = getSharedPreferences(userName, MODE_PRIVATE);
 				pref.edit().putBoolean("score_saved", false).commit();
@@ -591,41 +558,20 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				return true;
 			case R.id.menunote:
 				boolean noteTest = preferences.getBoolean("note_set", true);
-				boolean newNote;
-				if (noteTest)
-				{
-					newNote = false;
-				}
-				else
-				{
-					newNote = true;
-				}
-				getSharedPreferences(userName, MODE_PRIVATE).edit().putBoolean("note_set", newNote).commit();
-				changeNote(newNote);
+				getSharedPreferences(userName, MODE_PRIVATE).edit().putBoolean("note_set", !noteTest).commit();
+				changeNote(!noteTest);
 				return true;
 			case R.id.menucata:
 				boolean cataTest = preferences.getBoolean("cata_set", true);
-				boolean newCata;
-				if (cataTest)
-				{
-					newCata = false;
-				}
-				else
-				{
-					newCata = true;
-				}
-				getSharedPreferences(userName, MODE_PRIVATE).edit().putBoolean("cata_set", newCata).commit();
-				changeCata(newCata);
+				getSharedPreferences(userName, MODE_PRIVATE).edit().putBoolean("cata_set", !cataTest).commit();
+				changeCata(!cataTest);
 				return true;
 			case R.id.menuset:
-				spinset = true;
+				spinSet = true;
 				Intent set;
-				if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) //For old OS
-				{
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					set = new Intent(this, SettingsMenuOld.class);
-				}
-				else //For new OS
-				{
+				} else { //For new OS
 					set = new Intent(this, SettingsMenu.class);
 				}
 				set.putExtra("prefUser", userName);
@@ -634,26 +580,19 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				return true;
 			case R.id.menuscores:
 				Intent scores;
-				if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) //For old OS
-				{
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					scores = new Intent(this, HighScoresList.class);
-				}
-				else //For new OS
-				{
+				} else { //For new OS
 					scores = new Intent(this, HighScoresList.class);
-					//scores = new Intent(this, HighScoresBar.class);
 				}
 				scores.putExtra("user", userName);
 				this.startActivity(scores);
 				return true;
 			case R.id.menulist:
 				Intent list;
-				if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) //For old OS
-				{
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					list = new Intent(this, WordList.class);
-				}
-				else //For new OS
-				{
+				} else { //For new OS
 					list = new Intent(this, WordList.class);
 				}
 				list.putExtra("user", userName);
@@ -664,35 +603,24 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 	}
 
-	private void levelPointUp()
-	{
+	private void levelPointUp() {
 		Resources res = getResources();
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		boolean userMaxed = preferences.getBoolean("level_max_set", false);
 		boolean freePlay = preferences.getBoolean("game_set", false);
-		if (!freePlay && !hideWord.matches(showWord))
-		{
+		if (!freePlay && !hideWord.matches(showWord)) {
 			int userLevel = preferences.getInt("user_level", 1);
 			int maxPoints = userLevel * 10;
 			int userPoints = preferences.getInt("level_points", 0);
-			if (checkPaid() && userLevel < maxLevel || !checkPaid() && userLevel < demoLevel)
-			{
+			if (checkPaid() && userLevel < maxLevel || !checkPaid() && userLevel < demoLevel) {
 				userPoints = userPoints + wordLevel;
 				preferences.edit().putBoolean("level_max_set", false).commit();
-			}
-			else if (!userMaxed) //user is at max level
-			{
+			} else if (!userMaxed) { //user is at max level
 				preferences.edit().putBoolean("level_max_set", true).commit();
 				String maxText = res.getString(R.string.levelMaxed);
 				Toast.makeText(this, maxText, Toast.LENGTH_SHORT).show();
 			}
-			else
-			{
-				//Do nothing, user already knows.
-			}
-			if (userPoints >= maxPoints) //Level Up
-			{
-
+			if (userPoints >= maxPoints) { //Level Up
 				userPoints = userPoints - maxPoints;
 				userLevel++;
 				String levelText = String.format(res.getString(R.string.levelUp), userLevel);
@@ -704,8 +632,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 	}
 
-	private void updateLevel()
-	{
+	private void updateLevel() {
 		Resources res = getResources();
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		TextView lPoint = (TextView) findViewById(R.id.pointDisplay);
@@ -719,123 +646,89 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		lPoint.setText(pointText);
 	}
 
-	private void scoreUp()
-	{
-		UserDBFragment userdb = (UserDBFragment) theManager.findFragmentByTag("userFragment");
+	private void scoreUp() {
+		UserDBFragment userDB = (UserDBFragment) theManager.findFragmentByTag("userFragment");
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
-
 		score++;
-
-		if (score > 0) //If the score is 0 then nothing to check or save
-		{
-			if (!topMostNotify)
-			{
-				Cursor topMost = userdb.topScore(null, null, userName);
-				if (topMost.moveToFirst())
-				{
+		if (score > 0) { //If the score is 0 then nothing to check or save
+			if (!topMostNotify) {
+				Cursor topMost = userDB.topScore(null, null, userName);
+				if (topMost.moveToFirst()) {
 					int tScore = topMost.getInt(topMost.getColumnIndex("score"));
-					if (score > tScore)
-					{
+					if (score > tScore) {
 						String tName = topMost.getString(topMost.getColumnIndex("name"));
-						//String tMode = topMost.getString(topMost.getColumnIndex("mode"));
-						CharSequence tText;
-						if (tName.matches("Guest")) //Last highest score was held by a guest
-						{
-							tText = getString(R.string.notifyMost);
+						if (tName != null) {
+							CharSequence tText;
+							if (tName.matches("Guest")) { //Last highest score was held by a guest
+								tText = getString(R.string.notifyMost);
+							} else if (tName.matches(userName)) { //Last highest score was held by the same user
+								tText = getString(R.string.notifyMost);
+							} else { //Last highest score was held by a different user (tName)
+								tText = getString(R.string.notifyMost);
+							}
+							Toast.makeText(this, tText, Toast.LENGTH_LONG).show();
+							topMostNotify = true;
 						}
-						else if (tName.matches(userName)) //Last highest score was held by the same user
-						{
-							tText = getString(R.string.notifyMost);
-						}
-						else //Last highest score was held by a different user (tName)
-						{
-							tText = getString(R.string.notifyMost);
-						}
-						Toast.makeText(this, tText, Toast.LENGTH_LONG).show();
-						topMostNotify = true;
 					}
 				}
-				userdb.close();
+				userDB.close();
 				topMost.close();
 			}
-			if (!topTypeNotify)
-			{
-				Cursor topScore = userdb.topScore(showWord, hideWord, userName);
-				if (topScore.moveToFirst())
-				{
+			if (!topTypeNotify) {
+				Cursor topScore = userDB.topScore(showWord, hideWord, userName);
+				if (topScore.moveToFirst()) {
 					int hScore = topScore.getInt(topScore.getColumnIndex("score"));
-					if (score > hScore)
-					{
+					if (score > hScore) {
 						String hName = topScore.getString(topScore.getColumnIndex("name"));
-						//String hMode = topScore.getString(topScore.getColumnIndex("mode"));
-						CharSequence hText;
-						if (hName.matches("Guest")) //Last high score in this mode was held by a guest
-						{
-							hText = getString(R.string.notifyHigh);
+						if (hName != null) {
+							CharSequence hText;
+							if (hName.matches("Guest")) { //Last high score in this mode was held by a guest
+								hText = getString(R.string.notifyHigh);
+							} else if (hName.matches(userName)) { //Last high score in this mode was held by the same user
+								hText = getString(R.string.notifyHigh);
+							} else { //Last high score in this mode was held by a different user (hName)
+								hText = getString(R.string.notifyHigh);
+							}
+							Toast.makeText(this, hText, Toast.LENGTH_LONG).show();
+							topTypeNotify = true;
 						}
-						else if (hName.matches(userName)) //Last high score in this mode was held by the same user
-						{
-							hText = getString(R.string.notifyHigh);
-						}
-						else //Last high score in this mode was held by a different user (hName)
-						{
-							hText = getString(R.string.notifyHigh);
-						}
-						Toast.makeText(this, hText, Toast.LENGTH_LONG).show();
-						topTypeNotify = true;
 					}
 				}
-				userdb.close();
+				userDB.close();
 				topScore.close();
 			}
-
-			if (scoreId == null) //Inserts the current test score
-			{
-				scoreId = userdb.addScore(userName, score, showWord, hideWord);
+			if (scoreId == null) { //Inserts the current test score
+				scoreId = userDB.addScore(userName, score, showWord, hideWord);
 				boolean keepPoint = preferences.getBoolean("keep_score", false);
-				if (keepPoint)
-				{
+				if (keepPoint) {
 					preferences.edit().putLong("score_id", scoreId).commit();
 					preferences.edit().putInt("last_score", score).commit();
 					preferences.edit().putBoolean("score_saved", true).commit();
 				}
-			}
-			else //Updates the current test score
-			{
-				userdb.updateScore(scoreId, score);
+			} else { //Updates the current test score
+				userDB.updateScore(scoreId, score);
 				preferences.edit().putInt("last_score", score).commit();
 			}
 		}
 		showScore();
 		boolean nextTest = preferences.getBoolean("auto_set", false);
-		if (nextTest)
-		{
+		if (nextTest) {
 			nextWord();
 			getWord();
-		}
-		else
-		{
+		} else {
 			showWord();
 		}
 	}
 
-	private void showScore()
-	{
+	private void showScore() {
 		Resources res = getResources();
 		TextView viewScore = (TextView) findViewById(R.id.correct);
 		String scoreText = String.format(res.getString(R.string.testScore), score);
 		viewScore.setText(scoreText);
 	}
 
-	public void words(View v)
-	{
-		nextWord();
-		getWord();
-	}
-
 	//This pulls a random word from the database and adjust the view.
-	private void nextWord ()
-	{
+	private void nextWord() {
 		Button nextWord = (Button) findViewById(R.id.newButton);
 		nextWord.setText(R.string.SkipWord);
 		//Sets up the views to be used.
@@ -849,58 +742,46 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		showB.setEnabled(true);
 		shown = false;
 		//Asks the Words Database Adapter for a random row.
-		try
-		{
-			Cursor wordCursor = dBHelp.getRandomWord(selected, userName, freePlay, userLevel);
-			if (wordCursor.moveToFirst())
-			{
+		try {
+			Cursor wordCursor = dBHelp.getRandomWord(selected, freePlay, userLevel);
+			if (wordCursor.moveToFirst()) {
 				wordID = wordCursor.getLong(wordCursor.getColumnIndex(WordDBFragment.KEY_ROWID));
 
 				String tempCate = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_CAT));
 				category = WordSwapHelper.cateCodeToString(this, tempCate);
-				String tempType = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_TYPE));
-				type = tempType;     //Need to work on using this later.
-
+				type = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_TYPE));
 				wordLevel = wordCursor.getInt(wordCursor.getColumnIndex(WordDBFragment.KEY_LEVEL));
 				theMark = wordCursor.getInt(wordCursor.getColumnIndex(WordDBFragment.KEY_MARK));
 				gotPoint = wordCursor.getInt(wordCursor.getColumnIndex(WordDBFragment.KEY_POINT));
 				note = WordSwapHelper.noteCodeToString(this, wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_NOTE)));
-				/*
-				String tempNote = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_NOTE));
-				if (tempNote.matches("Masculine"))
-				{
-					note = getString(R.string.hintM);
+
+				String tempEnglish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_ENG));
+				String tempAltEnglish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_AENG));
+				String tempSpanish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_SPAN));
+				String tempAltSpanish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_ASPAN));
+				if (tempEnglish != null && tempAltEnglish != null && tempSpanish != null && tempAltSpanish != null) {
+					english = tempEnglish.toLowerCase(Locale.US);
+					altEnglish = tempAltEnglish.toLowerCase(Locale.US);
+					spanish = tempSpanish.toLowerCase(Locale.US);
+					altSpanish = tempAltSpanish.toLowerCase(Locale.US);
+				} else {
+					english = "Database Error";
+					altEnglish = "Database Error";
+					spanish = "Database Error";
+					altSpanish = "Database Error";
 				}
-				else if (tempNote.matches("Feminine"))
-				{
-					note = getString(R.string.hintF);
-				}
-				else //no hint = 0
-				{
-					note = "0";
-				}
-				*/
-				english = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_ENG)).toLowerCase(Locale.US);
-				altEnglish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_AENG)).toLowerCase(Locale.US);
-				spanish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_SPAN)).toLowerCase(Locale.US);
-				altSpanish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_ASPAN)).toLowerCase(Locale.US);
-			}
-			else
-			{
+			} else {
 				String notFound = String.format(getString(R.string.noWordsFound), selected);
 				Toast.makeText(this, notFound, Toast.LENGTH_LONG).show();
 			}
 			wordCursor.close();
 			dBHelp.close();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void getWord ()
-	{
+	private void getWord() {
 		SharedPreferences preferences = getSharedPreferences(userName, 0);
 		boolean cataTest = preferences.getBoolean("cata_set", true);
 		boolean noteTest = preferences.getBoolean("note_set", true);
@@ -910,20 +791,14 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		TextView catText = (TextView) findViewById(R.id.catText);
 		ToggleButton markB = (ToggleButton) findViewById(R.id.markButton);
 		//Sets the returned database text to the text views.
-		if (hideWord.contains("English"))
-		{
+		if (hideWord.contains("English")) {
 			textHide.setText(english);
-		}
-		else if (hideWord.contains("Spanish"))
-		{
+		} else if (hideWord.contains("Spanish")) {
 			textHide.setText(spanish);
 		}
-		if (showWord.contains("English"))
-		{
+		if (showWord.contains("English")) {
 			textShow.setText(english);
-		}
-		else if (showWord.contains("Spanish"))
-		{
+		} else if (showWord.contains("Spanish")) {
 			textShow.setText(spanish);
 		}
 		String showHint = String.format(getString(R.string.hintText), note);
@@ -934,100 +809,61 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		changeCata(cataTest);
 		changeNote(noteTest);
 		//Toggles the mark button depending if the word is marked in the database.
-		if (theMark == 1)
-		{
+		if (theMark == 1) {
 			markB.setChecked(true);
-		}
-		else if (theMark == 0)
-		{
+		} else if (theMark == 0) {
 			markB.setChecked(false);
 		}
 		updateLevel();
 	}
 
-	private void changeNote(boolean current)
-	{
+	private void changeNote(boolean current) {
 		//Hides or shows the hints depending on the user's settings.
 		TextView noteText = (TextView) findViewById(R.id.noteText);
-		if (current)
-		{
+		if (current) {
 			//If the note word is 0 then it will not be shown.
-			if (note.contains("0"))
-			{
+			if (note.contains("0")) {
 				noteText.setVisibility(View.INVISIBLE);
-			}
-			else
-			{
+			} else {
 				noteText.setVisibility(View.VISIBLE);
 			}
-		}
-		else
-		{
+		} else {
 			noteText.setVisibility(View.INVISIBLE);
 		}
 	}
 
-	private void changeCata(boolean current)
-	{
+	private void changeCata(boolean current) {
 		//Hides or shows the category depending on the user's settings.
 		TextView catCurrent = (TextView) findViewById(R.id.currentCata);
 		TextView catText = (TextView) findViewById(R.id.catText);
-		if (current)
-		{
+		if (current) {
 			catText.setVisibility(View.VISIBLE);
 			catCurrent.setVisibility(View.VISIBLE);
-		}
-		else
-		{
+		} else {
 			catText.setVisibility(View.INVISIBLE);
 			catCurrent.setVisibility(View.INVISIBLE);
 		}
 	}
 
-	public void voice(View v)
-	{
-		SharedPreferences preferences = getSharedPreferences(userName, 0);
-		boolean voiceTest = preferences.getBoolean("speak_set", true);
-		if (networkCheck()) //Network check pass, ok to use voice
-		{
-			if (voiceTest) //Voice is true. Using the voice
-			{
-				startVoice();
-			}
-			else if (!voiceTest) //Voice is False. Using the text
-			{
-				startText();
-			}
-		}
-		else //Network check failed, should use text
-		{
-			startText();
-		}
-	}
-
-	private void voiceCheck()
-	{
+	private void voiceCheck() {
 		PackageManager pm = getPackageManager();
-		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
-		if (activities.size() == 0)
-		{
-			//Disabled
-			getSharedPreferences(userName, 0).edit().putBoolean("speak_set", false).commit();
-			Toast.makeText(this, getString(R.string.noVoice), Toast.LENGTH_LONG).show();
+		if (pm != null) {
+			List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+			if (activities.size() == 0) {
+				//Disabled
+				getSharedPreferences(userName, 0).edit().putBoolean("speak_set", false).commit();
+				Toast.makeText(this, getString(R.string.noVoice), Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
 	//This starts the voice recognition activity with an intent.
-	public void startVoice ()
-	{
+	public void startVoice() {
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-		if (hideWord.contains("English"))
-		{
+		if (hideWord.contains("English")) {
 			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
 			intent.putExtra(RecognizerIntent.EXTRA_PROMPT, R.string.englishSay);
-		}
-		else if (hideWord.contains("Spanish"))
-		{
+		} else if (hideWord.contains("Spanish")) {
 			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es");
 			intent.putExtra(RecognizerIntent.EXTRA_PROMPT, R.string.spanishSay);
 		}
@@ -1035,140 +871,102 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		startActivityForResult(intent, VOICE_REQUEST_CODE);
 	}
 
-	public void startText ()
-	{
-		startDialog(0, null, 2); //2 = null
+	public void startText() {
+		startDialog(0, null);
 	}
 
 	//This runs after the voice recognition activity is finished and handles the result.
-	public void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//This is for settings
-		if (requestCode == SETTING_REQUEST_CODE)
-		{
+		if (requestCode == SETTING_REQUEST_CODE) {
 			updateOrie();
-			spinman = 0;
-			setupspin();
+			spinMan = 0;
+			setupSpin();
 			ttsChange = true;
 			SharedPreferences preferences = getSharedPreferences(userName, 0);
 			boolean voiceTest = preferences.getBoolean("speak_set", true);
-			if (voiceTest)
-			{
+			if (voiceTest) {
 				voiceCheck();
 			}
 		}
 		//This section is for the Voice Recognition
-		if (requestCode == VOICE_REQUEST_CODE && resultCode == RESULT_OK )
-		{
+		if (requestCode == VOICE_REQUEST_CODE && resultCode == RESULT_OK) {
 			String testText = null;
 			String altTestText = null;
-			if (hideWord.contains("English"))
-			{
+			if (hideWord.contains("English")) {
 				testText = english;
 				altTestText = altEnglish;
-			}
-			else if (hideWord.contains("Spanish"))
-			{
+			} else if (hideWord.contains("Spanish")) {
 				testText = spanish;
 				altTestText = altSpanish;
 			}
 			//Pulls the results of what the recognition engine thought it heard into an array list
 			ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			//Moves the array to my variable to work with.
-			userSaid = matches.toString().toLowerCase(Locale.US);
-			//Checks if the user said the correct word.
-			if (userSaid.contains(testText) || userSaid.contains(altTestText)) //The user was correct
-			{
-				pointCheck();
-			}
-			else //The activity did not hear right or the wrong word was said
-			{
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) //For old OS
-				{
-					startDialog(1, userSaid, 2); //2 = null
-				}
-				else //For new OS
-				{
-					wrongDialog = true;
+			if (matches != null) {
+				userSaid = matches.toString().toLowerCase(Locale.US);
+				//Checks if the user said the correct word.
+				if (userSaid.contains(testText) || userSaid.contains(altTestText)) { //The user was correct
+					pointCheck();
+				} else { //The activity did not hear right or the wrong word was said
+					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
+						startDialog(1, userSaid);
+					} else { //For new OS
+						wrongDialog = true;
+					}
 				}
 			}
-		}
-		else
-		{
-			//Got Something else????
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	public void UserText(String userTyped)
-	{
+	public void UserText(String userTyped) {
 		String testText = null;
 		String altTestText = null;
-		if (hideWord.matches("English"))
-		{
+		if (hideWord.matches("English")) {
 			testText = english;
 			altTestText = altEnglish;
-		}
-		else if (hideWord.matches("Spanish"))
-		{
+		} else if (hideWord.matches("Spanish")) {
 			testText = spanish;
 			altTestText = altSpanish;
 		}
 		//Checks if the user said the correct word.
-		if (userTyped.toLowerCase(Locale.US).contains(testText)
-				|| userTyped.toLowerCase(Locale.US).contains(altTestText)) //The user was correct
-		{
+		if (userTyped.toLowerCase(Locale.US).contains(testText) || userTyped.toLowerCase(Locale.US).contains(altTestText)) { //The user was correct
 			pointCheck();
-		}
-		else //The user did not type in the correct word
-		{
+		} else { //The user did not type in the correct word
 			userSaid = null;
-			startDialog(2, userSaid, 2); //2 = null
+			startDialog(2, userSaid);
 		}
 	}
 
-	private void pointCheck()
-	{
+	private void pointCheck() {
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		boolean pointTest = preferences.getBoolean("point_set", false);
 		CharSequence toastText = null;
-		if (!pointTest) //Should be false. User wants to get a point for every word
-		{
+		if (!pointTest) { //Should be false. User wants to get a point for every word
 			scoreUp();
 			levelPointUp();
 			toastText = getString(R.string.wordRight);
-		}
-		else if (pointTest) //Should be true. User wants to get a point once a word
-		{
-			if (gotPoint == 0) //Should be set to 0. User has not received a point yet for the word
-			{
-
+		} else { //User wants to get a point once a word
+			if (gotPoint == 0) { //Should be set to 0. User has not received a point yet for the word
 				gotPoint = 1;
 				WordDBFragment word = (WordDBFragment) theManager.findFragmentByTag("wordFragment");
 				word.updatePoint(wordID);
 				scoreUp();
 				levelPointUp();
 				toastText = getString(R.string.wordPoint);
-			}
-			else if (gotPoint == 1) //Should be set to 1. User has already received a point for the word
-			{
+			} else if (gotPoint == 1) { //Should be set to 1. User has already received a point for the word
 				toastText = getString(R.string.wordNoPoint);
 			}
 		}
 		Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
 	}
 
-	public void show(View v)
-	{
-		showWord();
-	}
-
 	/*
 	*Shows the Hidden word and disables the speak and show buttons.
 	*This runs when the show button is pressed or when the user gets the word correct.
 	*/
-	private void showWord ()
-	{
+	private void showWord() {
 		Button nextWord = (Button) findViewById(R.id.newButton);
 		TextView wordHide = (TextView) findViewById(R.id.hideText);
 		Button speakB = (Button) findViewById(R.id.speakButton);
@@ -1180,66 +978,11 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		shown = true;
 	}
 
-	public void wordSpeak(View v) //New
-	{
-		SharedPreferences preferences = getSharedPreferences(userName, 0);
-		boolean ttsTest = preferences.getBoolean("tts_set", true);
-		if (ttsTest)
-		{
-			TTSFragment ttsrun = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
-			if (ttsrun.goodTTS)
-			{
-				switch (v.getId())
-				{
-					case R.id.hideText:
-						if (hideWord.matches("English"))
-						{
-							ttsrun.sayWord("English", english);
-						}
-						else if (hideWord.matches("Spanish"))
-						{
-							ttsrun.sayWord("Spanish", spanish);
-						}
-						break;
-					case R.id.showText:
-						if (showWord.matches("English"))
-						{
-							ttsrun.sayWord("English", english);
-						}
-						else if (showWord.matches("Spanish"))
-						{
-							ttsrun.sayWord("Spanish", spanish);
-						}
-						break;
-					default:
-				}
-			}
-		}
-	}
-
-	public void marks(View v)
-	{
-		//If the word is not marked right now, this will run.
-		if (theMark == 0) //Should be 0.
-		{
-			theMark = 1;
-		}
-		//If the word is marked right now, this will run.
-		else if (theMark == 1) //Should be 1.
-		{
-			theMark = 0;
-		}
-		//Updates the database.
-		dBHelp.updateMark(wordID, theMark);
-	}
-
-	public void startDialog(int id, String userSaid2, int extra)
-	{
+	public void startDialog(int id, String userSaid2) {
 		FragmentTransaction theTransaction = theManager.beginTransaction();
-		Fragment dialogset = theManager.findFragmentByTag("dialogFragment");
-		if (dialogset != null)
-		{
-			theTransaction.remove(dialogset);
+		Fragment dialogSet = theManager.findFragmentByTag("dialogFragment");
+		if (dialogSet != null) {
+			theTransaction.remove(dialogSet);
 		}
 		DialogFragment newDialog = DialogsFragment.newInstance(null, id, userSaid2, 2, userName); //2 = null
 		newDialog.show(theTransaction, "dialogFragment");

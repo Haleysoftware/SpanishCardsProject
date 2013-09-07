@@ -1,92 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<Button
-			android:id="@+id/goTestButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			android:layout_margin="5dp"
-			android:onClick="goTest"
-			android:text="@string/go_test" />
+		android:id="@+id/goTestButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:layout_margin="5dp"
+		android:text="@string/go_test"/>
 
 	<ToggleButton
-			android:id="@+id/togglePoints"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@+id/goTestButton"
-			android:layout_centerHorizontal="true"
-			android:layout_margin="5dp"
-			android:onClick="points"
-			android:textOn="@string/toggle_hard_on"
-			android:textOff="@string/toggle_hard_off" />
+		android:id="@+id/togglePoints"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/goTestButton"
+		android:layout_centerHorizontal="true"
+		android:layout_margin="5dp"
+		android:textOn="@string/toggle_hard_on"
+		android:textOff="@string/toggle_hard_off"/>
 
 	<Spinner
-			android:id="@+id/spinnerName"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@+id/togglePoints"
-			android:layout_centerHorizontal="true"
-			android:layout_margin="5dp"
-			android:prompt="@string/userSelect" />
+		android:id="@+id/spinnerName"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/togglePoints"
+		android:layout_centerHorizontal="true"
+		android:layout_margin="5dp"
+		android:prompt="@string/userSelect"/>
 
 	<Spinner
-			android:id="@+id/spinnerHide"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_above="@+id/goTestButton"
-			android:layout_centerHorizontal="true"
-			android:layout_margin="5dp"
-			android:prompt="@string/langSelect" />
+		android:id="@+id/spinnerHide"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@+id/goTestButton"
+		android:layout_centerHorizontal="true"
+		android:layout_margin="5dp"
+		android:prompt="@string/langSelect"/>
 
 	<TextView
-			android:id="@+id/middleText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_above="@+id/spinnerHide"
-			android:layout_centerHorizontal="true"
-			android:layout_margin="5dp"
-			android:textSize="15sp"
-			android:text="@string/middleWord"
-			android:textIsSelectable="false" />
+		android:id="@+id/middleText"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@+id/spinnerHide"
+		android:layout_centerHorizontal="true"
+		android:layout_margin="5dp"
+		android:textSize="15sp"
+		android:text="@string/middleWord"
+		android:textIsSelectable="false"/>
 
 	<Spinner
-			android:id="@+id/spinnerShow"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_above="@+id/middleText"
-			android:layout_centerHorizontal="true"
-			android:layout_margin="5dp"
-			android:prompt="@string/langSelect" />
+		android:id="@+id/spinnerShow"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@+id/middleText"
+		android:layout_centerHorizontal="true"
+		android:layout_margin="5dp"
+		android:prompt="@string/langSelect"/>
 
 	<TextView
-			android:id="@+id/levelDisplay"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentTop="true"
-			android:textIsSelectable="false" />
+		android:id="@+id/levelDisplay"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/pointDisplay"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentTop="true"
-			android:textIsSelectable="false" />
+		android:id="@+id/pointDisplay"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:textIsSelectable="false"/>
 
 	<com.google.ads.AdView
-			android:id="@+id/adView"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:layout_alignParentBottom="true"
-			ads:adUnitId="a151f170c1c5283"
-			ads:adSize="BANNER"/>
+		android:id="@+id/adView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		ads:adUnitId="a151f170c1c5283"
+		ads:adSize="BANNER"/>
 
 </RelativeLayout>

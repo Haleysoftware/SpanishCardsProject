@@ -1,149 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<com.google.ads.AdView
-			android:id="@+id/adView"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:layout_alignParentBottom="true"
-			ads:adUnitId="a151f170c1c5283"
-			ads:adSize="BANNER"/>
+		android:id="@+id/adView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		ads:adUnitId="a151f170c1c5283"
+		ads:adSize="BANNER"/>
 
 	<Button
-			android:id="@+id/newButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:layout_centerVertical="true"
-			android:onClick="words" />
+		android:id="@+id/newButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"/>
 
 	<Button
-			android:id="@+id/speakButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentTop="true"
-			android:onClick="voice"
-			android:text="@string/Speak"/>
+		android:id="@+id/speakButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:text="@string/Speak"/>
 
 	<Button
-			android:id="@+id/showButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_above="@id/adView"
-			android:layout_alignParentLeft="true"
-			android:onClick="show"
-			android:text="@string/ShowWord"/>
+		android:id="@+id/showButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/adView"
+		android:layout_alignParentLeft="true"
+		android:text="@string/ShowWord"/>
 
 	<TextView
-			android:id="@+id/correct"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_above="@id/adView"
-			android:layout_alignParentLeft="true"
-			android:layout_marginTop="10dp"
-			android:textSize="20sp"
-			android:textIsSelectable="false" />
+		android:id="@+id/correct"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/adView"
+		android:layout_alignParentLeft="true"
+		android:layout_marginTop="10dp"
+		android:textSize="20sp"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/showText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			android:clickable="true"
-			android:onClick="wordSpeak"
-			android:textSize="25sp"
-			android:textIsSelectable="false" />
+		android:id="@+id/showText"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:clickable="true"
+		android:textSize="25sp"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/hideText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/showText"
-			android:layout_centerHorizontal="true"
-			android:layout_marginTop="10dp"
-			android:clickable="true"
-			android:onClick="wordSpeak"
-			android:textSize="25sp"
-			android:textIsSelectable="false" />
+		android:id="@+id/hideText"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/showText"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="10dp"
+		android:clickable="true"
+		android:textSize="25sp"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/noteText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_above="@id/showText"
-			android:layout_centerHorizontal="true"
-			android:layout_marginBottom="10dp"
-			android:textSize="20sp"
-			android:textIsSelectable="false" />
+		android:id="@+id/noteText"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/showText"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="10dp"
+		android:textSize="20sp"
+		android:textIsSelectable="false"/>
 
 	<Spinner
-			android:id="@+id/select"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentRight="true"
-			android:prompt="@string/WordSelect"/>
+		android:id="@+id/select"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:prompt="@string/WordSelect"/>
 
 	<ToggleButton
-			android:id="@+id/markButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentTop="true"
-			android:onClick="marks"
-			android:textOff="@string/markOff"
-			android:textOn="@string/markOn"/>
+		android:id="@+id/markButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:textOff="@string/markOff"
+		android:textOn="@string/markOn"/>
 
 	<TextView
-			android:id="@+id/cataselect"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_above="@id/select"
-			android:layout_alignParentRight="true"
-			android:text="@string/selectCata"
-			android:textSize="15sp"
-			android:textIsSelectable="false" />
+		android:id="@+id/cataselect"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/select"
+		android:layout_alignParentRight="true"
+		android:text="@string/selectCata"
+		android:textSize="15sp"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/currentCata"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:layout_centerHorizontal="true"
-			android:text="@string/wordCata"
-			android:textSize="15sp"
-			android:textIsSelectable="false" />
+		android:id="@+id/currentCata"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:text="@string/wordCata"
+		android:textSize="15sp"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/catText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/currentCata"
-			android:layout_centerHorizontal="true"
-			android:textSize="15sp"
-			android:textIsSelectable="false" />
+		android:id="@+id/catText"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/currentCata"
+		android:layout_centerHorizontal="true"
+		android:textSize="15sp"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/levelDisplay"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/markButton"
-			android:textIsSelectable="false" />
+		android:id="@+id/levelDisplay"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/markButton"
+		android:textIsSelectable="false"/>
 
 	<TextView
-			android:id="@+id/pointDisplay"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/levelDisplay"
-			android:textIsSelectable="false" />
+		android:id="@+id/pointDisplay"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/levelDisplay"
+		android:textIsSelectable="false"/>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 8/29/13.
  */
 
 import android.app.Activity;
@@ -16,8 +17,7 @@ import com.android.vending.billing.util.Inventory;
 import com.android.vending.billing.util.Purchase;
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class StartPicker extends Activity
-{
+public class StartPicker extends Activity {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	private SharedPreferences masterPref;
 	private SharedPreferences preferences;
@@ -34,17 +34,6 @@ public class StartPicker extends Activity
 		userName = masterPref.getString("last_user_set", "Guest");
 		inAppCheck();
 		preferences = getSharedPreferences(userName, MODE_PRIVATE);
-		/*
-		boolean testing = preferences.getBoolean("return_test_set", false);
-		if (testing)
-		{
-			goTest();
-		}
-		else
-		{
-			goSelect();
-		}
-		*/
 	}
 
 	@Override
@@ -55,12 +44,9 @@ public class StartPicker extends Activity
 		if (analytics) {
 			EasyTracker.getInstance().activityStart(this);
 		}
-		if (testing)
-		{
+		if (testing) {
 			goTest();
-		}
-		else
-		{
+		} else {
 			goSelect();
 		}
 	}
@@ -80,8 +66,7 @@ public class StartPicker extends Activity
 		billHelper = null;
 	}
 
-	private void setupPref()
-	{
+	private void setupPref() {
 		PreferenceManager.setDefaultValues(this, MASTER_SETTINGS, MODE_PRIVATE, R.xml.programsettings, false);
 		PreferenceManager.setDefaultValues(this, userName, MODE_PRIVATE, R.xml.mastersettings, false);
 	}
@@ -104,8 +89,7 @@ public class StartPicker extends Activity
 	}
 
 	//Listener for items that the user owns
-	private IabHelper.QueryInventoryFinishedListener billGotInventoryListener = new
-			IabHelper.QueryInventoryFinishedListener() {
+	private IabHelper.QueryInventoryFinishedListener billGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
 		public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
 			if (result.isFailure()) {
 				//Failed to get item list
@@ -113,8 +97,7 @@ public class StartPicker extends Activity
 			}
 			//This is where we check for items.
 			Purchase removeAdsPurchase = inventory.getPurchase(AppPurchasing.SKU_ADS);
-			boolean adsRemoved = (removeAdsPurchase != null &&
-					AppPurchasing.verifyDeveloperPayload(removeAdsPurchase));
+			boolean adsRemoved = (removeAdsPurchase != null && AppPurchasing.verifyDeveloperPayload(removeAdsPurchase));
 			masterPref.edit().putBoolean("remove_ads", adsRemoved).commit();
 
 			/*
@@ -137,16 +120,14 @@ public class StartPicker extends Activity
 			};
 	*/
 
-	public void goTest()
-	{
+	public void goTest() {
 		Intent test = new Intent(this, TestMain.class);
 		test.putExtra("user", userName);
 		startActivity(test);
 		finish();
 	}
 
-	public void goSelect()
-	{
+	public void goSelect() {
 		Intent select = new Intent(this, TestSelect.class);
 		startActivity(select);
 		finish();

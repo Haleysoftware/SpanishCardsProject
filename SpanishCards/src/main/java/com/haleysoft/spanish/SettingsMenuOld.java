@@ -2,10 +2,9 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
- * Cleaned by Mike Haley ?.
+ * Cleaned by Mike Haley 8/29/13.
  */
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -54,8 +53,7 @@ public class SettingsMenuOld extends PreferenceActivity {
 				break;
 		}
 		if (savedInstanceState != null) {
-			switch (mode)
-			{
+			switch (mode) {
 				case 0: //This is for the main settings
 
 					break;
@@ -65,17 +63,14 @@ public class SettingsMenuOld extends PreferenceActivity {
 				default:
 			}
 		}
-
 		Preference shopButton = this.findPreference("buy_set");
 		if (shopButton != null) {
 			if (masterPref.getBoolean("buy_okay", false)) {
 				shopButton.setEnabled(true);
 				shopButton.setSummary(R.string.setbuysum);
-				shopButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-				{
+				shopButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 					@Override
-					public boolean onPreferenceClick(Preference arg0)
-					{
+					public boolean onPreferenceClick(Preference arg0) {
 						Intent goShop = new Intent(SettingsMenuOld.this, AppPurchasing.class);
 						startActivity(goShop);
 						return true;
@@ -91,8 +86,7 @@ public class SettingsMenuOld extends PreferenceActivity {
 
 				Preference resetButton = this.findPreference("mark_reset_set");
 				if (resetButton != null) {
-					resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-					{
+					resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 						@Override
 						public boolean onPreferenceClick(Preference arg0) {
 							//Code goes here
@@ -109,16 +103,12 @@ public class SettingsMenuOld extends PreferenceActivity {
 				break;
 			default:
 		}
-
 		//This is where to setup that is common to all settings
-
 		Preference changeOrie = findPreference("orie_list_set");
 		if (changeOrie != null) {
-			changeOrie.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-			{
+			changeOrie.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 				@Override
-				public boolean onPreferenceChange(Preference preference, Object newValue)
-				{
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					orientation(newValue.toString());
 					return true;
 				}
@@ -128,11 +118,9 @@ public class SettingsMenuOld extends PreferenceActivity {
 	}
 
 	@Override
-	public void onStart()
-	{
+	public void onStart() {
 		super.onStart();
-		switch (mode)
-		{
+		switch (mode) {
 			case 0: //This is for the main settings
 
 				break;
@@ -145,16 +133,14 @@ public class SettingsMenuOld extends PreferenceActivity {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void voiceCheck()
-	{
+	private void voiceCheck() {
 		PackageManager pm = getPackageManager();
 		if (pm != null) {
 			List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
-			if (activities.size() == 0)
-			{
+			if (activities.size() == 0) {
 				//Disabled
 				Preference voice = findPreference("speak_set");
-				if (voice !=null) {
+				if (voice != null) {
 					voice.setEnabled(false);
 					voice.setSummary(R.string.noVoice);
 				}
@@ -162,14 +148,10 @@ public class SettingsMenuOld extends PreferenceActivity {
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	private void orientation(String orientationTest)
-	{
+	private void orientation(String orientationTest) {
 		int orieTest = Integer.parseInt(orientationTest);
-		if (Build.VERSION.SDK_INT<Build.VERSION_CODES.GINGERBREAD) //For old OS
-		{
-			switch (orieTest)
-			{
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) { //For old OS
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;
@@ -181,11 +163,8 @@ public class SettingsMenuOld extends PreferenceActivity {
 					break;
 				default:
 			}
-		}
-		else
-		{
-			switch (orieTest)
-			{
+		} else {
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;

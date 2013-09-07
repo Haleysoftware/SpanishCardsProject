@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 9/6/13.
  */
 
 import java.io.FileOutputStream;
@@ -23,8 +24,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 //This class is no longer being used. Please use WordDBCP for now on.
-public class WordDBFragment extends Fragment
-{
+public class WordDBFragment extends Fragment {
 	private static final int demoLevel = 30;
 	//private static final int maxLevel = 150;
 	private String newDb = "0";
@@ -56,33 +56,26 @@ public class WordDBFragment extends Fragment
 	public static final String KEY_ASPAN = "AltSpanish";
 
 
-	public WordDBFragment()
-	{
+	public WordDBFragment() {
 
 	}
 
 	//Start of the Fragments LifeCycle
 	//Called when the Fragment is created
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
 		dbHelp = new dBHelper(getActivity());
 		open();
-		if (newDb.contains("1"))
-		{
-			try
-			{
+		if (newDb.contains("1")) {
+			try {
 				copyDataBase();
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		if (updateDb.contains("1")) //Added
-		{
+		if (updateDb.contains("1")) {
 			backupOldDB();
 			close();
 			open();
@@ -90,112 +83,72 @@ public class WordDBFragment extends Fragment
 		}
 		close();
 	}
-
-	//Used to restore the fragments state
-	@Override
-	public void onActivityCreated (Bundle savedInstanceState)
-	{
-		super.onActivityCreated (savedInstanceState);
-	}
-
-	//Called when the fragment is about to be paused
-	@Override
-	public void onPause()
-	{
-		super.onPause();
-	}
-
-	//Called when the fragment is about to be destroyed
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-	}
 	//End of Fragment LifeCycle
 
-	private boolean checkPaid()
-	{
+	private boolean checkPaid() {
 		String mainAppPkg = "com.haleysoft.spanish";
 		String keyPkg = "com.haleysoft.spanish.key";
-		String cardKeyPkg = "com.haleysoft.card.key";
-		String haleyKeyPkg = "com.haleysoft.master.key";
 		PackageManager manager = getActivity().getPackageManager();
-		int sigMatch = manager.checkSignatures(mainAppPkg, keyPkg);
-		int sigCardMatch = manager.checkSignatures(mainAppPkg, cardKeyPkg);
-		int sigHaleyMatch = manager.checkSignatures(mainAppPkg, haleyKeyPkg);
-		return sigMatch == PackageManager.SIGNATURE_MATCH
-				|| sigCardMatch == PackageManager.SIGNATURE_MATCH
-				|| sigHaleyMatch == PackageManager.SIGNATURE_MATCH;
+		int sigMatch = 22;
+		if (manager != null) {
+			sigMatch = manager.checkSignatures(mainAppPkg, keyPkg);
+		}
+		return sigMatch == PackageManager.SIGNATURE_MATCH;
 	}
 
 	//Open the database
-	public WordDBFragment open() throws SQLException
-	{
+	public WordDBFragment open() throws SQLException {
 		//Opens the database but if the database named is not found it will create it.
 		Db = dbHelp.getWritableDatabase();
 		return this;
 	}
 
 	//Closes the Database
-	public void close()
-	{
-		if (Db != null)
-		{
+	public void close() {
+		if (Db != null) {
 			Db.close();
 		}
 	}
 
-	private void backupOldDB()
-	{
+	private void backupOldDB() {
 		//DataBase is already open and will be closed when finished
-		if (markBackup != null)
-		{
+		if (markBackup != null) {
 			markBackup.clear();
 		}
 		Cursor markSave = getAllMarks();
 		markBackup = new ArrayList<Long>();
-		while (markSave.moveToNext())
-		{
+		while (markSave.moveToNext()) {
 			Long markRowId = markSave.getLong(markSave.getColumnIndex(KEY_ROWID));
 			markBackup.add(markRowId);
 		}
 		markSave.close();
 
-		if (pointBackup != null)
-		{
+		if (pointBackup != null) {
 			pointBackup.clear();
 		}
 		Cursor pointSave = getAllPoints();
 		pointBackup = new ArrayList<Long>();
-		while (pointSave.moveToNext())
-		{
+		while (pointSave.moveToNext()) {
 			Long pointRowId = pointSave.getLong(pointSave.getColumnIndex(KEY_ROWID));
 			pointBackup.add(pointRowId);
 		}
 		pointSave.close();
 
-		if (Db != null)
-		{
+		if (Db != null) {
 			Db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
 		}
-		try
-		{
+		try {
 			copyDataBase();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void restoreOldDB()
-	{
-		if (markBackup != null)
-		{
+	private void restoreOldDB() {
+		if (markBackup != null) {
 			int maxMark = markBackup.size();
 			int currentMark = 0;
-			while (currentMark < maxMark)
-			{
+			while (currentMark < maxMark) {
 				Long markRow = markBackup.get(currentMark);
 				ContentValues markNow = new ContentValues();
 				markNow.put(KEY_MARK, 1);
@@ -203,12 +156,10 @@ public class WordDBFragment extends Fragment
 				currentMark++;
 			}
 		}
-		if (pointBackup != null)
-		{
+		if (pointBackup != null) {
 			int maxPoint = pointBackup.size();
 			int currentPoint = 0;
-			while (currentPoint < maxPoint)
-			{
+			while (currentPoint < maxPoint) {
 				Long pointRow = pointBackup.get(currentPoint);
 				ContentValues pointNow = new ContentValues();
 				pointNow.put(KEY_POINT, 1);
@@ -219,8 +170,7 @@ public class WordDBFragment extends Fragment
 	}
 
 	//Copies the Database from the Assets folder
-	public void copyDataBase() throws IOException
-	{
+	public void copyDataBase() throws IOException {
 		Resources resources = getResources();
 		//This is the path to the empty database.
 		String outFileName = Db.getPath();
@@ -231,8 +181,7 @@ public class WordDBFragment extends Fragment
 		//This transfers the bytes from the inputfile to the outputfile.
 		byte[] buffer = new byte[1024];
 		int length;
-		while ((length = myInput.read(buffer))>0)
-		{
+		while ((length = myInput.read(buffer)) > 0) {
 			myOutput.write(buffer, 0, length);
 		}
 		//Close the streams when finished.
@@ -242,13 +191,11 @@ public class WordDBFragment extends Fragment
 	}
 
 	//Counts the number of rows in the words database so random will not pick something that is not there
-	public int countEntries()
-	{
+	public int countEntries() {
 		int rows = 1;
 		open();
 		Cursor cursor = Db.rawQuery("SELECT COUNT(_id) FROM SpanishWords", null);
-		if(cursor.moveToFirst())
-		{
+		if (cursor.moveToFirst()) {
 			rows = cursor.getInt(0);
 		}
 		close();
@@ -257,8 +204,7 @@ public class WordDBFragment extends Fragment
 	}
 
 	//Updates the mark column of the current displayed row
-	public void updateMark(long rowId, int changeMark)
-	{
+	public void updateMark(long rowId, int changeMark) {
 		open();
 		ContentValues markUp = new ContentValues();
 		markUp.put(KEY_MARK, changeMark);
@@ -266,8 +212,7 @@ public class WordDBFragment extends Fragment
 		close();
 	}
 
-	public void resetMark()
-	{
+	public void resetMark() {
 		open();
 		ContentValues markUp = new ContentValues();
 		markUp.put(KEY_MARK, 0);
@@ -275,16 +220,14 @@ public class WordDBFragment extends Fragment
 		close();
 	}
 
-	private Cursor getAllMarks()
-	{
+	private Cursor getAllMarks() {
 		String[] column = {KEY_ROWID};
 		String where = KEY_MARK + " = 1";
 		return Db.query(DB_TABLE, column, where, null, null, null, null);
 	}
 
 	//Updates the point column of the current displayed row
-	public void updatePoint(long rowId)
-	{
+	public void updatePoint(long rowId) {
 		open();
 		ContentValues pointUp = new ContentValues();
 		pointUp.put(KEY_POINT, 1);
@@ -292,8 +235,7 @@ public class WordDBFragment extends Fragment
 		close();
 	}
 
-	public void resetPoint()
-	{
+	public void resetPoint() {
 		open();
 		ContentValues pointUp = new ContentValues();
 		pointUp.put(KEY_POINT, 0);
@@ -301,21 +243,19 @@ public class WordDBFragment extends Fragment
 		close();
 	}
 
-	private Cursor getAllPoints() //Added
-	{
+	private Cursor getAllPoints() {
 		String[] column = {KEY_ROWID};
 		String where = KEY_POINT + " = 1";
 		return Db.query(DB_TABLE, column, where, null, null, null, null);
 	}
 
 	//This is called to pull a random row from the database.
-	public Cursor getRandomWord(String select, String userName, boolean freePlay, int userLevel) throws IOException
-	{
+	public Cursor getRandomWord(String select, boolean freePlay, int userLevel) throws IOException {
 		//This is used to change the sorting options.
-		String sort = "null";
+		String sort;
 		//Creates the variable that will be used to pick what row to return.
-		String where = null;
-		String[] key = null;
+		String where;
+		String[] key;
 		//Sets the random number
 		Random random = new Random();
 		//Sets id to the total number of rows in the database.
@@ -324,142 +264,67 @@ public class WordDBFragment extends Fragment
 		int rand = random.nextInt(id) + 1;
 
 		//This will run if All is selected on the spinner.
-		if (select.matches(getString(R.string.arrayAll))) //contains
-		{
-			if (freePlay)
-			{
-				if (checkPaid())
-				{
+		if (select.matches(getString(R.string.arrayAll))) { //contains
+			if (freePlay) {
+				if (checkPaid()) {
 					where = KEY_ROWID + " = ?";
-					key = new String[] {String.valueOf(rand)};
+					key = new String[]{String.valueOf(rand)};
 					sort = "null";
-				}
-				else
-				{
+				} else {
 					where = KEY_LEVEL + " <= ?";
-					key = new String[] {String.valueOf(demoLevel)};
+					key = new String[]{String.valueOf(demoLevel)};
 					sort = "Random()";
-
-					//where = KEY_ROWID + " = ? AND " + KEY_LEVEL + " <= ?";
-					//key = new String[] {String.valueOf(rand), String.valueOf(demoLevel)};
-					//sort = "null";
 				}
-			}
-			else
-			{
+			} else {
 				where = KEY_LEVEL + " <= ?";
-				key = new String[] {String.valueOf(userLevel)};
+				key = new String[]{String.valueOf(userLevel)};
 				sort = "Random()";
 			}
-		}
-		else if (select.matches(getString(R.string.arrayMarked))) //contains
-		{
-			if (freePlay)
-			{
-				if (checkPaid())
-				{
+		} else if (select.matches(getString(R.string.arrayMarked))) { //contains
+			if (freePlay) {
+				if (checkPaid()) {
 					where = KEY_MARK + " = ?";
-					key = new String[] {"1"};
-				}
-				else
-				{
+					key = new String[]{"1"};
+				} else {
 					where = KEY_MARK + " = ? AND " + KEY_LEVEL + " <= ?";
-					key = new String[] {"1", String.valueOf(demoLevel)};
+					key = new String[]{"1", String.valueOf(demoLevel)};
 				}
-			}
-			else
-			{
+			} else {
 				where = KEY_LEVEL + " <= ? AND " + KEY_MARK + " = ?";
-				key = new String[] {String.valueOf(userLevel), "1"};
+				key = new String[]{String.valueOf(userLevel), "1"};
 			}
 			sort = "Random()";
-		}
-		else if (select.matches(getString(R.string.arrayLevel))) //contains
-		{
+		} else if (select.matches(getString(R.string.arrayLevel))) { //contains
 			where = KEY_LEVEL + " <= ?";
-			key = new String[] {String.valueOf(userLevel)};
+			key = new String[]{String.valueOf(userLevel)};
 			sort = "Random()";
-		}
-		else if (select.matches(getString(R.string.arrayPoints))) //contains
-		{
-			if (freePlay)
-			{
-				if (checkPaid())
-				{
+		} else if (select.matches(getString(R.string.arrayPoints))) { //contains
+			if (freePlay) {
+				if (checkPaid()) {
 					where = KEY_POINT + " = ?";
-					key = new String[] {"0"};
-				}
-				else
-				{
+					key = new String[]{"0"};
+				} else {
 					where = KEY_POINT + " = ? AND " + KEY_LEVEL + " <= ?";
-					key = new String[] {"0", String.valueOf(demoLevel)};
+					key = new String[]{"0", String.valueOf(demoLevel)};
 				}
-			}
-			else
-			{
+			} else {
 				where = KEY_LEVEL + " <= ? AND " + KEY_POINT + " = ?";
-				key = new String[] {String.valueOf(userLevel), "0"};
+				key = new String[]{String.valueOf(userLevel), "0"};
 			}
 			sort = "Random()";
-		}
-		else
-		{
+		} else {
 			String search = WordSwapHelper.cateStringToCode(getActivity(), select);
-			/*
-			if (select.matches(getString(R.string.arrayAction)))
-			{
-				search = "Action";
-			}
-			else if (select.matches(getString(R.string.arrayAnimal)))
-			{
-				search = "Animal";
-			}
-			else if (select.matches(getString(R.string.arrayDefine)))
-			{
-				search = "Define";
-			}
-			else if (select.matches(getString(R.string.arrayFood)))
-			{
-				search = "Food";
-			}
-			else if (select.matches(getString(R.string.arrayHealth)))
-			{
-				search = "Health";
-			}
-			else if (select.matches(getString(R.string.arrayObject)))
-			{
-				search = "Objects";
-			}
-			else if (select.matches(getString(R.string.arrayPeople)))
-			{
-				search = "People";
-			}
-			else if (select.matches(getString(R.string.arrayPlace)))
-			{
-				search = "Places";
-			}
-			else //Other
-			{
-				search = "Other";
-			}
-			*/
-			if (freePlay)
-			{
-				if (checkPaid())
-				{
+			if (freePlay) {
+				if (checkPaid()) {
 					where = KEY_CAT + " LIKE ?";
-					key = new String[] {search};
-				}
-				else
-				{
+					key = new String[]{search};
+				} else {
 					where = KEY_CAT + " LIKE ? AND " + KEY_LEVEL + " <= ?";
-					key = new String[] {search, String.valueOf(demoLevel)};
+					key = new String[]{search, String.valueOf(demoLevel)};
 				}
-			}
-			else
-			{
+			} else {
 				where = KEY_LEVEL + " <= ? AND " + KEY_CAT + " = ?";
-				key = new String[] {String.valueOf(userLevel), search};
+				key = new String[]{String.valueOf(userLevel), search};
 			}
 			sort = "Random()";
 		}
@@ -469,24 +334,20 @@ public class WordDBFragment extends Fragment
 	}
 
 	//This is where the database helper lives. It helps when the database is created or upgraded.
-	private class dBHelper extends SQLiteOpenHelper
-	{
-		public dBHelper (Context ctx)
-		{
+	private class dBHelper extends SQLiteOpenHelper {
+		public dBHelper(Context ctx) {
 			super(ctx, DB_NAME, null, DATABASE_VERSION);
 		}
 
 		//This is called when the database is created.
 		@Override
-		public void onCreate(SQLiteDatabase db)
-		{
+		public void onCreate(SQLiteDatabase db) {
 			newDb = "1";
 		}
 
 		//This is called when the database is out of date.
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-		{
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			updateDb = "1"; //Added
 			//Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will remove all marked words.");
 		}

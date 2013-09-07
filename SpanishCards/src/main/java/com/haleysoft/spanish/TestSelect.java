@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 8/29/13.
  */
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.Locale;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
@@ -34,8 +35,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class TestSelect extends FragmentActivity implements OnItemSelectedListener
-{
+public class TestSelect extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	private boolean analytics = true;
 	private AdView adView;
@@ -47,37 +47,31 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 	private ArrayAdapter<CharSequence> nameAdapter = null;
 	private ArrayList<CharSequence> littleNames;
 	private boolean newUser = false;
-	private int spinman = 0;
+	private int spinMan = 0;
 	private int lastSpin = 0;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		userName = masterPref.getString("last_user_set", "Guest");
 		SharedPreferences pref = getSharedPreferences(userName, MODE_PRIVATE);
 		analytics = pref.getBoolean("analytics_set", true);
 		boolean theme = pref.getBoolean("theme_set", false);
-		if (theme)
-		{
+		if (theme) {
 			setTheme(R.style.ActivityThemeAlt);
-		}
-		else
-		{
+		} else {
 			setTheme(R.style.ActivityTheme);
 		}
 		setContentView(R.layout.selectlayout);
 		nameSpinSetup();
-		if (savedInstanceState == null)
-		{
+		if (savedInstanceState == null) {
 			addFragments();
-		}
-		else
-		{
+		} else {
 			lastSpin = savedInstanceState.getInt("last");
 		}
-        addAds(masterPref.getBoolean("remove_ads", false));
+		addButtons();
+		addAds(masterPref.getBoolean("remove_ads", false));
 	}
 
 	@Override
@@ -102,71 +96,62 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		}
 	}
 
-    @Override
-    public void onDestroy() {
-        if (adView != null) {
-	        adView.removeAllViews();
-            adView.destroy();
-        }
-        super.onDestroy();
-    }
+	@Override
+	public void onDestroy() {
+		if (adView != null) {
+			adView.removeAllViews();
+			adView.destroy();
+		}
+		super.onDestroy();
+	}
 
 	@Override
-	public void onSaveInstanceState (Bundle savedState)
-	{
+	public void onSaveInstanceState(Bundle savedState) {
 		savedState.putInt("last", lastSpin);
 		super.onSaveInstanceState(savedState);
 	}
 
-    private void addAds(boolean paid) {
-	    adView = (AdView) this.findViewById(R.id.adView);
-        if (paid) {
+	private void addAds(boolean paid) {
+		adView = (AdView) this.findViewById(R.id.adView);
+		if (paid) {
 			adView.setVisibility(View.INVISIBLE);
-	        if (adView != null) {
-		        adView.removeAllViews();
-		        adView.destroy();
-		        adView = null;
-	        }
-        }
-	    else {
-	        adView.setVisibility(View.VISIBLE);
-	        AdRequest adRequest = new AdRequest();
-	        //This code is for testing only
-	        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-	        adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
-	        adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
-	        //adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
-	        //End of testing code
-	        adView.loadAd(adRequest);
-	        adView.setAdListener(new AdListen());
-        }
-    }
+			if (adView != null) {
+				adView.removeAllViews();
+				adView.destroy();
+				adView = null;
+			}
+		} else {
+			adView.setVisibility(View.VISIBLE);
+			AdRequest adRequest = new AdRequest();
+			//This code is for testing only
+			adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+			adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
+			adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
+			//adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
+			//End of testing code
+			adView.loadAd(adRequest);
+			adView.setAdListener(new AdListen());
+		}
+	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.selectmenu, menu);
-		if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) //Below 3.0
-		{
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //Below 3.0
 			menu.removeItem(R.id.menu_theme); //Need to work on this
 		}
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected (MenuItem item)
-	{
-		switch (item.getItemId())
-		{
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
 			case R.id.menu_settings:
-				spinman = 1;
+				spinMan = 1;
 				Intent set;
-				if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) //For old OS
-				{
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					set = new Intent(this, SettingsMenuOld.class);
-				}
-				else //For new OS
-				{
+				} else { //For new OS
 					set = new Intent(this, SettingsMenu.class);
 				}
 				set.putExtra("prefUser", userName);
@@ -175,12 +160,9 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 				return true;
 			case R.id.menu_scores:
 				Intent scores;
-				if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) //For old OS
-				{
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					scores = new Intent(this, HighScoresList.class);
-				}
-				else //For new OS
-				{
+				} else { //For new OS
 					scores = new Intent(this, HighScoresList.class);
 					//scores = new Intent(this, HighScoresBar.class);
 				}
@@ -189,12 +171,9 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 				return true;
 			case R.id.menu_list:
 				Intent list;
-				if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) //For old OS
-				{
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					list = new Intent(this, WordList.class);
-				}
-				else //For new OS
-				{
+				} else { //For new OS
 					list = new Intent(this, WordList.class);
 				}
 				list.putExtra("user", userName);
@@ -208,36 +187,53 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		}
 	}
 
-	private void setupPref()
-	{
+	private void setupPref() {
 		PreferenceManager.setDefaultValues(this, userName, MODE_PRIVATE, R.xml.mastersettings, false);
 	}
 
-	private void addFragments()
-	{
+	private void addFragments() {
 		FragmentTransaction theTransaction = theManager.beginTransaction();
-
-		UserDBFragment userdb = new UserDBFragment();
-		theTransaction.add(userdb, "userFragment");
-
+		UserDBFragment userDB = new UserDBFragment();
+		theTransaction.add(userDB, "userFragment");
 		theTransaction.commit();
+	}
+
+	private void addButtons() {
+		Button goButton = (Button) this.findViewById(R.id.goTestButton);
+		Button pointsButton = (Button) this.findViewById(R.id.togglePoints);
+		goButton.setOnClickListener(this);
+		pointsButton.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.goTestButton:
+				getSharedPreferences(userName, MODE_PRIVATE).edit().putBoolean("return_test_set", true).commit();
+				Intent test = new Intent(this, TestMain.class);
+				test.putExtra("user", userName);
+				startActivity(test);
+				finish();
+				break;
+			case R.id.togglePoints:
+				SharedPreferences pref = getSharedPreferences(userName, MODE_PRIVATE);
+				boolean point = pref.getBoolean("point_set", false);
+				pref.edit().putBoolean("point_set", !point).commit();
+				break;
+			default:
+		}
 	}
 
 	//This is for when the spinner is selected.
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-	{
-		if (spinman >= 3)
-		{
-			switch (parent.getId())
-			{
+	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+		if (spinMan >= 3) {
+			switch (parent.getId()) {
 				case R.id.spinnerName:
-					if (pos != lastSpin)
-					{
+					if (pos != lastSpin) {
 						Spinner spinner = (Spinner) findViewById(R.id.spinnerName);
-						if (pos == 0)
-						{
-							lastSpin = pos;
+						if (pos == 0) {
+							lastSpin = 0;
 							userName = "Guest";
 							setupPref();
 							updateOrie();
@@ -248,32 +244,27 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 							finish();
 							Intent select = new Intent(this, TestSelect.class);
 							startActivity(select);
-						}
-						else if (pos == 1)
-						{
-							spinman = 2;
+						} else if (pos == 1) {
+							spinMan = 2;
 							int currentUser;
-							if (userName.matches("Guest"))
-							{
+							if (userName.matches("Guest")) {
 								currentUser = 0;
-							}
-							else
-							{
+							} else {
 								currentUser = nameAdapter.getPosition(userName);
 							}
 							FragmentTransaction theTransaction = theManager.beginTransaction();
 							Fragment dialogset = theManager.findFragmentByTag("dialogFragment");
-							if (dialogset != null)
-							{
+							if (dialogset != null) {
 								theTransaction.remove(dialogset);
 							}
 							DialogFragment newDialog = DialogsFragment.newInstance(null, 3, null, currentUser, userName);
 							newDialog.show(theTransaction, "dialogFragment");
-						}
-						else
-						{
+						} else {
+							Object spinItem = spinner.getSelectedItem();
 							lastSpin = pos;
-							userName = spinner.getSelectedItem().toString();
+							if (spinItem != null) {
+								userName = spinItem.toString();
+							}
 							setupPref();
 							updateOrie();
 							wordSpinUpdate();
@@ -288,57 +279,50 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 					break;
 				case R.id.spinnerHide:
 					Spinner hideSpinner = (Spinner) findViewById(R.id.spinnerHide);
-					String pickHide = hideSpinner.getSelectedItem().toString();
-					String langHide;
-					if (pickHide.matches(getString(R.string.langSpanish)))
-					{
-						langHide = "Spanish";
+					Object hideItem = hideSpinner.getSelectedItem();
+					if (hideItem != null) {
+						String pickHide = hideItem.toString();
+						String langHide;
+						if (pickHide.matches(getString(R.string.langSpanish))) {
+							langHide = "Spanish";
+						} else { //English
+							langHide = "English";
+						}
+						getSharedPreferences(userName, MODE_PRIVATE).edit().putString("hide_word_set", langHide).commit();
 					}
-					else //English
-					{
-						langHide = "English";
-					}
-					getSharedPreferences(userName, MODE_PRIVATE).edit().putString("hide_word_set", langHide).commit();
 					break;
 				case R.id.spinnerShow:
 					Spinner showSpinner = (Spinner) findViewById(R.id.spinnerShow);
-					String pickShow = showSpinner.getSelectedItem().toString();
-					String langShow;
-					if (pickShow.matches(getString(R.string.langSpanish)))
-					{
-						langShow = "Spanish";
+					Object showItem = showSpinner.getSelectedItem();
+					if (showItem != null) {
+						String pickShow = showItem.toString();
+						String langShow;
+						if (pickShow.matches(getString(R.string.langSpanish))) {
+							langShow = "Spanish";
+						} else { //English
+							langShow = "English";
+						}
+						getSharedPreferences(userName, MODE_PRIVATE).edit().putString("show_word_set", langShow).commit();
 					}
-					else //English
-					{
-						langShow = "English";
-					}
-					getSharedPreferences(userName, MODE_PRIVATE).edit().putString("show_word_set", langShow).commit();
 					break;
 				default:
 			}
-		}
-		else
-		{
-			spinman++;
+		} else {
+			spinMan++;
 		}
 	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> parent)
-	{
+	public void onNothingSelected(AdapterView<?> parent) {
 		//Do nothing
 	}
 
-	private void toggleTheme()
-	{
+	private void toggleTheme() {
 		SharedPreferences preference = getSharedPreferences(userName, MODE_PRIVATE);
 		boolean theme = preference.getBoolean("theme_set", false);
-		if (theme)
-		{
+		if (theme) {
 			preference.edit().putBoolean("theme_set", false).commit();
-		}
-		else
-		{
+		} else {
 			preference.edit().putBoolean("theme_set", true).commit();
 		}
 		finish();
@@ -346,16 +330,14 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		startActivity(select);
 	}
 
-	private void uiUpdate()
-	{
+	private void uiUpdate() {
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		ToggleButton pointButton = (ToggleButton) findViewById(R.id.togglePoints);
 		boolean pointTest = preferences.getBoolean("point_set", false);
 		pointButton.setChecked(pointTest);
 	}
 
-	private void updateLevel()
-	{
+	private void updateLevel() {
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		TextView lPoint = (TextView) findViewById(R.id.pointDisplay);
 		TextView lUser = (TextView) findViewById(R.id.levelDisplay);
@@ -368,8 +350,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		lPoint.setText(pointText);
 	}
 
-	private void wordSpinUpdate()
-	{
+	private void wordSpinUpdate() {
 		Spinner hideSpinner = (Spinner) findViewById(R.id.spinnerHide);
 		Spinner showSpinner = (Spinner) findViewById(R.id.spinnerShow);
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
@@ -377,28 +358,21 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		String sWord = preferences.getString("show_word_set", "Spanish");
 		String hText;
 		String sText;
-		if (hWord.matches("Spanish"))
-		{
+		if (hWord.matches("Spanish")) {
 			hText = getString(R.string.langSpanish);
-		}
-		else //English
-		{
+		} else { //English
 			hText = getString(R.string.langEnglish);
 		}
-		if (sWord.matches("Spanish"))
-		{
+		if (sWord.matches("Spanish")) {
 			sText = getString(R.string.langSpanish);
-		}
-		else //English
-		{
+		} else { //English
 			sText = getString(R.string.langEnglish);
 		}
 		hideSpinner.setSelection(hideAdapter.getPosition(hText));
 		showSpinner.setSelection(showAdapter.getPosition(sText));
 	}
 
-	private void hideSpinSetup()
-	{
+	private void hideSpinSetup() {
 		Spinner hideSpinner = (Spinner) findViewById(R.id.spinnerHide);
 		hideAdapter = ArrayAdapter.createFromResource(this, R.array.startwordlist, android.R.layout.simple_spinner_item);
 		this.hideAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -406,8 +380,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		hideSpinner.setOnItemSelectedListener(this);
 	}
 
-	private void showSpinSetup()
-	{
+	private void showSpinSetup() {
 		Spinner showSpinner = (Spinner) findViewById(R.id.spinnerShow);
 		showAdapter = ArrayAdapter.createFromResource(this, R.array.startwordlist, android.R.layout.simple_spinner_item);
 		this.showAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -415,8 +388,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		showSpinner.setOnItemSelectedListener(this);
 	}
 
-	private void nameSpinSetup()
-	{
+	private void nameSpinSetup() {
 		//Sets the data and function for the Spinner.
 		Spinner nameSpinner = (Spinner) findViewById(R.id.spinnerName);
 		nameAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
@@ -430,46 +402,40 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		littleNames.add(getString(R.string.nUName).toLowerCase(Locale.US)); //Little list update
 	}
 
-	private void nameSpinUpdate()
-	{
+	private void nameSpinUpdate() {
 		UserDBFragment userdb = (UserDBFragment) theManager.findFragmentByTag("userFragment");
 		Spinner nameSpinner = (Spinner) findViewById(R.id.spinnerName);
-		if (nameAdapter != null)
-		{
+		if (nameAdapter != null) {
 			nameAdapter.clear();
 		}
 		nameAdapter.add(getString(R.string.gName));
 		nameAdapter.add(getString(R.string.nUName));
-		if (littleNames != null) //Little list update
-		{
+		if (littleNames != null) { //Little list update
 			littleNames.clear();
 		}
 		littleNames.add(getString(R.string.gName).toLowerCase(Locale.US)); //Little list update
 		littleNames.add(getString(R.string.nUName).toLowerCase(Locale.US)); //Little list update
 		int last;
 		Cursor spinNames = userdb.getUsers();
-		while (spinNames.moveToNext())
-		{
+		while (spinNames.moveToNext()) {
 			String user = spinNames.getString(spinNames.getColumnIndex(UserDBFragment.KEY_USER));
-			nameAdapter.add(user);
-			littleNames.add(user.toLowerCase(Locale.US)); //Little list update
+			if (user != null) {
+				nameAdapter.add(user);
+				littleNames.add(user.toLowerCase(Locale.US)); //Little list update
+			}
 		}
 		spinNames.close();
 		userdb.close();
-		if (userName.matches("Guest"))
-		{
+		if (userName.matches("Guest")) {
 			last = 0;
-		}
-		else
-		{
+		} else {
 			last = nameAdapter.getPosition(userName);
 		}
 		nameAdapter.notifyDataSetChanged();
 		nameSpinner.setAdapter(nameAdapter);
 		nameSpinner.setSelection(last);
 		lastSpin = last;
-		if (newUser)
-		{
+		if (newUser) {
 			newUser = false;
 			finish();
 			Intent select = new Intent(this, TestSelect.class);
@@ -477,67 +443,33 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		}
 	}
 
-	public void addUser(String name)
-	{
-		UserDBFragment userdb = (UserDBFragment) theManager.findFragmentByTag("userFragment");
+	public void addUser(String name) {
+		UserDBFragment userDB = (UserDBFragment) theManager.findFragmentByTag("userFragment");
 		Spinner spinner = (Spinner) findViewById(R.id.spinnerName);
-		if (userdb.addUser(name)) //New name was added
-		{
+		if (userDB.addUser(name)) { //New name was added
 			newUser = true;
 			userName = name;
 			setupPref();
 			getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE).edit().putString("last_user_set", userName).commit();
 			nameSpinUpdate();
-		}
-		else //name already on list
-		{
+		} else { //name already on list
 			spinner.setSelection(littleNames.indexOf(name.toLowerCase(Locale.US)));
 		}
 	}
 
-	public void goTest(View v)
-	{
-		getSharedPreferences(userName, MODE_PRIVATE).edit().putBoolean("return_test_set", true).commit();
-		Intent test = new Intent(this, TestMain.class);
-		test.putExtra("user", userName);
-		startActivity(test);
-		finish();
-	}
-
-	public void points(View v)
-	{
-		SharedPreferences pref = getSharedPreferences(userName, MODE_PRIVATE);
-		boolean point = pref.getBoolean("point_set", false);
-		if (!point)
-		{
-			point = true;
-		}
-		else if (point)
-		{
-			point = false;
-		}
-		pref.edit().putBoolean("point_set", point).commit();
-	}
-
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, requestCode, data);
-		if (requestCode == SETTING_REQUEST_CODE)
-		{
+		if (requestCode == SETTING_REQUEST_CODE) {
 			updateOrie();
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	private void updateOrie()
-	{
+	private void updateOrie() {
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		String orientationTest = preferences.getString("orie_list_set", "0");
 		int orieTest = Integer.parseInt(orientationTest);
-		if (Build.VERSION.SDK_INT<Build.VERSION_CODES.GINGERBREAD) //For old OS
-		{
-			switch (orieTest)
-			{
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) { //For old OS
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;
@@ -549,11 +481,8 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 					break;
 				default:
 			}
-		}
-		else
-		{
-			switch (orieTest)
-			{
+		} else {
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;

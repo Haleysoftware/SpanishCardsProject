@@ -36,17 +36,12 @@ public class HighScoreFragment extends ListFragment implements LoaderManager.Loa
 	}
 
 	@Override
-	public void onActivityCreated (Bundle savedInstanceState) {
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		userName = getArguments().getString("user");
 		cAdapter = new ScoreAdapter(getActivity(), null);
 		setListAdapter(cAdapter);
 		getLoaderManager().initLoader(0, null, this);
-	}
-
-	@Override
-	public void onPause () {
-		super.onPause();
 	}
 
 	@Override
@@ -107,8 +102,8 @@ public class HighScoreFragment extends ListFragment implements LoaderManager.Loa
 	}
 
 	class ScoreAdapter extends CursorAdapter {
-		ScoreAdapter (Context ctx, Cursor theScore) {
-			super(ctx, theScore,  FLAG_REGISTER_CONTENT_OBSERVER);
+		ScoreAdapter(Context ctx, Cursor theScore) {
+			super(ctx, theScore, FLAG_REGISTER_CONTENT_OBSERVER);
 		}
 
 		@Override
@@ -123,10 +118,10 @@ public class HighScoreFragment extends ListFragment implements LoaderManager.Loa
 			changeView();
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			View row = inflater.inflate(R.layout.highbar, group, false);
-            if (row != null) {
-                RowHolder holder = new RowHolder(row);
-                row.setTag(holder);
-            }
+			if (row != null) {
+				RowHolder holder = new RowHolder(row);
+				row.setTag(holder);
+			}
 			return row;
 		}
 	}

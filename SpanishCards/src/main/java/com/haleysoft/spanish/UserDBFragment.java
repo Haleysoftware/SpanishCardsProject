@@ -2,6 +2,7 @@ package com.haleysoft.spanish;
 
 /**
  * Created by Haleysoftware on 5/23/13.
+ * Cleaned by Mike Haley on 9/6/13.
  */
 
 import java.text.SimpleDateFormat;
@@ -19,8 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 //This class is no longer being used. Please use UserDBCP for now on.
-public class UserDBFragment extends Fragment
-{
+public class UserDBFragment extends Fragment {
 	//User Name Database column names
 	public static final String KEY_ROWA = "_id";
 	public static final String KEY_USER = "user";
@@ -48,86 +48,45 @@ public class UserDBFragment extends Fragment
 	public final static String DB_CREATEB = "create table " + DB_TABLEB + " (" + KEY_ROWB + " integer primary key autoincrement, " + KEY_NAME + " text, " + KEY_DATE + " text, " + KEY_SCORE + " integer, " + KEY_MODE + " text, " + KEY_HSCORE + " integer);";
 
 
-	public UserDBFragment()
-	{
+	public UserDBFragment() {
 
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
 		dbHelper = new DatabaseHelper(getActivity());
 	}
 
-	@Override
-	public void onActivityCreated (Bundle savedInstanceState)
-	{
-		super.onActivityCreated (savedInstanceState);
-		if (savedInstanceState != null)
-		{
-			//engWord = savedInstanceState.getString("english");
-		}
-	}
-
-	@Override
-	public void onPause()
-	{
-		super.onPause();
-	}
-
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-	}
-
-	@Override
-	public void onSaveInstanceState (Bundle savedState)
-	{
-		//savedState.putString("english", engWord);
-		super.onSaveInstanceState(savedState);
-	}
-
-	public UserDBFragment open() throws SQLException
-	{
+	public UserDBFragment open() throws SQLException {
 		db = dbHelper.getWritableDatabase();
 		return this;
 	}
 
-	public void close()
-	{
-		if (db != null)
-		{
+	public void close() {
+		if (db != null) {
 			db.close();
 		}
 	}
 
-	public long addScore(String name, int score, String show, String hide)
-	{
+	public long addScore(String name, int score, String show, String hide) {
 		SharedPreferences preferences = getActivity().getSharedPreferences(name, 0);
 		boolean pointTest = preferences.getBoolean("point_set", false);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
 		String currentDate = dateFormat.format(new Date());
 		String type;
 		String userName;
-		if (name.matches("Guest"))
-		{
+		if (name.matches("Guest")) {
 			userName = getString(R.string.gName);
-		}
-		else
-		{
+		} else {
 			userName = name;
 		}
 		open();
-		if (pointTest) //User wants one point for each word
-		{
+		if (pointTest) { //User wants one point for each word
 			type = String.format(getString(R.string.scoreNameLimited), show, hide);
 			//type = "Limited " + show + " to " + hide;
-		}
-		else //User wants a point for each word
-		{
+		} else { //User wants a point for each word
 			type = String.format(getString(R.string.scoreNameUnlimited), show, hide);
 			//type = "Unlimited " + show + " to " + hide;
 		}
@@ -142,8 +101,7 @@ public class UserDBFragment extends Fragment
 		return row;
 	}
 
-	public void updateScore (long id, int score)
-	{
+	public void updateScore(long id, int score) {
 		open();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
 		String currentDate = dateFormat.format(new Date());
@@ -154,8 +112,7 @@ public class UserDBFragment extends Fragment
 		close();
 	}
 
-	public void cleanScore()
-	{
+	public void cleanScore() {
 		//resets the High Score to zero
 		ContentValues cleanUp = new ContentValues();
 		cleanUp.put(KEY_HSCORE, "0");
@@ -168,8 +125,7 @@ public class UserDBFragment extends Fragment
 		String gWhere = KEY_NAME + " LIKE ?";
 		String[] key1 = {getString(R.string.gName)};
 		Cursor gTop = db.query(DB_TABLEB, null, gWhere, key1, null, null, KEY_SCORE + " DESC", keepGuestScore);
-		while (gTop.moveToNext())
-		{
+		while (gTop.moveToNext()) {
 			Long gID = gTop.getLong(gTop.getColumnIndex(KEY_ROWB));
 			ContentValues gScore = new ContentValues();
 			gScore.put(KEY_HSCORE, "1");
@@ -179,16 +135,14 @@ public class UserDBFragment extends Fragment
 
 		//Users top scores
 		Cursor names = db.query(DB_TABLEA, null, null, null, null, null, KEY_USER + " COLLATE NOCASE ASC");
-		while (names.moveToNext())//Loop to get the next user name
-		{
+		while (names.moveToNext()) { //Loop to get the next user name
 			String user = names.getString(names.getColumnIndex(KEY_USER));
 			SharedPreferences userPreferences = getActivity().getSharedPreferences(user, 0);
 			String keepUserScore = userPreferences.getString("score_list_set", "15");
 			String userWhere = KEY_NAME + " LIKE ?";
 			String[] key2 = {user};
 			Cursor top = db.query(DB_TABLEB, null, userWhere, key2, null, null, KEY_SCORE + " DESC", keepUserScore);
-			while (top.moveToNext()) //ID of top scores for each user
-			{
+			while (top.moveToNext()) { //ID of top scores for each user
 				Long ID = top.getLong(top.getColumnIndex(KEY_ROWB));
 				ContentValues markScore = new ContentValues();
 				markScore.put(KEY_HSCORE, "1");
@@ -199,50 +153,35 @@ public class UserDBFragment extends Fragment
 		names.close();
 
 		//Remove unwanted scores
-		db.delete(DB_TABLEB, KEY_HSCORE + "<?", new String[] {"1"});
+		db.delete(DB_TABLEB, KEY_HSCORE + "<?", new String[]{"1"});
 		close();
 	}
 
-	public Cursor topScore(String show, String hide, String userName)
-	{
+	public Cursor topScore(String show, String hide, String userName) {
 		open();
 		String topWhere;
-		if (show == null || hide == null)
-		{
+		if (show == null || hide == null) {
 			topWhere = null;
-		}
-		else
-		{
+		} else {
 			SharedPreferences preferences = getActivity().getSharedPreferences(userName, 0);
 			boolean pointTest = preferences.getBoolean("point_set", false);
 			String type;
 			String showText;
 			String hideText;
-			if (show.matches("Spanish"))
-			{
+			if (show.matches("Spanish")) {
 				showText = getString(R.string.langSpanish);
-			}
-			else //English
-			{
+			} else { //English
 				showText = getString(R.string.langEnglish);
 			}
-			if (hide.matches("Spanish"))
-			{
+			if (hide.matches("Spanish")) {
 				hideText = getString(R.string.langSpanish);
-			}
-			else //English
-			{
+			} else { //English
 				hideText = getString(R.string.langEnglish);
 			}
-			if (pointTest) //User wants one point for each word
-			{
+			if (pointTest) { //User wants one point for each word
 				type = String.format(getString(R.string.scoreNameLimited), showText, hideText);
-
-			}
-			else //User wants a point for each word
-			{
+			} else { //User wants a point for each word
 				type = String.format(getString(R.string.scoreNameUnlimited), showText, hideText);
-
 			}
 			topWhere = KEY_MODE + " LIKE '" + type + "%'";
 		}
@@ -250,30 +189,24 @@ public class UserDBFragment extends Fragment
 		return db.query(DB_TABLEB, null, topWhere, null, null, null, KEY_SCORE + " DESC", "1");
 	}
 
-	public void removeScore(String name)
-	{
-		db.delete(DB_TABLEB, KEY_NAME +"=?", new String[] {name});
+	public void removeScore(String name) {
+		db.delete(DB_TABLEB, KEY_NAME + "=?", new String[]{name});
 	}
 
-	public void emptyScore()
-	{
+	public void emptyScore() {
 		open();
-		db.delete(DB_TABLEB, KEY_HSCORE + "<?", new String[] {"2"});
+		db.delete(DB_TABLEB, KEY_HSCORE + "<?", new String[]{"2"});
 		close();
 	}
 
-	public boolean addUser(String name)
-	{
+	public boolean addUser(String name) {
 		open();
 		boolean check;
 		String where = KEY_USER + " LIKE '" + name + "%'";
 		Cursor cursor = db.query(DB_TABLEA, null, where, null, null, null, null, "1");
-		if (cursor.moveToFirst())
-		{
+		if (cursor.moveToFirst()) {
 			check = false;
-		}
-		else
-		{
+		} else {
 			check = true;
 			//Adds the new user
 			ContentValues initialValues = new ContentValues();
@@ -285,16 +218,14 @@ public class UserDBFragment extends Fragment
 		return check;
 	}
 
-	public boolean deleteUser(String row)
-	{
-		return db.delete(DB_TABLEA, KEY_ROWA + "=?", new String[] {row}) > 0;
+	public boolean deleteUser(String row) {
+		return db.delete(DB_TABLEA, KEY_ROWA + "=?", new String[]{row}) > 0;
 	}
 
-	public Cursor getUsers()
-	{
+	public Cursor getUsers() {
 		open();
 		//DB needs to be closed
-		return db.query(DB_TABLEA, new String[] {KEY_ROWA, KEY_USER}, null, null, null, null, KEY_USER + " COLLATE NOCASE ASC");
+		return db.query(DB_TABLEA, new String[]{KEY_ROWA, KEY_USER}, null, null, null, null, KEY_USER + " COLLATE NOCASE ASC");
 	}
 
 	//Not yet used
@@ -309,23 +240,19 @@ public class UserDBFragment extends Fragment
 	}
 	*/
 
-	private class DatabaseHelper extends SQLiteOpenHelper
-	{
-		DatabaseHelper(Context ctx)
-		{
+	private class DatabaseHelper extends SQLiteOpenHelper {
+		DatabaseHelper(Context ctx) {
 			super(ctx, DB_NAME, null, DB_VERSION);
 		}
 
 		@Override
-		public void onCreate(SQLiteDatabase db)
-		{
+		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DB_CREATEA);
 			db.execSQL(DB_CREATEB);
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-		{
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			//Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
 			db.execSQL("DROP TABLE IF EXISTS nametable");
 			db.execSQL("DROP TABLE IF EXISTS scoretable");
