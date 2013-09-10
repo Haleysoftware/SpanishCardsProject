@@ -53,24 +53,9 @@ public class HighModeFragment extends ListFragment implements OnItemSelectedList
 	}
 
 	@Override
-	public void onPause () {
-		super.onPause();
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		changeView();
-	}
-
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
 	}
 
 	private void spinSetup() {
@@ -126,7 +111,7 @@ public class HighModeFragment extends ListFragment implements OnItemSelectedList
 		dateKey.invalidate();
 	}
 
-	@Override //LoadManager
+	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle pack) {
 		Uri scoreUri = UserDBCP.CONTENT_URI;
 		String[] getColumns = {UserDBCP.KEY_ROWB, UserDBCP.KEY_NAME, UserDBCP.KEY_DATE, UserDBCP.KEY_SCORE};
@@ -136,12 +121,12 @@ public class HighModeFragment extends ListFragment implements OnItemSelectedList
 		return new CursorLoader(getActivity(), scoreUri, getColumns, where, key, sort);
 	}
 
-	@Override //LoadManager
+	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		cAdapter.swapCursor(data);
 	}
 
-	@Override //LoadManager
+	@Override
 	public void onLoaderReset(Loader<Cursor> cursor) {
 		cAdapter.swapCursor(null);
 	}

@@ -3,23 +3,23 @@
 <!-- This layout is for when a word is long clicked in word list -->
 
 <LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="horizontal"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<ToggleButton
-			android:id="@+id/hintMarkButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textOff="@string/markOff"
-			android:textOn="@string/markOn"/>
+		android:id="@+id/hintMarkButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textOff="@string/markOff"
+		android:textOn="@string/markOn"/>
 
 	<Button
-			android:id="@+id/hintOkButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="6sp"
-			android:text="@string/HintButtonText" />
+		android:id="@+id/hintOkButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="6sp"
+		android:text="@string/HintButtonText"/>
 
 </LinearLayout>

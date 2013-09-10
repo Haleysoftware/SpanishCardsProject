@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<EditText
-				android:id="@+id/searchtext"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:ems="10"
-				android:inputType="textNoSuggestions" >
+			android:id="@+id/searchtext"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:ems="10"
+			android:inputType="textNoSuggestions">
 		</EditText>
 
 		<Button
-				android:id="@+id/searchbutton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="@string/WordSearchButton" />
+			android:id="@+id/searchbutton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/WordSearchButton"/>
 
 	</LinearLayout>
 
 	<LinearLayout
-			android:layout_width="match_parent"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:weightSum="10">
+
+		<TextView
+			android:id="@+id/leftKey"
+			android:layout_weight="4"
+			android:layout_width="0sp"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:weightSum="10" >
+			android:gravity="left"
+			android:visibility="gone"
+			android:textStyle="bold"
+			android:text="@string/tagEnglish"/>
 
 		<TextView
-				android:id="@+id/leftKey"
-				android:layout_weight="4"
-				android:layout_width="0sp"
-				android:layout_height="wrap_content"
-				android:gravity="left"
-				android:visibility="gone"
-				android:textStyle="bold"
-				android:text="@string/tagEnglish" />
+			android:id="@+id/rightKey"
+			android:layout_weight="4"
+			android:layout_width="0sp"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:visibility="gone"
+			android:textStyle="bold"
+			android:text="@string/tagSpanish"/>
 
 		<TextView
-				android:id="@+id/rightKey"
-				android:layout_weight="4"
-				android:layout_width="0sp"
-				android:layout_height="wrap_content"
-				android:gravity="left"
-				android:visibility="gone"
-				android:textStyle="bold"
-				android:text="@string/tagSpanish" />
-
-		<TextView
-				android:id="@+id/categoryKey"
-				android:layout_weight="2"
-				android:layout_width="0sp"
-				android:layout_height="wrap_content"
-				android:gravity="left"
-				android:visibility="gone"
-				android:textStyle="bold"
-				android:text="@string/tagCategory" />
+			android:id="@+id/categoryKey"
+			android:layout_weight="2"
+			android:layout_width="0sp"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:visibility="gone"
+			android:textStyle="bold"
+			android:text="@string/tagCategory"/>
 
 	</LinearLayout>
 
 	<ListView
-			android:id="@android:id/list"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:dividerHeight="2sp"
-			android:fastScrollEnabled="true" />
+		android:id="@android:id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:dividerHeight="2sp"
+		android:fastScrollEnabled="true"/>
 
 	<TextView
-			android:id="@id/android:empty"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:text="@string/NoWords"/>
+		android:id="@id/android:empty"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:text="@string/NoWords"/>
 
 </LinearLayout>

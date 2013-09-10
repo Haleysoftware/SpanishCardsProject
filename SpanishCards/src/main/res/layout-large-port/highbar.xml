@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
 	<LinearLayout
-			android:id="@+id/linearLayout1"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
+		android:id="@+id/linearLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<TextView
-				android:id="@+id/highScoreText"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:gravity="left"
-				android:textIsSelectable="false" />
+			android:id="@+id/highScoreText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="left"
+			android:textIsSelectable="false"/>
 
 		<TextView
-				android:id="@+id/highModeText"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:gravity="right"
-				android:layout_weight="1"
-				android:textIsSelectable="false" />
+			android:id="@+id/highModeText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="right"
+			android:layout_weight="1"
+			android:textIsSelectable="false"/>
 
 	</LinearLayout>
 
 	<LinearLayout
-			android:id="@+id/linearLayout2"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
+		android:id="@+id/linearLayout2"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<TextView
-				android:id="@+id/highUserText"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:gravity="left"
-				android:textIsSelectable="false" />
+			android:id="@+id/highUserText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="left"
+			android:textIsSelectable="false"/>
 
 		<TextView
-				android:id="@+id/highDateText"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:gravity="right"
-				android:layout_weight="1"
-				android:textIsSelectable="false" />
+			android:id="@+id/highDateText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="right"
+			android:layout_weight="1"
+			android:textIsSelectable="false"/>
 
 	</LinearLayout>
 

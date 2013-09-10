@@ -9,6 +9,9 @@ import com.google.ads.AdRequest.ErrorCode;
  */
 
 public class AdListen implements AdListener {
+
+	//This file is no longer used.
+
     //public static final String ADS_ID = "a151f170c1c5283";
 
     public AdListen() {

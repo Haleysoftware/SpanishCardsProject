@@ -1,76 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<Spinner
+		android:id="@+id/spinnerWordsSort"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="wrap_content"
+		android:prompt="@string/SortSpinText"/>
 
 	<Spinner
-			android:id="@+id/spinnerWordsSort"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:prompt="@string/SortSpinText" />
-
-	<Spinner
-			android:id="@+id/spinnerWordsList"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:prompt="@string/CategorySpinText" />
+		android:id="@+id/spinnerWordsList"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:prompt="@string/CategorySpinText"/>
 
 	<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<TextView
-				android:id="@+id/leftKey"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:gravity="left"
-				android:layout_weight="1"
-				android:visibility="gone"
-				android:textStyle="bold"
-				android:text="@string/tagEnglish" />
+			android:id="@+id/leftKey"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:layout_weight="1"
+			android:visibility="gone"
+			android:textStyle="bold"
+			android:text="@string/tagEnglish"/>
 
 		<TextView
-				android:id="@+id/rightKey"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:gravity="right"
-				android:layout_weight="1"
-				android:visibility="gone"
-				android:textStyle="bold"
-				android:text="@string/tagSpanish" />
+			android:id="@+id/rightKey"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="right"
+			android:layout_weight="1"
+			android:visibility="gone"
+			android:textStyle="bold"
+			android:text="@string/tagSpanish"/>
 
 	</LinearLayout>
 
 	<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<TextView
-				android:id="@+id/categoryKey"
-				android:layout_width="0sp"
-				android:layout_height="wrap_content"
-				android:gravity="left"
-				android:layout_weight="1"
-				android:visibility="gone"
-				android:textStyle="bold"
-				android:text="@string/tagCategory" />
+			android:id="@+id/categoryKey"
+			android:layout_width="0sp"
+			android:layout_height="wrap_content"
+			android:gravity="left"
+			android:layout_weight="1"
+			android:visibility="gone"
+			android:textStyle="bold"
+			android:text="@string/tagCategory"/>
 
 	</LinearLayout>
 
 	<ListView
-			android:id="@android:id/list"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:dividerHeight="2sp"
-			android:fastScrollEnabled="true" />
+		android:id="@android:id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:dividerHeight="2sp"
+		android:fastScrollEnabled="true"/>
 
 	<TextView
-			android:id="@id/android:empty"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:text="@string/NoWords"/>
+		android:id="@id/android:empty"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:text="@string/NoWords"/>
 
 </LinearLayout>
