@@ -1,24 +1,24 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
-    }
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:0.6.+'
+	}
 }
 apply plugin: 'android'
 
 dependencies {
-    compile files('libs/android-support-v4.jar')
+	compile files('libs/android-support-v4.jar')
 	compile files('libs/libGoogleAnalyticsV2.jar')
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+	compileSdkVersion 17
+	buildToolsVersion "19.0.0"
 
-    defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 17
-    }
+	defaultConfig {
+		minSdkVersion 8
+		targetSdkVersion 17
+	}
 }

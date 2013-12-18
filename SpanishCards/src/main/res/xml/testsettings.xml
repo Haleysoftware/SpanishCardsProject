@@ -5,78 +5,80 @@
 	<!-- This is used to create the settings for the test screen -->
 
 	<PreferenceCategory
-			android:title="@string/settoptest">
+		android:title="@string/settoptest">
 
 		<CheckBoxPreference
-				android:key="note_set"
-				android:defaultValue="true"
-				android:title="@string/setnotemain"
-				android:summaryOn="@string/setnoteon"
-				android:summaryOff="@string/setnoteoff" />
+			android:key="note_set"
+			android:defaultValue="true"
+			android:title="@string/setnotemain"
+			android:summaryOn="@string/setnoteon"
+			android:summaryOff="@string/setnoteoff"/>
 
 		<CheckBoxPreference
-				android:key="cata_set"
-				android:defaultValue="true"
-				android:title="@string/setcatemain"
-				android:summaryOn="@string/setcateon"
-				android:summaryOff="@string/setcateoff" />
+			android:key="cata_set"
+			android:defaultValue="true"
+			android:title="@string/setcatemain"
+			android:summaryOn="@string/setcateon"
+			android:summaryOff="@string/setcateoff"/>
 
 	</PreferenceCategory>
 
 	<PreferenceCategory
-			android:title="@string/settopsound">
+		android:title="@string/settopsound">
 
 		<CheckBoxPreference
-				android:key="speak_set"
-				android:defaultValue="true"
-				android:title="@string/setspeakmain"
-				android:summaryOn="@string/setspeakon"
-				android:summaryOff="@string/setspeakoff" />
+			android:key="speak_set"
+			android:defaultValue="true"
+			android:title="@string/setspeakmain"
+			android:summaryOn="@string/setspeakon"
+			android:summaryOff="@string/setspeakoff"/>
 
 		<CheckBoxPreference
-				android:key="tts_set"
-				android:defaultValue="true"
-				android:title="@string/setttsmain"
-				android:summaryOn="@string/setttson"
-				android:summaryOff="@string/setttsoff"/>
+			android:key="tts_set"
+			android:defaultValue="true"
+			android:title="@string/setttsmain"
+			android:summaryOn="@string/setttson"
+			android:summaryOff="@string/setttsoff"/>
 
 	</PreferenceCategory>
 
 	<PreferenceCategory
-			android:title="@string/settopfun">
+		android:title="@string/settopfun">
 
 		<CheckBoxPreference
-				android:key="keep_score"
-				android:defaultValue="false"
-				android:title="@string/setkeepmain"
-				android:summaryOn="@string/setkeepon"
-				android:summaryOff="@string/setkeepoff" />
+			android:key="keep_score"
+			android:defaultValue="false"
+			android:title="@string/setkeepmain"
+			android:summaryOn="@string/setkeepon"
+			android:summaryOff="@string/setkeepoff"/>
 
 		<CheckBoxPreference
-				android:key="auto_set"
-				android:defaultValue="false"
-				android:title="@string/setautomain"
-				android:summaryOn="@string/setautoon"
-				android:summaryOff="@string/setautooff" />
+			android:key="auto_set"
+			android:defaultValue="false"
+			android:title="@string/setautomain"
+			android:summaryOn="@string/setautoon"
+			android:summaryOff="@string/setautooff"/>
 
 	</PreferenceCategory>
 
 	<PreferenceCategory
-			android:title="@string/settopadj">
+		android:title="@string/settopadj">
 
-		<CheckBoxPreference android:key="hand_set"
-				android:defaultValue="false"
-				android:title="@string/sethandmain"
-				android:summaryOn="@string/sethandon"
-				android:summaryOff="@string/sethandoff" />
+		<CheckBoxPreference
+			android:key="hand_set"
+			android:defaultValue="false"
+			android:title="@string/sethandmain"
+			android:summaryOn="@string/sethandon"
+			android:summaryOff="@string/sethandoff"/>
 
-		<ListPreference android:key="orie_list_set"
-				android:defaultValue="0"
-				android:title="@string/setoriemain"
-				android:summary="@string/setoriesum"
-				android:dialogTitle="@string/setoriedialog"
-				android:entries="@array/setorielistname"
-				android:entryValues="@array/setorielistvalue" />
+		<ListPreference
+			android:key="orie_list_set"
+			android:defaultValue="0"
+			android:title="@string/setoriemain"
+			android:summary="@string/setoriesum"
+			android:dialogTitle="@string/setoriedialog"
+			android:entries="@array/setorielistname"
+			android:entryValues="@array/setorielistvalue"/>
 
 	</PreferenceCategory>
 
@@ -91,17 +93,16 @@
 
          Will bring up about Haley Software activity
         <Preference android:key="about_set"
-                    android:defaultValue="true"
-                    android:title="@string/setaboutmain"
-                    android:summary="@string/setaboutsum"/>
-	    
+                android:defaultValue="true"
+                android:title="@string/setaboutmain"
+                android:summary="@string/setaboutsum"/>
 
-		
+		Will report analytic data
         <CheckBoxPreference android:key="analytics_set"
-                    android:defaultValue="false"
-                    android:title="@string/setdatasendmain"
-                    android:summaryOn="@string/setdatasendtexton"
-                    android:summaryOff="@string/setdatasendtextoff"/>
+                android:defaultValue="false"
+                android:title="@string/setdatasendmain"
+                android:summaryOn="@string/setdatasendtexton"
+                android:summaryOff="@string/setdatasendtextoff"/>
 		
 
     </PreferenceCategory>
