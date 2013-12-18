@@ -31,14 +31,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class TestSelect extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
 	private static final String MASTER_SETTINGS = "haley_master_set";
-	private boolean analytics = true;
-	private AdView adView;
+	private boolean analytics = false;
 	FragmentManager theManager = getSupportFragmentManager();
 	private static final int SETTING_REQUEST_CODE = 2010;
 	public String userName = "Guest";
@@ -56,7 +53,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		userName = masterPref.getString("last_user_set", "Guest");
 		SharedPreferences pref = getSharedPreferences(userName, MODE_PRIVATE);
-		analytics = pref.getBoolean("analytics_set", true);
+		analytics = pref.getBoolean("analytics_set", false);
 		boolean theme = pref.getBoolean("theme_set", false);
 		if (theme) {
 			setTheme(R.style.ActivityThemeAlt);
@@ -71,7 +68,6 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 			lastSpin = savedInstanceState.getInt("last");
 		}
 		addButtons();
-		addAds(masterPref.getBoolean("remove_ads", false));
 	}
 
 	@Override
@@ -97,41 +93,9 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 	}
 
 	@Override
-	public void onDestroy() {
-		if (adView != null) {
-			adView.removeAllViews();
-			adView.destroy();
-		}
-		super.onDestroy();
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle savedState) {
 		savedState.putInt("last", lastSpin);
 		super.onSaveInstanceState(savedState);
-	}
-
-	private void addAds(boolean paid) {
-		adView = (AdView) this.findViewById(R.id.adView);
-		if (paid) {
-			adView.setVisibility(View.INVISIBLE);
-			if (adView != null) {
-				adView.removeAllViews();
-				adView.destroy();
-				adView = null;
-			}
-		} else {
-			adView.setVisibility(View.VISIBLE);
-			AdRequest adRequest = new AdRequest();
-			//This code is for testing only
-			adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-			adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
-			adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
-			//adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
-			//End of testing code
-			adView.loadAd(adRequest);
-			adView.setAdListener(new AdListen());
-		}
 	}
 
 	@Override
@@ -159,23 +123,23 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 				this.startActivityForResult(set, SETTING_REQUEST_CODE);
 				return true;
 			case R.id.menu_scores:
-				Intent scores;
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					scores = new Intent(this, HighScoresList.class);
-				} else { //For new OS
-					scores = new Intent(this, HighScoresList.class);
+				Intent scores = new Intent(this, HighScoresList.class);;
+				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
+					//scores = new Intent(this, HighScoresList.class);
+				//} else { //For new OS
+					//scores = new Intent(this, HighScoresList.class);
 					//scores = new Intent(this, HighScoresBar.class);
-				}
+				//}
 				scores.putExtra("user", userName);
 				this.startActivity(scores);
 				return true;
 			case R.id.menu_list:
-				Intent list;
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					list = new Intent(this, WordList.class);
-				} else { //For new OS
-					list = new Intent(this, WordList.class);
-				}
+				Intent list = new Intent(this, WordList.class);
+				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
+					//list = new Intent(this, WordList.class);
+				//} else { //For new OS
+					//list = new Intent(this, WordList.class);
+				//}
 				list.putExtra("user", userName);
 				this.startActivity(list);
 				return true;

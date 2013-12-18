@@ -189,10 +189,6 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 			} else if (key.contentEquals("about_set")) {
 
 				usedClick = true;
-			} else if (key.contentEquals("buy_set")) {
-				Intent goShop = new Intent(ctx, AppPurchasing.class);
-				startActivity(goShop);
-				usedClick = true;
 			}
 			if (title != null && text != null) {
 				showActionDialog(id, prefName, title, text, null);

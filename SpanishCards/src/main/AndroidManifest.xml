@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.haleysoft.spanish"
-    android:versionCode="8"
-    android:versionName="1.1.4" >
+    android:versionCode="9"
+    android:versionName="1.1.6" >
+	
+	<!-- 
+		1.0.0 - Relesed = First
+		1.1.4 - Beta = Added IAP
+		1.1.6 - Not released = Removed IAP, made full free
+		-->
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.vending.BILLING" />
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -60,13 +64,6 @@
                 android:name="com.haleysoft.spanish.OldSetDelete"
                 android:label="@string/title_activity_old_set_delete" >
         </activity>
-        <activity android:name="com.haleysoft.spanish.AppPurchasing"
-                  android:label="@string/setbuymain">
-        </activity>
-	    
-	    <activity
-		    android:name="com.google.ads.AdActivity"
-			    android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <provider
                 android:name="com.haleysoft.spanish.UserDBCP"

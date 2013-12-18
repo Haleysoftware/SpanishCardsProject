@@ -23,8 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.haleysoft.spanish.HighScoresList.TabManager.TabInfo;
 
 import java.util.HashMap;
@@ -35,7 +33,6 @@ import java.util.HashMap;
 public class HighScoresList extends FragmentActivity
 {
 	private static final String MASTER_SETTINGS = "haley_master_set";
-	private AdView adView;
 	private static String userName = "Guest";
 	private static TabHost theHost;
 	private static String currentStringTab; //high - user - mode
@@ -144,46 +141,12 @@ public class HighScoresList extends FragmentActivity
 			    actionBar.setDisplayHomeAsUpEnabled(true);
             }
 		}
-		addAds(masterPref.getBoolean("remove_ads", false));
-	}
-
-	@Override
-	public void onDestroy() {
-		if (adView != null) {
-			adView.removeAllViews();
-			adView.destroy();
-		}
-		super.onDestroy();
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString("tab", theHost.getCurrentTabTag());
-	}
-
-	private void addAds(boolean paid) {
-		adView = (AdView) this.findViewById(R.id.adView);
-		if (paid) {
-			adView.setVisibility(View.INVISIBLE);
-			if (adView != null) {
-				adView.removeAllViews();
-				adView.destroy();
-				adView = null;
-			}
-		}
-		else {
-			adView.setVisibility(View.VISIBLE);
-			AdRequest adRequest = new AdRequest();
-			//This code is for testing only
-			adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-			adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
-			adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
-			//adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
-			//End of testing code
-			adView.loadAd(adRequest);
-			adView.setAdListener(new AdListen());
-		}
 	}
 
 	private void addFragments() {

@@ -63,24 +63,7 @@ public class SettingsMenuOld extends PreferenceActivity {
 				default:
 			}
 		}
-		Preference shopButton = this.findPreference("buy_set");
-		if (shopButton != null) {
-			if (masterPref.getBoolean("buy_okay", false)) {
-				shopButton.setEnabled(true);
-				shopButton.setSummary(R.string.setbuysum);
-				shopButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-					@Override
-					public boolean onPreferenceClick(Preference arg0) {
-						Intent goShop = new Intent(SettingsMenuOld.this, AppPurchasing.class);
-						startActivity(goShop);
-						return true;
-					}
-				});
-			} else {
-				shopButton.setEnabled(false);
-				shopButton.setSummary(R.string.setbuyoff);
-			}
-		}
+		
 		switch (mode) {
 			case 0: //This is to setup the main settings
 

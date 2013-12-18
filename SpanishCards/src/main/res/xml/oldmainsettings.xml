@@ -125,16 +125,10 @@
 
 	</PreferenceCategory>
 
+	<!--
     <PreferenceCategory android:title="@string/settopmore">
 
-        <!-- Will go to a page to buy items -->
-        <Preference android:key="buy_set"
-                    android:defaultValue="false"
-                    android:title="@string/setbuymain"
-                    android:summary="@string/setbuysum"/>
-
-
-        <!-- Will bring up how to activity
+         Will bring up how to activity
         <Preference android:key="howto_set"
                     android:defaultValue="true"
                     android:title="@string/sethowmain"
@@ -145,15 +139,17 @@
                     android:defaultValue="true"
                     android:title="@string/setaboutmain"
                     android:summary="@string/setaboutsum"/>
-	    -->
+	    
 
         <CheckBoxPreference
                 android:key="analytics_set"
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:title="@string/setdatasendmain"
                 android:summaryOn="@string/setdatasendtexton"
                 android:summaryOff="@string/setdatasendtextoff"/>
+		
 
     </PreferenceCategory>
+	-->
 
 </PreferenceScreen>

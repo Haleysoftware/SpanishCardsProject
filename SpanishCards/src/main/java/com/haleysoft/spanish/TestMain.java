@@ -43,15 +43,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class TestMain extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
 	private static final String MASTER_SETTINGS = "haley_master_set";
-	private boolean analytics = true;
-	private AdView adView;
-	private static final int demoLevel = 30;
+	private boolean analytics = false;
+	//TODO Need to rename Max Level
 	private static final int maxLevel = 150;
 	FragmentManager theManager = getSupportFragmentManager();
 	private boolean startNull = false;
@@ -99,7 +96,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 		SharedPreferences preferences = this.getSharedPreferences(userName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
-		analytics = preferences.getBoolean("analytics_set", true);
+		analytics = preferences.getBoolean("analytics_set", false);
 		if (theme) {
 			this.setTheme(R.style.ActivityThemeAlt);
 		} else {
@@ -152,7 +149,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			}
 		}
 		setButtonListen();
-		addAds(masterPref.getBoolean("remove_ads", false));
 	}
 
 	@Override
@@ -221,15 +217,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		if (analytics) {
 			EasyTracker.getInstance().activityStop(this);
 		}
-	}
-
-	@Override
-	public void onDestroy() {
-		if (adView != null) {
-			adView.removeAllViews();
-			adView.destroy();
-		}
-		super.onDestroy();
 	}
 
 	@Override
@@ -335,41 +322,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		showText.setOnClickListener(this);
 		hideText.setOnClickListener(this);
 		markWord.setOnClickListener(this);
-	}
-
-	private void addAds(boolean paid) {
-		adView = (AdView) this.findViewById(R.id.adView);
-		if (paid) {
-			adView.setVisibility(View.INVISIBLE);
-			if (adView != null) {
-				adView.removeAllViews();
-				adView.destroy();
-				adView = null;
-			}
-		} else {
-			adView.setVisibility(View.VISIBLE);
-			AdRequest adRequest = new AdRequest();
-			//This code is for testing only
-			adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-			adRequest.addTestDevice("2233DFE5B204F720C5A258A482ECAB8E"); //GS2
-			adRequest.addTestDevice("79B71208D02B63421ADC58ACF3A19CEE"); //LG G
-			//adRequest.addTestDevice("015d0787bd3c0215"); //ASUS Prime
-			//End of testing code
-			adView.loadAd(adRequest);
-			adView.setAdListener(new AdListen());
-		}
-	}
-
-	//This needs to be removed later!!
-	private boolean checkPaid() {
-		String mainAppPkg = "com.haleysoft.spanish";
-		String keyPkg = "com.haleysoft.spanish.key";
-		PackageManager manager = getPackageManager();
-		int sigMatch = 22;
-		if (manager != null) {
-			sigMatch = manager.checkSignatures(mainAppPkg, keyPkg);
-		}
-		return sigMatch == PackageManager.SIGNATURE_MATCH;
 	}
 
 	private void updateOrie() {
@@ -579,22 +531,22 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				this.startActivityForResult(set, SETTING_REQUEST_CODE);
 				return true;
 			case R.id.menuscores:
-				Intent scores;
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					scores = new Intent(this, HighScoresList.class);
-				} else { //For new OS
-					scores = new Intent(this, HighScoresList.class);
-				}
+				Intent scores = new Intent(this, HighScoresList.class);
+				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
+					//scores = new Intent(this, HighScoresList.class);
+				//} else { //For new OS
+					//scores = new Intent(this, HighScoresList.class);
+				//}
 				scores.putExtra("user", userName);
 				this.startActivity(scores);
 				return true;
 			case R.id.menulist:
-				Intent list;
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					list = new Intent(this, WordList.class);
-				} else { //For new OS
-					list = new Intent(this, WordList.class);
-				}
+				Intent list = new Intent(this, WordList.class);
+				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
+					//list = new Intent(this, WordList.class);
+				//} else { //For new OS
+					//list = new Intent(this, WordList.class);
+				//}
 				list.putExtra("user", userName);
 				this.startActivity(list);
 				return true;
@@ -603,6 +555,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 	}
 
+	//TODO Need to verify if this is correct still. Removed paid check.
 	private void levelPointUp() {
 		Resources res = getResources();
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
@@ -612,7 +565,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			int userLevel = preferences.getInt("user_level", 1);
 			int maxPoints = userLevel * 10;
 			int userPoints = preferences.getInt("level_points", 0);
-			if (checkPaid() && userLevel < maxLevel || !checkPaid() && userLevel < demoLevel) {
+			if (userLevel < maxLevel) {
 				userPoints = userPoints + wordLevel;
 				preferences.edit().putBoolean("level_max_set", false).commit();
 			} else if (!userMaxed) { //user is at max level
