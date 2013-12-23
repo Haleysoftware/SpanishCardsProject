@@ -30,9 +30,8 @@ import java.util.HashMap;
 //This is used for a Tab View that works with Android OS < 3.0
 @SuppressLint("NewApi")
 @TargetApi(14)
-public class HighScoresList extends FragmentActivity
-{
-	private static final String MASTER_SETTINGS = "haley_master_set";
+public class HighScoresList extends FragmentActivity {
+	//private static final String MASTER_SETTINGS = "haley_master_set";
 	private static String userName = "Guest";
 	private static TabHost theHost;
 	private static String currentStringTab; //high - user - mode
@@ -41,31 +40,25 @@ public class HighScoresList extends FragmentActivity
 
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
+		//SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		Bundle extras = getIntent().getExtras();
-		if (extras != null)
-		{
+		if (extras != null) {
 			userName = extras.getString("user");
 		}
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
-		if (theme)
-		{
+		if (theme) {
 			setTheme(R.style.ActivityThemeAlt);
-		}
-		else
-		{
+		} else {
 			setTheme(R.style.ActivityTheme);
 		}
 		String orientationTest = preferences.getString("orie_list_set", "0");
 		int orieTest = Integer.parseInt(orientationTest);
-		if (Build.VERSION.SDK_INT<Build.VERSION_CODES.GINGERBREAD) //For old OS
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) //For old OS
 		{
-			switch (orieTest)
-			{
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;
@@ -77,11 +70,8 @@ public class HighScoresList extends FragmentActivity
 					break;
 				default:
 			}
-		}
-		else
-		{
-			switch (orieTest)
-			{
+		} else {
+			switch (orieTest) {
 				case 0:
 					this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 					break;
@@ -94,15 +84,14 @@ public class HighScoresList extends FragmentActivity
 				default:
 			}
 		}
-		if (savedInstanceState == null)
-		{
+		if (savedInstanceState == null) {
 			addFragments();
 		}
-		setContentView(R.layout.scoretabs);
-		theHost = (TabHost)findViewById(android.R.id.tabhost);
+		setContentView(R.layout.scorelisthost);
+		theHost = (TabHost) findViewById(android.R.id.tabhost);
 		theHost.setup();
 
-		TabManager theManager = new TabManager (this, theHost, android.R.id.tabcontent);
+		TabManager theManager = new TabManager(this, theHost, android.R.id.tabcontent);
 
 		Bundle arg = new Bundle();
 		arg.putString("user", userName);
@@ -112,7 +101,7 @@ public class HighScoresList extends FragmentActivity
 		theManager.addTab(theHost.newTabSpec("mode").setIndicator(getText(R.string.ModeTabText)), HighModeFragment.class, arg);
 
         /*
-        TabWidget widget = theHost.getTabWidget();
+		TabWidget widget = theHost.getTabWidget();
         if (widget != null) {
             View childZero = widget.getChildAt(0);
             View childOne = widget.getChildAt(1);
@@ -127,19 +116,19 @@ public class HighScoresList extends FragmentActivity
 		if (savedInstanceState != null) {
 			theHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
-		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.ICE_CREAM_SANDWICH){
-		    //For ICS and up
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			//For ICS and up
 			ActionBar actionBar = getActionBar();
-            if (actionBar != null) {
-			    actionBar.setHomeButtonEnabled(true);
-            }
+			if (actionBar != null) {
+				actionBar.setHomeButtonEnabled(true);
+			}
 		}
-		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
-		    //For HC and up
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			//For HC and up
 			ActionBar actionBar = getActionBar();
-            if (actionBar != null) {
-			    actionBar.setDisplayHomeAsUpEnabled(true);
-            }
+			if (actionBar != null) {
+				actionBar.setDisplayHomeAsUpEnabled(true);
+			}
 		}
 	}
 
@@ -157,14 +146,14 @@ public class HighScoresList extends FragmentActivity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu (Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.scoremenu, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected (MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home: //This is the up button
 				finish();

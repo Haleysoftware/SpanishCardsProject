@@ -19,7 +19,7 @@ import android.speech.RecognizerIntent;
 import java.util.List;
 
 public class SettingsMenuOld extends PreferenceActivity {
-	private static final String MASTER_SETTINGS = "haley_master_set";
+	//private static final String MASTER_SETTINGS = "haley_master_set";
 	public static String prefName = "Guest";
 	private int mode = 0;
 
@@ -27,7 +27,7 @@ public class SettingsMenuOld extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
+		//SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		Bundle extras = this.getIntent().getExtras();
 		if (extras != null) {
 			prefName = extras.getString("prefUser");
@@ -63,7 +63,7 @@ public class SettingsMenuOld extends PreferenceActivity {
 				default:
 			}
 		}
-		
+
 		switch (mode) {
 			case 0: //This is to setup the main settings
 

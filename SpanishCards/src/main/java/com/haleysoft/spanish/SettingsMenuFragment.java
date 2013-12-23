@@ -96,7 +96,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	}
 
 	@Override
-	public void onSaveInstanceState (Bundle savedState) {
+	public void onSaveInstanceState(Bundle savedState) {
 		super.onSaveInstanceState(savedState);
 		switch (mode) {
 			case 0: //for main settings
@@ -111,17 +111,6 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	}
 
 	private void setListeners() {
-		Preference shopButton = findPreference("buy_set");
-		if (shopButton != null && masterPref != null) {
-			if (masterPref.getBoolean("buy_okay", false)) {
-				shopButton.setEnabled(true);
-				shopButton.setSummary(R.string.setbuysum);
-				shopButton.setOnPreferenceClickListener(this);
-			} else {
-				shopButton.setEnabled(false);
-				shopButton.setSummary(R.string.setbuyoff);
-			}
-		}
 		Preference changeOrie = findPreference("orie_list_set");
 		if (changeOrie != null) {
 			changeOrie.setOnPreferenceChangeListener(this);
@@ -201,7 +190,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 		String key = pref.getKey();
 		if (key != null) {
 			if (key.contentEquals("orie_list_set")) {
-				((SettingsMenu)ctx).updateOrie(newValue.toString());
+				((SettingsMenu) ctx).updateOrie(newValue.toString());
 				return true;
 			} else if (key.contentEquals("analytics_set")) {
 
@@ -221,7 +210,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	private void recoverUserList() {
 		ListPreference deleteUser = (ListPreference) findPreference("delete_user_set");
 		if (deleteUser != null) {
-			if (nameList.size()>0) {
+			if (nameList.size() > 0) {
 				deleteUser.setEnabled(true);
 				userNames = nameList.toArray(new CharSequence[nameList.size()]);
 				userRows = rowList.toArray(new CharSequence[rowList.size()]);
@@ -235,10 +224,10 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 
 	public void fillUserList() {
 		ListPreference deleteUser = (ListPreference) findPreference("delete_user_set");
-		Cursor cNames = ((SettingsMenu)ctx).userDB.getUsers();
+		Cursor cNames = ((SettingsMenu) ctx).userDB.getUsers();
 		rowList = new ArrayList<String>();
 		nameList = new ArrayList<String>();
-		while (cNames.moveToNext())	{
+		while (cNames.moveToNext()) {
 			Long row = cNames.getLong(cNames.getColumnIndex(UserDBFragment.KEY_ROWA));
 			String name = cNames.getString(cNames.getColumnIndex(UserDBFragment.KEY_USER));
 			if (name != null) {
@@ -249,9 +238,9 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 			}
 		}
 		cNames.close();
-		((SettingsMenu)ctx).userDB.close();
+		((SettingsMenu) ctx).userDB.close();
 		if (deleteUser != null) {
-			if (nameList.size()>0) {
+			if (nameList.size() > 0) {
 				deleteUser.setEnabled(true);
 				userNames = nameList.toArray(new CharSequence[nameList.size()]);
 				userRows = rowList.toArray(new CharSequence[rowList.size()]);
@@ -280,6 +269,6 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	private void showActionDialog(int action, String userN, String title, String text, String extra) {
 		//0 is for settings 3.0 and up
 		DialogFragment newDialog = ActionDialog.newInstance(0, action, userN, title, text, extra);
-		newDialog.show(((SettingsMenu)ctx).theManager, "actionDialog");
+		newDialog.show(((SettingsMenu) ctx).theManager, "actionDialog");
 	}
 }

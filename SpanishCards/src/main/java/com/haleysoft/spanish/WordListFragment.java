@@ -7,7 +7,6 @@ package com.haleysoft.spanish;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -23,13 +22,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class WordListFragment extends ListFragment implements OnItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
-	private static final int demoLevel = 30;
 	//private static final int maxLevel = 150;
 	private String userName = "Guest";
 	private static boolean safeLoad = false;
@@ -126,17 +124,6 @@ public class WordListFragment extends ListFragment implements OnItemSelectedList
 		changeView();
 	}
 
-	private boolean checkPaid() {
-		String mainAppPkg = "com.haleysoft.spanish";
-		String keyPkg = "com.haleysoft.spanish.key";
-		PackageManager manager = getActivity().getPackageManager();
-		int sigMatch = 22;
-		if (manager != null) {
-			sigMatch = manager.checkSignatures(mainAppPkg, keyPkg);
-		}
-		return sigMatch == PackageManager.SIGNATURE_MATCH;
-	}
-
 	private void spinSetupOne() {
 		Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinnerWordsSort);
 		ArrayAdapter<CharSequence> adapterOne = ArrayAdapter.createFromResource(getActivity(), R.array.SortArray, android.R.layout.simple_spinner_item);
@@ -208,21 +195,11 @@ public class WordListFragment extends ListFragment implements OnItemSelectedList
 		String[] key;
 		String sort;
 		if (theFilter.matches(getString(R.string.arrayAll))) {
-			if (checkPaid()) {
-				where = null;
-				key = null;
-			} else {
-				where = WordDBCP.KEY_LEVEL + " <= ?";
-				key = new String[]{String.valueOf(demoLevel)};
-			}
+			where = null;
+			key = null;
 		} else if (theFilter.matches(getString(R.string.arrayMarked))) {
-			if (checkPaid()) {
-				where = WordDBCP.KEY_MARK + " LIKE ?";
-				key = new String[]{"1"};
-			} else {
-				where = WordDBCP.KEY_MARK + " LIKE ? AND " + WordDBCP.KEY_LEVEL + " <= ?";
-				key = new String[]{"1", String.valueOf(demoLevel)};
-			}
+			where = WordDBCP.KEY_MARK + " LIKE ?";
+			key = new String[]{"1"};
 		} else if (theFilter.matches(getString(R.string.arrayLevel))) {
 			SharedPreferences preferences = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
 			int userLevel = preferences.getInt("user_level", 1);
@@ -230,13 +207,8 @@ public class WordListFragment extends ListFragment implements OnItemSelectedList
 			key = new String[]{String.valueOf(userLevel)};
 		} else {
 			String search = WordSwapHelper.cateStringToCode(getActivity(), theFilter);
-			if (checkPaid()) {
-				where = WordDBCP.KEY_CAT + " LIKE ?";
-				key = new String[]{search};
-			} else {
-				where = WordDBCP.KEY_CAT + " LIKE ? AND " + WordDBCP.KEY_LEVEL + " <= ?";
-				key = new String[]{search, String.valueOf(demoLevel)};
-			}
+			where = WordDBCP.KEY_CAT + " LIKE ?";
+			key = new String[]{search};
 		}
 		if (theOrder.matches(getString(R.string.sortArrayEAsc))) {
 			sort = WordDBCP.KEY_ENG + " COLLATE NOCASE ASC";
@@ -298,7 +270,6 @@ public class WordListFragment extends ListFragment implements OnItemSelectedList
 				leftKey.setText(R.string.tagSpanish);
 				rightKey.setText(R.string.tagEnglish);
 			}
-
 		}
 
 		@Override

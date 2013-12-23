@@ -5,16 +5,13 @@ package com.haleysoft.spanish;
  * Cleaned by Mike Haley on 8/29/13.
  */
 
-import java.util.ArrayList;
-import java.util.Locale;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.os.Build;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,14 +21,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.analytics.tracking.android.EasyTracker;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class TestSelect extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
 	private static final String MASTER_SETTINGS = "haley_master_set";
@@ -123,23 +123,12 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 				this.startActivityForResult(set, SETTING_REQUEST_CODE);
 				return true;
 			case R.id.menu_scores:
-				Intent scores = new Intent(this, HighScoresList.class);;
-				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					//scores = new Intent(this, HighScoresList.class);
-				//} else { //For new OS
-					//scores = new Intent(this, HighScoresList.class);
-					//scores = new Intent(this, HighScoresBar.class);
-				//}
+				Intent scores = new Intent(this, HighScoresList.class);
 				scores.putExtra("user", userName);
 				this.startActivity(scores);
 				return true;
 			case R.id.menu_list:
 				Intent list = new Intent(this, WordList.class);
-				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					//list = new Intent(this, WordList.class);
-				//} else { //For new OS
-					//list = new Intent(this, WordList.class);
-				//}
 				list.putExtra("user", userName);
 				this.startActivity(list);
 				return true;
@@ -155,6 +144,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		PreferenceManager.setDefaultValues(this, userName, MODE_PRIVATE, R.xml.mastersettings, false);
 	}
 
+	//TODO need to move away from fragments
 	private void addFragments() {
 		FragmentTransaction theTransaction = theManager.beginTransaction();
 		UserDBFragment userDB = new UserDBFragment();

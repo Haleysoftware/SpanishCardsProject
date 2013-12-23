@@ -85,10 +85,10 @@ public class HighScoreFragment extends ListFragment implements LoaderManager.Loa
 	public Loader<Cursor> onCreateLoader(int id, Bundle pack) {
 		Uri scoreUri = UserDBCP.CONTENT_URI;
 		String[] getColumns = {UserDBCP.KEY_ROWB, UserDBCP.KEY_NAME, UserDBCP.KEY_DATE, UserDBCP.KEY_SCORE, UserDBCP.KEY_MODE};
-		String where = null;
-		String[] key = null;
+		//String where = null;
+		//String[] key = null;
 		String sort = UserDBCP.KEY_SCORE + " DESC";
-		return new CursorLoader(getActivity(), scoreUri, getColumns, where, key, sort);
+		return new CursorLoader(getActivity(), scoreUri, getColumns, null, null, sort);
 	}
 
 	@Override //LoadManager

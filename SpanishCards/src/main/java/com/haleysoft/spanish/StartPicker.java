@@ -7,16 +7,16 @@ package com.haleysoft.spanish;
  */
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class StartPicker extends Activity {
 	private static final String MASTER_SETTINGS = "haley_master_set";
-	private SharedPreferences masterPref;
+	//private SharedPreferences masterPref;
 	private SharedPreferences preferences;
 	private boolean analytics = false;
 	private String userName = "Guest";
@@ -26,7 +26,7 @@ public class StartPicker extends Activity {
 		super.onCreate(savedInstanceState);
 		setupPref();
 		//Check to go right to test mode
-		masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
+		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		userName = masterPref.getString("last_user_set", "Guest");
 		preferences = getSharedPreferences(userName, MODE_PRIVATE);
 	}

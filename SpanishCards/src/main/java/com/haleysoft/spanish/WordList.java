@@ -12,7 +12,11 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.*;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,7 +29,7 @@ import com.haleysoft.spanish.WordList.TabManager.TabInfo;
 import java.util.HashMap;
 
 public class WordList extends FragmentActivity {
-	private static final String MASTER_SETTINGS = "haley_master_set";
+	//private static final String MASTER_SETTINGS = "haley_master_set";
 	public static Boolean ttsErrorDialog = false;
 	private static final String MODES = "Word List";
 	private static String userName;
@@ -37,7 +41,7 @@ public class WordList extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
+		//SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {

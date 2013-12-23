@@ -7,7 +7,6 @@ package com.haleysoft.spanish;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -34,7 +33,6 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class WordSearchFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-	private static final int demoLevel = 30;
 	//private static final int maxLevel = 150;
 	private String userName = "Guest";
 	private static WordDBFragment wordDb;
@@ -182,17 +180,6 @@ public class WordSearchFragment extends ListFragment implements LoaderManager.Lo
 		changeView();
 	}
 
-	private boolean checkPaid() {
-		String mainAppPkg = "com.haleysoft.spanish";
-		String keyPkg = "com.haleysoft.spanish.key";
-		PackageManager manager = getActivity().getPackageManager();
-		int sigMatch = 22;
-		if (manager != null) {
-			sigMatch = manager.checkSignatures(mainAppPkg, keyPkg);
-		}
-		return sigMatch == PackageManager.SIGNATURE_MATCH;
-	}
-
 	public void toggleKey() {
 		SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
 		boolean keyShow = pref.getBoolean("word_key_set", true);
@@ -229,20 +216,11 @@ public class WordSearchFragment extends ListFragment implements LoaderManager.Lo
 		String sort = WordDBCP.KEY_ENG + " COLLATE NOCASE ASC";
 		String where;
 		String[] key = null;
-		if (checkPaid()) {
-			where = WordDBCP.KEY_ENG + " LIKE ? OR " + WordDBCP.KEY_AENG + " LIKE ? OR " + WordDBCP.KEY_SPAN + " LIKE ? OR " + WordDBCP.KEY_ASPAN + " LIKE ?";
-			if (searchTest.contains("0")) { //User wants to search from start
-				key = new String[]{searchWord + "%", searchWord + "%", searchWord + "%", searchWord + "%"};
-			} else if (searchTest.contains("1")) { //User wants to search anywhere
-				key = new String[]{"%" + searchWord + "%", "%" + searchWord + "%", "%" + searchWord + "%", "%" + searchWord + "%"};
-			}
-		} else {
-			where = WordDBCP.KEY_ENG + " LIKE ? AND " + WordDBCP.KEY_LEVEL + " <= ? OR " + WordDBCP.KEY_AENG + " LIKE ? AND " + WordDBCP.KEY_LEVEL + " <= ? OR " + WordDBCP.KEY_SPAN + " LIKE ? AND " + WordDBCP.KEY_LEVEL + " <= ? OR " + WordDBCP.KEY_ASPAN + " LIKE ? AND " + WordDBCP.KEY_LEVEL + " <= ?";
-			if (searchTest.contains("0")) { //User wants to search from start
-				key = new String[]{searchWord + "%", String.valueOf(demoLevel), searchWord + "%", String.valueOf(demoLevel), searchWord + "%", String.valueOf(demoLevel), searchWord + "%", String.valueOf(demoLevel)};
-			} else if (searchTest.contains("1")) { //User wants to search anywhere
-				key = new String[]{"%" + searchWord + "%", String.valueOf(demoLevel), "%" + searchWord + "%", String.valueOf(demoLevel), "%" + searchWord + "%", String.valueOf(demoLevel), "%" + searchWord + "%", String.valueOf(demoLevel)};
-			}
+		where = WordDBCP.KEY_ENG + " LIKE ? OR " + WordDBCP.KEY_AENG + " LIKE ? OR " + WordDBCP.KEY_SPAN + " LIKE ? OR " + WordDBCP.KEY_ASPAN + " LIKE ?";
+		if (searchTest.contains("0")) { //User wants to search from start
+			key = new String[]{searchWord + "%", searchWord + "%", searchWord + "%", searchWord + "%"};
+		} else if (searchTest.contains("1")) { //User wants to search anywhere
+			key = new String[]{"%" + searchWord + "%", "%" + searchWord + "%", "%" + searchWord + "%", "%" + searchWord + "%"};
 		}
 		return new CursorLoader(getActivity(), wordUri, getColumns, where, key, sort);
 	}

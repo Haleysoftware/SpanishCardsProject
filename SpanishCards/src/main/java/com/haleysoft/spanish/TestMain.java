@@ -5,11 +5,6 @@ package com.haleysoft.spanish;
  * Cleaned by Mike Haley on 9/6/13.
  */
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -45,11 +40,15 @@ import android.widget.ToggleButton;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class TestMain extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
-	private static final String MASTER_SETTINGS = "haley_master_set";
+	//private static final String MASTER_SETTINGS = "haley_master_set";
 	private boolean analytics = false;
-	//TODO Need to rename Max Level
-	private static final int maxLevel = 150;
+	private static final int MAX_LEVEL = 150;
 	FragmentManager theManager = getSupportFragmentManager();
 	private boolean startNull = false;
 	private String hideWord;
@@ -89,7 +88,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
+		//SharedPreferences masterPref = getSharedPreferences(MASTER_SETTINGS, MODE_PRIVATE);
 		Bundle extras = this.getIntent().getExtras();
 		if (extras != null) {
 			userName = extras.getString("user");
@@ -130,6 +129,11 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		this.setupSpin();
 		if (savedInstanceState == null) {
 			startNull = true;
+			Spinner spinner = (Spinner) findViewById(R.id.select);
+			Object spinItem = spinner.getSelectedItem();
+			if (spinItem != null) {
+				selected = spinItem.toString();
+			}
 			this.addFragments();
 			this.addTTS();
 		}
@@ -140,15 +144,13 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = this.getActionBar();
 			if (actionBar != null) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					actionBar.setDisplayHomeAsUpEnabled(true);
-				}
+				actionBar.setDisplayHomeAsUpEnabled(true);
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 					actionBar.setHomeButtonEnabled(true);
 				}
 			}
 		}
-		setButtonListen();
+		//setButtonListen();
 	}
 
 	@Override
@@ -189,7 +191,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	@Override
 	public void onPostResume() {
 		super.onPostResume();
-
 		if (ttsChange) { //This is for when TTS is changed on the settings page.
 			SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
 			boolean ttsTest = preferences.getBoolean("tts_set", true);
@@ -202,6 +203,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 
 		//This is for Android HC and up
+		//ToDo Need to find a better way to handle this
 		if (ttsErrorDialog) {
 			startDialog(5, null);
 			ttsErrorDialog = false;
@@ -361,14 +363,11 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		} else {
 			setContentView(R.layout.testlayout);
 		}
+		setButtonListen();
 	}
 
+	//TODO need to move from fragments to DBCP
 	private void addFragments() {
-		Spinner spinner = (Spinner) findViewById(R.id.select);
-		Object spinItem = spinner.getSelectedItem();
-		if (spinItem != null) {
-			selected = spinItem.toString();
-		}
 		FragmentTransaction theTransaction = theManager.beginTransaction();
 		UserDBFragment userDB = new UserDBFragment();
 		WordDBFragment wordDB = new WordDBFragment();
@@ -533,9 +532,9 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			case R.id.menuscores:
 				Intent scores = new Intent(this, HighScoresList.class);
 				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					//scores = new Intent(this, HighScoresList.class);
+				//scores = new Intent(this, HighScoresList.class);
 				//} else { //For new OS
-					//scores = new Intent(this, HighScoresList.class);
+				//scores = new Intent(this, HighScoresList.class);
 				//}
 				scores.putExtra("user", userName);
 				this.startActivity(scores);
@@ -543,9 +542,9 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			case R.id.menulist:
 				Intent list = new Intent(this, WordList.class);
 				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
-					//list = new Intent(this, WordList.class);
+				//list = new Intent(this, WordList.class);
 				//} else { //For new OS
-					//list = new Intent(this, WordList.class);
+				//list = new Intent(this, WordList.class);
 				//}
 				list.putExtra("user", userName);
 				this.startActivity(list);
@@ -555,7 +554,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 	}
 
-	//TODO Need to verify if this is correct still. Removed paid check.
 	private void levelPointUp() {
 		Resources res = getResources();
 		SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
@@ -565,7 +563,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			int userLevel = preferences.getInt("user_level", 1);
 			int maxPoints = userLevel * 10;
 			int userPoints = preferences.getInt("level_points", 0);
-			if (userLevel < maxLevel) {
+			if (userLevel < MAX_LEVEL) {
 				userPoints = userPoints + wordLevel;
 				preferences.edit().putBoolean("level_max_set", false).commit();
 			} else if (!userMaxed) { //user is at max level
