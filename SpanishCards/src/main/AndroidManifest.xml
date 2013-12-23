@@ -6,8 +6,10 @@
 	
 	<!-- 
 		1.0.0 - Relesed = First
-		1.1.4 - Beta = Added IAP
-		1.1.6 - Not released = Removed IAP, made full free
+		1.1.4 / 8 - Beta = Added IAP
+		1.1.6 / 9 - Beta = Removed IAP, made full free
+		1.1.7 / 10 - Not = Fixed test buttons from settings
+							slowed down TTS talking and added delay in the study sheet
 		-->
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

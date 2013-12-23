@@ -150,7 +150,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				}
 			}
 		}
-		//setButtonListen();
+		setButtonListen();
 	}
 
 	@Override
@@ -363,7 +363,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		} else {
 			setContentView(R.layout.testlayout);
 		}
-		setButtonListen();
 	}
 
 	//TODO need to move from fragments to DBCP
@@ -831,6 +830,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		//This is for settings
 		if (requestCode == SETTING_REQUEST_CODE) {
 			updateOrie();
+			setButtonListen();
 			spinMan = 0;
 			setupSpin();
 			ttsChange = true;
@@ -885,8 +885,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		if (userTyped.toLowerCase(Locale.US).contains(testText) || userTyped.toLowerCase(Locale.US).contains(altTestText)) { //The user was correct
 			pointCheck();
 		} else { //The user did not type in the correct word
-			userSaid = null;
-			startDialog(2, userSaid);
+			//userSaid = null;
+			startDialog(2, null);
 		}
 	}
 

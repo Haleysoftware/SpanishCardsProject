@@ -176,6 +176,8 @@ public class TTSFragment extends Fragment implements TextToSpeech.OnInitListener
 	}
 
 	public void sayWord(String type, String word) {
+		TTS.setSpeechRate(0.5f);
+		TTS.setPitch(1.0f);
 		if (type.matches("English")) {
 			TTS.setLanguage(Locale.US);
 			TTS.speak(word, TextToSpeech.QUEUE_ADD, null);
