@@ -38,8 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -170,9 +168,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			}
 			this.nextWord();
 		}
-		if (analytics) {
-			EasyTracker.getInstance().activityStart(this);
-		}
 	}
 
 	@Override
@@ -210,14 +205,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		} else if (wrongDialog) {
 			startDialog(1, userSaid);
 			wrongDialog = false;
-		}
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (analytics) {
-			EasyTracker.getInstance().activityStop(this);
 		}
 	}
 
