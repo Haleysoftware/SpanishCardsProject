@@ -252,6 +252,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	@Override
 	public void onClick(View v) {
 		SharedPreferences preferences = getSharedPreferences(userName, 0);
+		float ttsRate = Float.valueOf(preferences.getString("tts_rate_set", "1.0"));
+		float ttsPitch = Float.valueOf(preferences.getString("tts_pitch_set", "1.0"));
 		boolean ttsTest = preferences.getBoolean("tts_set", true);
 		switch (v.getId()) {
 			case R.id.newButton:
@@ -278,9 +280,9 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 					TTSFragment ttsRun = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
 					if (ttsRun.goodTTS) {
 						if (showWord.matches("English")) {
-							ttsRun.sayWord("English", english);
+							ttsRun.sayWord("English", english, ttsRate, ttsPitch);
 						} else if (showWord.matches("Spanish")) {
-							ttsRun.sayWord("Spanish", spanish);
+							ttsRun.sayWord("Spanish", spanish, ttsRate, ttsPitch);
 						}
 					}
 				}
@@ -290,9 +292,9 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 					TTSFragment ttsRun = (TTSFragment) theManager.findFragmentByTag("ttsFragment");
 					if (ttsRun.goodTTS) {
 						if (hideWord.matches("English")) {
-							ttsRun.sayWord("English", english);
+							ttsRun.sayWord("English", english, ttsRate, ttsPitch);
 						} else if (hideWord.matches("Spanish")) {
-							ttsRun.sayWord("Spanish", spanish);
+							ttsRun.sayWord("Spanish", spanish, ttsRate, ttsPitch);
 						}
 					}
 				}

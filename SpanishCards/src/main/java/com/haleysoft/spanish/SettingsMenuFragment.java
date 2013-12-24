@@ -78,6 +78,7 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 			}
 		}
 		setListeners();
+		updateTts();
 	}
 
 	@Override
@@ -111,9 +112,18 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 	}
 
 	private void setListeners() {
+		SharedPreferences pref = ctx.getSharedPreferences(prefName, Context.MODE_PRIVATE);
 		Preference changeOrie = findPreference("orie_list_set");
 		if (changeOrie != null) {
 			changeOrie.setOnPreferenceChangeListener(this);
+		}
+		Preference ttsRatePref = findPreference("tts_rate_set");
+		if (ttsRatePref != null) {
+			ttsRatePref.setOnPreferenceClickListener(this);
+		}
+		Preference ttsPitchPref = findPreference("tts_pitch_set");
+		if (ttsPitchPref != null) {
+			ttsPitchPref.setOnPreferenceClickListener(this);
 		}
 		switch (mode) {
 			case 0: //This is to setup the main settings
@@ -152,7 +162,13 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 		String text = null;
 		int id = 0;
 		if (key != null) {
-			if (key.contentEquals("mark_reset_set")) {
+			if (key.contentEquals("tts_rate_set")) {
+				showTtsSetDialog(0);
+				return true;
+			} else if (key.contentEquals("tts_pitch_set")) {
+				showTtsSetDialog(1);
+				return true;
+			} else if (key.contentEquals("mark_reset_set")) {
 				title = getString(R.string.setresetmarksmain);
 				text = getString(R.string.settopresetdialog);
 				id = 0;
@@ -270,5 +286,26 @@ public class SettingsMenuFragment extends PreferenceFragment implements OnPrefer
 		//0 is for settings 3.0 and up
 		DialogFragment newDialog = ActionDialog.newInstance(0, action, userN, title, text, extra);
 		newDialog.show(((SettingsMenu) ctx).theManager, "actionDialog");
+	}
+
+	private void showTtsSetDialog(int action) {
+		DialogFragment setDialog = TTSPrefDialog.newInstance(prefName, 0, action);
+		setDialog.show(((SettingsMenu) ctx).theManager, "ttsDialog");
+	}
+
+	public void updateTts() {
+		SharedPreferences pref = ctx.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+		Preference ttsRatePref = findPreference("tts_rate_set");
+		if (ttsRatePref != null) {
+			float ttsRate = Float.valueOf(pref.getString("tts_rate_set", "1.0"));
+			String rateText = String.valueOf(Math.round(ttsRate * 100)) + "%";
+			ttsRatePref.setSummary(rateText);
+		}
+		Preference ttsPitchPref = findPreference("tts_pitch_set");
+		if (ttsPitchPref != null) {
+			float ttsPitch = Float.valueOf(pref.getString("tts_pitch_set", "1.0"));
+			String pitchText = String.valueOf(Math.round(ttsPitch * 100)) + "%";
+			ttsPitchPref.setSummary(pitchText);
+		}
 	}
 }

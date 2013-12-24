@@ -133,6 +133,8 @@ public class WordSearchFragment extends ListFragment implements LoaderManager.Lo
 			@Override
 			public void onItemClick(AdapterView<?> list, View view, int row, long id) {
 				SharedPreferences preferences = getActivity().getSharedPreferences(userName, 0);
+				float ttsRate = Float.valueOf(preferences.getString("tts_rate_set", "1.0"));
+				float ttsPitch = Float.valueOf(preferences.getString("tts_pitch_set", "1.0"));
 				boolean ttsTest = preferences.getBoolean("tts_set", true);
 				if (ttsTest) {
 					TTSFragment ttsrun = (TTSFragment) getFragmentManager().findFragmentByTag("ttsFragment");
@@ -142,8 +144,8 @@ public class WordSearchFragment extends ListFragment implements LoaderManager.Lo
 						if (engWord != null && spnWord != null) {
 							String engText = engWord.toString();
 							String spnText = spnWord.toString();
-							ttsrun.sayWord("English", engText);
-							ttsrun.sayWord("Spanish", spnText);
+							ttsrun.sayWord("English", engText, ttsRate, ttsPitch);
+							ttsrun.sayWord("Spanish", spnText, ttsRate, ttsPitch);
 						}
 					}
 				}

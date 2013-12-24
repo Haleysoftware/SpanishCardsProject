@@ -12,13 +12,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 public class StartPicker extends Activity {
 	private static final String MASTER_SETTINGS = "haley_master_set";
 	//private SharedPreferences masterPref;
 	private SharedPreferences preferences;
-	private boolean analytics = false;
 	private String userName = "Guest";
 
 	@Override
@@ -35,28 +32,11 @@ public class StartPicker extends Activity {
 	public void onStart() {
 		super.onStart();
 		boolean testing = preferences.getBoolean("return_test_set", false);
-		analytics = preferences.getBoolean("analytics_set", false);
-		if (analytics) {
-			EasyTracker.getInstance().activityStart(this);
-		}
 		if (testing) {
 			goTest();
 		} else {
 			goSelect();
 		}
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (analytics) {
-			EasyTracker.getInstance().activityStop(this);
-		}
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
 	}
 
 	private void setupPref() {

@@ -28,8 +28,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -79,17 +77,7 @@ public class TestSelect extends FragmentActivity implements OnItemSelectedListen
 		showSpinSetup();
 		wordSpinUpdate();
 		nameSpinUpdate();
-		if (analytics) {
-			EasyTracker.getInstance().activityStart(this);
-		}
-	}
 
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (analytics) {
-			EasyTracker.getInstance().activityStop(this);
-		}
 	}
 
 	@Override

@@ -67,6 +67,8 @@ public class WordListFragment extends ListFragment implements OnItemSelectedList
 			@Override
 			public void onItemClick(AdapterView<?> list, View view, int row, long id) {
 				SharedPreferences preferences = getActivity().getSharedPreferences(userName, 0);
+				float ttsRate = Float.valueOf(preferences.getString("tts_rate_set", "1.0"));
+				float ttsPitch = Float.valueOf(preferences.getString("tts_pitch_set", "1.0"));
 				boolean ttsTest = preferences.getBoolean("tts_set", true);
 				if (ttsTest) {
 					TTSFragment ttsrun = (TTSFragment) getFragmentManager().findFragmentByTag("ttsFragment");
@@ -80,11 +82,11 @@ public class WordListFragment extends ListFragment implements OnItemSelectedList
 							Object spinItem = spinOrder.getSelectedItem();
 							if (spinItem != null) {
 								if (spinItem.toString().matches(getString(R.string.sortArrayEAsc)) || spinItem.toString().matches(getString(R.string.sortArrayEDes))) {
-									ttsrun.sayWord("English", engText);
-									ttsrun.sayWord("Spanish", spnText);
+									ttsrun.sayWord("English", engText, ttsRate, ttsPitch);
+									ttsrun.sayWord("Spanish", spnText, ttsRate, ttsPitch);
 								} else if (spinItem.toString().matches(getString(R.string.sortArraySAsc)) || spinItem.toString().matches(getString(R.string.sortArraySDes))) {
-									ttsrun.sayWord("Spanish", spnText);
-									ttsrun.sayWord("English", engText);
+									ttsrun.sayWord("Spanish", spnText, ttsRate, ttsPitch);
+									ttsrun.sayWord("English", engText, ttsRate, ttsPitch);
 								}
 							}
 						}

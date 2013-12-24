@@ -40,6 +40,16 @@
 			android:summaryOn="@string/setttson"
 			android:summaryOff="@string/setttsoff"/>
 
+		<Preference
+			android:key="tts_rate_set"
+			android:defaultValue="1.0"
+			android:title="@string/ttsrateset"/>
+
+		<Preference
+			android:key="tts_pitch_set"
+			android:defaultValue="1.0"
+			android:title="@string/ttspichset"/>
+
 	</PreferenceCategory>
 
 	<PreferenceCategory

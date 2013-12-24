@@ -1,82 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.haleysoft.spanish"
-    android:versionCode="9"
-    android:versionName="1.1.6" >
-	
+		  package="com.haleysoft.spanish"
+		  android:versionCode="10"
+		  android:versionName="1.1.7">
+
 	<!-- 
 		1.0.0 - Relesed = First
 		1.1.4 / 8 - Beta = Added IAP
 		1.1.6 / 9 - Beta = Removed IAP, made full free
 		1.1.7 / 10 - Not = Fixed test buttons from settings
 							slowed down TTS talking and added delay in the study sheet
+							added tts rate and pitch into settings
 		-->
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+	<uses-sdk
+		android:minSdkVersion="8"
+		android:targetSdkVersion="17"/>
 
-    <supports-screens
-            android:anyDensity="true"
-            android:largeScreens="true"
-            android:normalScreens="true"
-            android:resizeable="true"
-            android:smallScreens="true"
-            android:xlargeScreens="true" />
+	<supports-screens
+		android:anyDensity="true"
+		android:largeScreens="true"
+		android:normalScreens="true"
+		android:resizeable="true"
+		android:smallScreens="true"
+		android:xlargeScreens="true"/>
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
-        <activity
-                android:name="com.haleysoft.spanish.StartPicker"
-                android:theme="@android:style/Theme.NoDisplay" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-                android:name="com.haleysoft.spanish.TestSelect"
-                android:label="@string/select_title" >
-        </activity>
-        <activity
-                android:name="com.haleysoft.spanish.TestMain"
-                android:label="@string/test" >
-        </activity>
-        <activity
-                android:name="com.haleysoft.spanish.HighScoresList"
-                android:label="@string/hScore" >
-        </activity>
-        <activity
-                android:name="com.haleysoft.spanish.WordList"
-                android:label="@string/wList" >
-        </activity>
-        <activity
-                android:name="com.haleysoft.spanish.SettingsMenuOld"
-                android:label="@string/setPage" >
-        </activity>
-        <activity
-                android:name="com.haleysoft.spanish.SettingsMenu"
-                android:label="@string/setPage" >
-        </activity>
-        <activity
-                android:name="com.haleysoft.spanish.OldSetDelete"
-                android:label="@string/title_activity_old_set_delete" >
-        </activity>
+	<application
+		android:allowBackup="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name">
+		<activity
+			android:name="com.haleysoft.spanish.StartPicker"
+			android:theme="@android:style/Theme.NoDisplay">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+		<activity
+			android:name="com.haleysoft.spanish.TestSelect"
+			android:label="@string/select_title">
+		</activity>
+		<activity
+			android:name="com.haleysoft.spanish.TestMain"
+			android:label="@string/test">
+		</activity>
+		<activity
+			android:name="com.haleysoft.spanish.HighScoresList"
+			android:label="@string/hScore">
+		</activity>
+		<activity
+			android:name="com.haleysoft.spanish.WordList"
+			android:label="@string/wList">
+		</activity>
+		<activity
+			android:name="com.haleysoft.spanish.SettingsMenuOld"
+			android:label="@string/setPage">
+		</activity>
+		<activity
+			android:name="com.haleysoft.spanish.SettingsMenu"
+			android:label="@string/setPage">
+		</activity>
+		<activity
+			android:name="com.haleysoft.spanish.OldSetDelete"
+			android:label="@string/title_activity_old_set_delete">
+		</activity>
 
-        <provider
-                android:name="com.haleysoft.spanish.UserDBCP"
-                android:authorities="haleysoft.spanish.provider.scores"
-                android:exported="false" >
-        </provider>
-        <provider
-                android:name="com.haleysoft.spanish.WordDBCP"
-                android:authorities="haleysoft.spanish.provider.words"
-                android:exported="false" >
-        </provider>
-    </application>
+		<provider
+			android:name="com.haleysoft.spanish.UserDBCP"
+			android:authorities="haleysoft.spanish.provider.scores"
+			android:exported="false">
+		</provider>
+		<provider
+			android:name="com.haleysoft.spanish.WordDBCP"
+			android:authorities="haleysoft.spanish.provider.words"
+			android:exported="false">
+		</provider>
+	</application>
 
 </manifest>

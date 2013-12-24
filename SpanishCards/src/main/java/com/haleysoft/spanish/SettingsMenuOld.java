@@ -18,10 +18,12 @@ import android.speech.RecognizerIntent;
 
 import java.util.List;
 
-public class SettingsMenuOld extends PreferenceActivity {
+public class SettingsMenuOld extends PreferenceActivity implements Preference.OnPreferenceClickListener {
 	//private static final String MASTER_SETTINGS = "haley_master_set";
 	public static String prefName = "Guest";
 	private int mode = 0;
+	private static final int TTS_RATE_ID = 8563;
+	private static final int TTS_PITCH_ID = 8541;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -69,16 +71,7 @@ public class SettingsMenuOld extends PreferenceActivity {
 
 				Preference resetButton = this.findPreference("mark_reset_set");
 				if (resetButton != null) {
-					resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-						@Override
-						public boolean onPreferenceClick(Preference arg0) {
-							//Code goes here
-							Intent reset = new Intent(SettingsMenuOld.this, OldSetDelete.class);
-							reset.putExtra("uName", prefName);
-							startActivity(reset);
-							return true;
-						}
-					});
+					resetButton.setOnPreferenceClickListener(this);
 				}
 				break;
 			case 1: //This is to setup the test settings
@@ -97,7 +90,23 @@ public class SettingsMenuOld extends PreferenceActivity {
 				}
 			});
 		}
+		Preference ttsRatePref = findPreference("tts_rate_set");
+		if (ttsRatePref != null) {
+			//ttsRatePref.setOnPreferenceClickListener(this);
+			float ttsRate = Float.valueOf(preferences.getString("tts_rate_set", "1.0"));
+			String rateText = String.valueOf(Math.round(ttsRate * 100)) + "%";
+			ttsRatePref.setSummary(rateText);
+			ttsRatePref.setEnabled(false);
 
+		}
+		Preference ttsPitchPref = findPreference("tts_pitch_set");
+		if (ttsPitchPref != null) {
+			//ttsPitchPref.setOnPreferenceClickListener(this);
+			float ttsPitch = Float.valueOf(preferences.getString("tts_pitch_set", "1.0"));
+			String pitchText = String.valueOf(Math.round(ttsPitch * 100)) + "%";
+			ttsPitchPref.setSummary(pitchText);
+			ttsPitchPref.setEnabled(false);
+		}
 	}
 
 	@Override
@@ -160,5 +169,19 @@ public class SettingsMenuOld extends PreferenceActivity {
 				default:
 			}
 		}
+	}
+
+	@Override
+	public boolean onPreferenceClick(Preference preference) {
+		String prefKey = preference.getKey();
+		if (prefKey != null) {
+			if (prefKey.matches("mark_reset_set")) {
+				Intent reset = new Intent(SettingsMenuOld.this, OldSetDelete.class);
+				reset.putExtra("uName", prefName);
+				startActivity(reset);
+				return true;
+			}
+		}
+		return false;
 	}
 }

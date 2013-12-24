@@ -38,7 +38,7 @@ public class SettingsMenu extends FragmentActivity {
 		SharedPreferences preferences = getSharedPreferences(prefName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
 		String orientationTest = preferences.getString("orie_list_set", "0");
-		setTheme(theme? R.style.ActivityThemeAlt : R.style.ActivityTheme);
+		setTheme(theme ? R.style.ActivityThemeAlt : R.style.ActivityTheme);
 		updateOrie(orientationTest);
 	}
 
@@ -115,11 +115,15 @@ public class SettingsMenu extends FragmentActivity {
 			userDB.removeScore(noName);
 		}
 		if (userDB.deleteUser(noRow)) {
-			Toast.makeText(this, noName  + " was removed!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, noName + " was removed!", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(this, noName + " at " + noRow + " was not removed!", Toast.LENGTH_SHORT).show();
 		}
 		userDB.close();
 		setting.fillUserList();
+	}
+
+	public void updateScreen() {
+		setting.updateTts();
 	}
 }
