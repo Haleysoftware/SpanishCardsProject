@@ -70,9 +70,12 @@
 
 	<string name="missing_egg">Espacio: la última frontera. \n \nEstos son los viajes de la nave estelar Enterprise. \n \nSu misión de cinco años: explorar extraños nuevos mundos, buscar nuevas formas de vida y nuevas civilizaciones, viajando temerariamente a donde nadie ha ido antes.</string>
 
-	<string name="tagEnglish">@string/langEnglish</string> <!-- English -->
-	<string name="tagSpanish">@string/langSpanish</string> <!-- Spanish -->
-	<string name="tagCategory">Categoría</string> <!-- Category -->
+	<string name="tagEnglish">@string/langEnglish</string>
+	<!-- English -->
+	<string name="tagSpanish">@string/langSpanish</string>
+	<!-- Spanish -->
+	<string name="tagCategory">Categoría</string>
+	<!-- Category -->
 
 	<string name="AllWordTab">Todas las Palabras</string>
 	<string name="SearchWordTab">Buscar</string>
@@ -84,30 +87,42 @@
 
 	<!-- Menus -->
 
-	<string name="menugoselect">Cambiar el modo de prueba</string> <!-- Change the test mode -->
+	<string name="menugoselect">Cambiar el modo de prueba</string>
+	<!-- Change the test mode -->
 
-	<string name="menuchangenote">Nota de cambio</string> <!-- Change note -->
+	<string name="menuchangenote">Nota de cambio</string>
+	<!-- Change note -->
 
-	<string name="menuchangecate">Cambiar Categoría</string> <!-- Change category -->
+	<string name="menuchangecate">Cambiar Categoría</string>
+	<!-- Change category -->
 
-	<string name="menugolist">Estudio de hoja</string> <!-- Study sheet -->
+	<string name="menugolist">Estudio de hoja</string>
+	<!-- Study sheet -->
 
-	<string name="menugoscores">Las puntuaciones</string> <!-- scores -->
+	<string name="menugoscores">Las puntuaciones</string>
+	<!-- scores -->
 
-	<string name="menusettings">Ajustes</string> <!-- Settings -->
+	<string name="menusettings">Ajustes</string>
+	<!-- Settings -->
 
-	<string name="menukey">Tecla Cambiar</string> <!-- Change key -->
+	<string name="menukey">Tecla Cambiar</string>
+	<!-- Change key -->
 
-	<string name="menutheme">Cambiar tema</string> <!-- Change Theme -->
+	<string name="menutheme">Cambiar tema</string>
+	<!-- Change Theme -->
 
 	<!-- Scores Screen -->
 
 	<string name="hScore">Las puntuaciones</string>
 
-	<string name="tagScore">Puntuación</string> <!-- Score -->
-	<string name="tagUser">Usuario</string> <!-- User -->
-	<string name="tagMode">Modo de prueba</string> <!-- Test mode -->
-	<string name="tagDate">Fecha</string> <!-- Date -->
+	<string name="tagScore">Puntuación</string>
+	<!-- Score -->
+	<string name="tagUser">Usuario</string>
+	<!-- User -->
+	<string name="tagMode">Modo de prueba</string>
+	<!-- Test mode -->
+	<string name="tagDate">Fecha</string>
+	<!-- Date -->
 
 	<string name="HighTabText">Mejores Puntuaciones</string>
 	<string name="UserTabText">Las Puntuaciones de Los Usuarios</string>
@@ -238,10 +253,6 @@
 
 	<string name="settopmore">Más</string>
 
-    <string name="setbuymain">La Tienda</string>
-    <string name="setbuysum">Vea lo que se puede quitar o añadirse.</string>
-	<string name="setbuyoff">Google Play Facturación V3 no es compatible.</string>
-
 	<string name="sethowmain">Instrucciones</string>
 	<string name="sethowsum">Muestra cómo a la página</string>
 
@@ -251,15 +262,6 @@
 	<string name="setdatasendmain">Google Analytics</string>
 	<string name="setdatasendtexton">Gracias por ayudarnos. Datos anónimos me ayudará a mejorar esta aplicación.</string>
 	<string name="setdatasendtextoff">El envío de datos anónimos está apagado.</string>
-
-	<!-- Shop -->
-
-	<string name="shopmoney">$1.99</string>
-	<string name="shopwait">Por favor espere. Actualización de elementos.</string>
-	<string name="shoptitle">La Tienda</string>
-	<string name="shopadtext">Retire Anuncios</string>
-	<string name="shopadbuttonno">Compra</string>
-	<string name="shopadbuttonyes">Comprado</string>
 
 	<!-- Test Screen -->
 
