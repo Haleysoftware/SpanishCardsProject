@@ -45,7 +45,6 @@ import java.util.Locale;
 
 public class TestMain extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
 	//private static final String MASTER_SETTINGS = "haley_master_set";
-	private boolean analytics = false;
 	private static final int MAX_LEVEL = 150;
 	FragmentManager theManager = getSupportFragmentManager();
 	private boolean startNull = false;
@@ -58,8 +57,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private WordDBFragment dBHelp;
 	private Long scoreId;
 	public int score = 0;
-	private int spinMan = 0;
-	private boolean spinSet = true;
 	private String selected;
 	private boolean shown = false;
 	private boolean ttsChange = false;
@@ -79,7 +76,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private String altEnglish = "";
 	private String spanish = "";
 	private String altSpanish = "";
-
+	private boolean spinMan = false;
+	private boolean spinCheck = false;
 
 	//Called when the activity is first created.
 	@Override
@@ -93,7 +91,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 		SharedPreferences preferences = this.getSharedPreferences(userName, MODE_PRIVATE);
 		boolean theme = preferences.getBoolean("theme_set", false);
-		analytics = preferences.getBoolean("analytics_set", false);
 		if (theme) {
 			this.setTheme(R.style.ActivityThemeAlt);
 		} else {
@@ -117,13 +114,11 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 
 			userSaid = savedInstanceState.getString("said");
 			scoreId = savedInstanceState.getLong("sID");
-			spinSet = savedInstanceState.getBoolean("spin");
 			score = savedInstanceState.getInt("score");
 			shown = savedInstanceState.getBoolean("show");
 			topTypeNotify = savedInstanceState.getBoolean("topType");
 			topMostNotify = savedInstanceState.getBoolean("topMost");
 		}
-		spinMan = 0;
 		this.setupSpin();
 		if (savedInstanceState == null) {
 			startNull = true;
@@ -166,6 +161,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				userDB.cleanScore();
 				dBHelp.resetPoint();
 			}
+			//ToDo I think there is something wrong here
 			this.nextWord();
 		}
 	}
@@ -206,6 +202,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			startDialog(1, userSaid);
 			wrongDialog = false;
 		}
+		spinMan = true;
 	}
 
 	@Override
@@ -229,7 +226,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		if (scoreId != null) {
 			savedState.putLong("sID", scoreId);
 		}
-		savedState.putBoolean("spin", spinSet);
 		savedState.putInt("score", score);
 		savedState.putBoolean("show", shown);
 		savedState.putBoolean("topType", topTypeNotify);
@@ -426,40 +422,26 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	//This is for when the spinner is selected.
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		Spinner spinner = (Spinner) findViewById(R.id.select);
-		Object spinItem = spinner.getSelectedItem();
-		if (spinMan == 0) {
-			if (pos == 0) {
-				//Do nothing and spinner is ready for use
-				spinMan = 2;
+		int test1 = 0;
+		int test2 = 0;
+		test1++;
+		Toast.makeText(this, "Spin tried " + test1, Toast.LENGTH_SHORT).show();
+		if (spinMan) {
+			if (spinCheck) {
+				test2++;
+				Toast.makeText(this, "Spin used " + test2, Toast.LENGTH_SHORT).show();
+				Spinner spinner = (Spinner) findViewById(R.id.select);
+				Object spinItem = spinner.getSelectedItem();
+
 				if (spinItem != null) {
 					selected = spinItem.toString();
 				}
 				getSharedPreferences(userName, MODE_PRIVATE).edit().putString("remember_spin", WordSwapHelper.cateStringToCode(this, selected)).commit();
+				nextWord();
+				getWord();
 			} else {
-				//Do nothing and spinner is not yet ready
-				if (spinSet) {
-					spinMan = 2; //spinner on first boot and ready
-					spinSet = false;
-				} else {
-					spinMan = 1; //phone rotated or returned from settings, not ready yet
-				}
+				spinCheck = true;
 			}
-		} else if (spinMan == 1) {
-			//Do nothing and spinner is ready for use
-			spinMan = 2;
-			if (spinItem != null) {
-				selected = spinItem.toString();
-			}
-			getSharedPreferences(userName, MODE_PRIVATE).edit().putString("remember_spin", WordSwapHelper.cateStringToCode(this, selected)).commit();
-		} else if (spinMan == 2) {
-			//Do nothing and spinner is ready for use
-			if (spinItem != null) {
-				selected = spinItem.toString();
-			}
-			getSharedPreferences(userName, MODE_PRIVATE).edit().putString("remember_spin", WordSwapHelper.cateStringToCode(this, selected)).commit();
-			nextWord();
-			getWord();
 		}
 	}
 
@@ -506,7 +488,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				changeCata(!cataTest);
 				return true;
 			case R.id.menuset:
-				spinSet = true;
+				//TODO need to fix the spinner
+				spinMan = false;
 				Intent set;
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					set = new Intent(this, SettingsMenuOld.class);
@@ -668,6 +651,10 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 
 	//This pulls a random word from the database and adjust the view.
 	private void nextWord() {
+		int test3 = 0;
+		test3++;
+		Toast.makeText(this, "Next used " + test3, Toast.LENGTH_SHORT).show();
+
 		Button nextWord = (Button) findViewById(R.id.newButton);
 		nextWord.setText(R.string.SkipWord);
 		//Sets up the views to be used.
@@ -820,7 +807,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		if (requestCode == SETTING_REQUEST_CODE) {
 			updateOrie();
 			setButtonListen();
-			spinMan = 0;
 			setupSpin();
 			ttsChange = true;
 			SharedPreferences preferences = getSharedPreferences(userName, 0);
