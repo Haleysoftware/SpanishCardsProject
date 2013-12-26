@@ -76,7 +76,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private String altEnglish = "";
 	private String spanish = "";
 	private String altSpanish = "";
-	private boolean spinClick = false;
+	private int spinCheck;
 
 	//Called when the activity is first created.
 	@Override
@@ -111,13 +111,17 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			spanish = savedInstanceState.getString("span");
 			altSpanish = savedInstanceState.getString("aSpan");
 
+			spinCheck = savedInstanceState.getInt("spinCheck");
 			userSaid = savedInstanceState.getString("said");
 			scoreId = savedInstanceState.getLong("sID");
 			score = savedInstanceState.getInt("score");
 			shown = savedInstanceState.getBoolean("show");
 			topTypeNotify = savedInstanceState.getBoolean("topType");
 			topMostNotify = savedInstanceState.getBoolean("topMost");
+		} else {
+			spinCheck = 1;
 		}
+
 		setupSpin();
 		if (savedInstanceState == null) {
 			startNull = true;
@@ -223,6 +227,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		if (scoreId != null) {
 			savedState.putLong("sID", scoreId);
 		}
+		savedState.putInt("spinCheck", spinCheck);
 		savedState.putInt("score", score);
 		savedState.putBoolean("show", shown);
 		savedState.putBoolean("topType", topTypeNotify);
@@ -290,10 +295,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				//Updates the database.
 				dBHelp.updateMark(wordID, theMark);
 				break;
-			case R.id.select:
-				Toast.makeText(this, "Spin true", Toast.LENGTH_SHORT).show();
-				spinClick = true;
-				return;
 		}
 	}
 
@@ -418,14 +419,13 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			preferences.edit().putString("remember_spin", "All").commit();
 		}
 		spinner.setSelection(adapter.getPosition(WordSwapHelper.cateCodeToString(this, spinRemember)));
-		spinner.setOnClickListener(this);
 		spinner.setOnItemSelectedListener(this);
 	}
 
 	//This is for when the spinner is selected.
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		if (spinClick) {
+		if (spinCheck == 0) {
 			Toast.makeText(this, "Spin used", Toast.LENGTH_SHORT).show();
 			Spinner spinner = (Spinner) findViewById(R.id.select);
 			Object spinItem = spinner.getSelectedItem();
@@ -436,14 +436,15 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			getSharedPreferences(userName, MODE_PRIVATE).edit().putString("remember_spin", WordSwapHelper.cateStringToCode(this, selected)).commit();
 			nextWord();
 			getWord();
-			spinClick = false;
+		} else {
+			Toast.makeText(this, "Spin tried " + spinCheck, Toast.LENGTH_SHORT).show();
+			spinCheck--;
 		}
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		Toast.makeText(this, "Spin false", Toast.LENGTH_SHORT).show();
-		spinClick = false;
+
 	}
 
 	private boolean networkCheck() {
@@ -485,6 +486,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				return true;
 			case R.id.menuset:
 				//TODO need to fix the spinner
+				spinCheck = 1;
 				Intent set;
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 					set = new Intent(this, SettingsMenuOld.class);
@@ -496,6 +498,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				this.startActivityForResult(set, SETTING_REQUEST_CODE);
 				return true;
 			case R.id.menuscores:
+				spinCheck = 0;
 				Intent scores = new Intent(this, HighScoresList.class);
 				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 				//scores = new Intent(this, HighScoresList.class);
@@ -506,6 +509,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				this.startActivity(scores);
 				return true;
 			case R.id.menulist:
+				spinCheck = 0;
 				Intent list = new Intent(this, WordList.class);
 				//if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) { //For old OS
 				//list = new Intent(this, WordList.class);
