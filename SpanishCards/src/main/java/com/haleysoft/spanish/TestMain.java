@@ -77,6 +77,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private String spanish = "";
 	private String altSpanish = "";
 	private int spinCheck;
+	private boolean spinPos = false;
 
 	//Called when the activity is first created.
 	@Override
@@ -118,10 +119,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			shown = savedInstanceState.getBoolean("show");
 			topTypeNotify = savedInstanceState.getBoolean("topType");
 			topMostNotify = savedInstanceState.getBoolean("topMost");
-		} else {
-			spinCheck = 1;
 		}
-
+		spinCheck = 1;
 		setupSpin();
 		if (savedInstanceState == null) {
 			startNull = true;
@@ -426,7 +425,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 		if (spinCheck == 0) {
-			Toast.makeText(this, "Spin used", Toast.LENGTH_SHORT).show();
 			Spinner spinner = (Spinner) findViewById(R.id.select);
 			Object spinItem = spinner.getSelectedItem();
 
@@ -437,7 +435,10 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 			nextWord();
 			getWord();
 		} else {
-			Toast.makeText(this, "Spin tried " + spinCheck, Toast.LENGTH_SHORT).show();
+			if (pos != 0 && !spinPos) {
+				spinPos = true;
+				spinCheck++;
+			}
 			spinCheck--;
 		}
 	}
@@ -800,6 +801,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//This is for settings
 		if (requestCode == SETTING_REQUEST_CODE) {
+			spinPos = true;
 			updateOrie();
 			setButtonListen();
 			setupSpin();
