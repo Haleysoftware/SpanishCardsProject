@@ -284,9 +284,6 @@
 	<string name="NameSpinText">Select a User</string>
 	<string name="ModeSpinText">Select a Test Mode</string>
 
-
-	<!-- need to add to Spanish -->
-
 	<string name="ttspichset">Set the speech ptich</string>
 	<string name="ttsrateset">Set the rate of speech</string>
 	<string name="ttsdefault">Default</string>
