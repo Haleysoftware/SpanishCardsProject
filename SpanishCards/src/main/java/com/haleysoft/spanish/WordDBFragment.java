@@ -5,13 +5,6 @@ package com.haleysoft.spanish;
  * Cleaned by Mike Haley on 9/6/13.
  */
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Random;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -22,6 +15,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Random;
 
 //This class is no longer being used. Please use WordDBCP for now on.
 public class WordDBFragment extends Fragment {
@@ -262,7 +263,7 @@ public class WordDBFragment extends Fragment {
 		int id = countEntries();
 		//pick a random number that is equal or between 1 and the number of rows.
 		int rand = random.nextInt(id) + 1;
-
+		Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
 		//This will run if All is selected on the spinner.
 		if (select.matches(getString(R.string.arrayAll))) { //contains
 			if (freePlay) {
@@ -328,6 +329,7 @@ public class WordDBFragment extends Fragment {
 			}
 			sort = "Random()";
 		}
+		Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
 		//open the database.
 		open();
 		return Db.query(DB_TABLE, null, where, key, null, null, sort, "1");

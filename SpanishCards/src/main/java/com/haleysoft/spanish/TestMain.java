@@ -665,8 +665,11 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		shown = false;
 		//Asks the Words Database Adapter for a random row.
 		try {
+			Toast.makeText(this, "test 1", Toast.LENGTH_SHORT).show();
 			Cursor wordCursor = dBHelp.getRandomWord(selected, freePlay, userLevel);
+			Toast.makeText(this, "test 2", Toast.LENGTH_SHORT).show();
 			if (wordCursor.moveToFirst()) {
+				Toast.makeText(this, "test 3", Toast.LENGTH_SHORT).show();
 				wordID = wordCursor.getLong(wordCursor.getColumnIndex(WordDBFragment.KEY_ROWID));
 
 				String tempCate = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_CAT));
