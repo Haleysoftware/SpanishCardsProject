@@ -1,3 +1,4 @@
+
 package com.haleysoft.spanish;
 
 /**
@@ -15,7 +16,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -252,6 +252,9 @@ public class WordDBFragment extends Fragment {
 
 	//This is called to pull a random row from the database.
 	public Cursor getRandomWord(String select, boolean freePlay, int userLevel) throws IOException {
+		if (select == null) {
+			throw new IOException("Word DB select is null");
+		}
 		//This is used to change the sorting options.
 		String sort;
 		//Creates the variable that will be used to pick what row to return.
@@ -263,7 +266,6 @@ public class WordDBFragment extends Fragment {
 		int id = countEntries();
 		//pick a random number that is equal or between 1 and the number of rows.
 		int rand = random.nextInt(id) + 1;
-		Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
 		//This will run if All is selected on the spinner.
 		if (select.matches(getString(R.string.arrayAll))) { //contains
 			if (freePlay) {
@@ -329,7 +331,6 @@ public class WordDBFragment extends Fragment {
 			}
 			sort = "Random()";
 		}
-		Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
 		//open the database.
 		open();
 		return Db.query(DB_TABLE, null, where, key, null, null, sort, "1");

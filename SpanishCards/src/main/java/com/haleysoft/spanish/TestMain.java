@@ -52,7 +52,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	private String showWord;
 	private static final int VOICE_REQUEST_CODE = 2040;
 	private static final int SETTING_REQUEST_CODE = 1010;
-	public static String userSaid = "Help me, I'm trapped in the phone";
+	public static String userSaid = "Help me, I'm trapped in here";
 	private String userName;
 	private WordDBFragment dBHelp;
 	private Long scoreId;
@@ -122,13 +122,13 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		}
 		spinCheck = 1;
 		setupSpin();
+		Spinner spinner = (Spinner) findViewById(R.id.select);
+		Object spinItem = spinner.getSelectedItem();
+		if (spinItem != null) {
+			selected = spinItem.toString();
+		}
 		if (savedInstanceState == null) {
 			startNull = true;
-			Spinner spinner = (Spinner) findViewById(R.id.select);
-			Object spinItem = spinner.getSelectedItem();
-			if (spinItem != null) {
-				selected = spinItem.toString();
-			}
 			this.addFragments();
 			this.addTTS();
 		}
@@ -427,7 +427,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		if (spinCheck == 0) {
 			Spinner spinner = (Spinner) findViewById(R.id.select);
 			Object spinItem = spinner.getSelectedItem();
-
 			if (spinItem != null) {
 				selected = spinItem.toString();
 			}
@@ -581,6 +580,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 						String tName = topMost.getString(topMost.getColumnIndex("name"));
 						if (tName != null) {
 							CharSequence tText;
+							tText = getString(R.string.notifyMost);
+							/*
 							if (tName.matches("Guest")) { //Last highest score was held by a guest
 								tText = getString(R.string.notifyMost);
 							} else if (tName.matches(userName)) { //Last highest score was held by the same user
@@ -588,6 +589,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 							} else { //Last highest score was held by a different user (tName)
 								tText = getString(R.string.notifyMost);
 							}
+							*/
 							Toast.makeText(this, tText, Toast.LENGTH_LONG).show();
 							topMostNotify = true;
 						}
@@ -604,6 +606,8 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 						String hName = topScore.getString(topScore.getColumnIndex("name"));
 						if (hName != null) {
 							CharSequence hText;
+							hText = getString(R.string.notifyHigh);
+							/*
 							if (hName.matches("Guest")) { //Last high score in this mode was held by a guest
 								hText = getString(R.string.notifyHigh);
 							} else if (hName.matches(userName)) { //Last high score in this mode was held by the same user
@@ -611,6 +615,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 							} else { //Last high score in this mode was held by a different user (hName)
 								hText = getString(R.string.notifyHigh);
 							}
+							*/
 							Toast.makeText(this, hText, Toast.LENGTH_LONG).show();
 							topTypeNotify = true;
 						}
@@ -665,13 +670,9 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 		shown = false;
 		//Asks the Words Database Adapter for a random row.
 		try {
-			Toast.makeText(this, "test 1", Toast.LENGTH_SHORT).show();
 			Cursor wordCursor = dBHelp.getRandomWord(selected, freePlay, userLevel);
-			Toast.makeText(this, "test 2", Toast.LENGTH_SHORT).show();
 			if (wordCursor.moveToFirst()) {
-				Toast.makeText(this, "test 3", Toast.LENGTH_SHORT).show();
 				wordID = wordCursor.getLong(wordCursor.getColumnIndex(WordDBFragment.KEY_ROWID));
-
 				String tempCate = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_CAT));
 				category = WordSwapHelper.cateCodeToString(this, tempCate);
 				type = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_TYPE));
@@ -679,7 +680,6 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 				theMark = wordCursor.getInt(wordCursor.getColumnIndex(WordDBFragment.KEY_MARK));
 				gotPoint = wordCursor.getInt(wordCursor.getColumnIndex(WordDBFragment.KEY_POINT));
 				note = WordSwapHelper.noteCodeToString(this, wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_NOTE)));
-
 				String tempEnglish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_ENG));
 				String tempAltEnglish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_AENG));
 				String tempSpanish = wordCursor.getString(wordCursor.getColumnIndex(WordDBFragment.KEY_SPAN));
@@ -707,6 +707,7 @@ public class TestMain extends FragmentActivity implements OnItemSelectedListener
 	}
 
 	private void getWord() {
+		//TODO This gets called twice when rotated?
 		SharedPreferences preferences = getSharedPreferences(userName, 0);
 		boolean cataTest = preferences.getBoolean("cata_set", true);
 		boolean noteTest = preferences.getBoolean("note_set", true);
