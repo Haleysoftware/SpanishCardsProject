@@ -1,11 +1,9 @@
-package com.haleysoft.spanish;
+package com.haleysoft.spanish.dialogs;
 
 /**
  * Created by Haleysoftware on 5/23/13.
  * Cleaned by Mike Haley on 8/25/13.
  */
-
-import java.util.Locale;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -27,63 +25,71 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.haleysoft.spanish.R;
+import com.haleysoft.spanish.TestMain;
+import com.haleysoft.spanish.TestSelect;
+import com.haleysoft.spanish.WordListFragment;
+import com.haleysoft.spanish.WordSearchFragment;
+
+import java.util.Locale;
+
 public class DialogsFragment extends DialogFragment {
-	private static String userName;
-	private String hintText; //Used to pass the hint word from the word list and search
-	private String userSaid;
-	private String userTyped;
-	private int extraData;
-	private int ID;
+    private static String userName;
+    private String hintText; //Used to pass the hint word from the word list and search
+    private String userSaid;
+    private String userTyped;
+    private int extraData;
+    private int ID;
 
-	static DialogsFragment newInstance(String hint, int id, String userSaid2, int extra, String userName) {
-		DialogsFragment dialog = new DialogsFragment();
-		Bundle args = new Bundle();
-		args.putString("name", userName);
-		args.putString("hint", hint);
-		args.putString("said", userSaid2);
-		args.putInt("id", id);
-		args.putInt("extra", extra);
-		dialog.setArguments(args);
-		return dialog;
-	}
+    static DialogsFragment newInstance(String hint, int id, String userSaid2, int extra, String userName) {
+        DialogsFragment dialog = new DialogsFragment();
+        Bundle args = new Bundle();
+        args.putString("name", userName);
+        args.putString("hint", hint);
+        args.putString("said", userSaid2);
+        args.putInt("id", id);
+        args.putInt("extra", extra);
+        dialog.setArguments(args);
+        return dialog;
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		userName = getArguments().getString("name");
-		hintText = getArguments().getString("hint");
-		userSaid = getArguments().getString("said");
-		ID = getArguments().getInt("id");
-		extraData = getArguments().getInt("extra");
-		setRetainInstance(true);
-		SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
-		boolean userTheme = pref.getBoolean("theme_set", false);
-		int theme;
-		if (userTheme) {
-			theme = (R.style.DialogThemeAlt);
-		} else {
-			theme = (R.style.DialogTheme);
-		}
-		setStyle(DialogFragment.STYLE_NORMAL, theme);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        userName = getArguments().getString("name");
+        hintText = getArguments().getString("hint");
+        userSaid = getArguments().getString("said");
+        ID = getArguments().getInt("id");
+        extraData = getArguments().getInt("extra");
+        setRetainInstance(true);
+        SharedPreferences pref = getActivity().getSharedPreferences(userName, Context.MODE_PRIVATE);
+        boolean userTheme = pref.getBoolean("theme_set", false);
+        int theme;
+        if (userTheme) {
+            theme = (R.style.DialogThemeAlt);
+        } else {
+            theme = (R.style.DialogTheme);
+        }
+        setStyle(DialogFragment.STYLE_NORMAL, theme);
+    }
 
-	//Dirty workaround for fixing on rotate
-	@Override
-	public void onDestroyView() {
-		Dialog dialog = getDialog();
-		if (dialog != null && getRetainInstance()) {
-			dialog.setOnDismissListener(null);
-		}
-		super.onDestroyView();
-	}
+    //Dirty workaround for fixing on rotate
+    @Override
+    public void onDestroyView() {
+        Dialog dialog = getDialog();
+        if (dialog != null && getRetainInstance()) {
+            dialog.setOnDismissListener(null);
+        }
+        super.onDestroyView();
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View dialog = null;
-		if (ID == 0) { //Dialog for the user to enter text
-			dialog = inflater.inflate(R.layout.enterdialoglayout, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View dialog = null;
+        if (ID == 0) { //Dialog for the user to enter text
+            dialog = inflater.inflate(R.layout.enterdialoglayout, container, false);
             if (dialog != null) {
-			    getDialog().setTitle(R.string.ETitle);
+                getDialog().setTitle(R.string.ETitle);
                 Button submit = (Button) dialog.findViewById(R.id.submitbutton);
                 Button cancel = (Button) dialog.findViewById(R.id.cancelbutton);
                 final EditText text = (EditText) dialog.findViewById(R.id.enteredText);
@@ -97,7 +103,7 @@ public class DialogsFragment extends DialogFragment {
                                 if (words != null) {
                                     if (words.length() != 0) {
                                         userTyped = words.toString().trim().toLowerCase(Locale.US);
-                                        ((TestMain)getActivity()).UserText(userTyped);
+                                        ((TestMain) getActivity()).UserText(userTyped);
                                         dismiss();
                                     }
                                     return true;
@@ -113,10 +119,10 @@ public class DialogsFragment extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         Editable words = text.getText();
-                        if (words !=null) {
+                        if (words != null) {
                             if (words.length() != 0) {
                                 userTyped = words.toString().trim().toLowerCase(Locale.US);
-                                ((TestMain)getActivity()).UserText(userTyped);
+                                ((TestMain) getActivity()).UserText(userTyped);
                                 dismiss();
                             }
                         }
@@ -129,9 +135,8 @@ public class DialogsFragment extends DialogFragment {
                     }
                 });
             }
-		}
-		else if (ID == 1) { //Dialog for when the wrong word was said
-			dialog = inflater.inflate(R.layout.wrongdialoglayout, container, false);
+        } else if (ID == 1) { //Dialog for when the wrong word was said
+            dialog = inflater.inflate(R.layout.wrongdialoglayout, container, false);
             if (dialog != null) {
                 getDialog().setTitle(R.string.WTitleSaid);
                 TextView error = (TextView) dialog.findViewById(R.id.errortext);
@@ -151,14 +156,13 @@ public class DialogsFragment extends DialogFragment {
                 retry.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((TestMain)getActivity()).startVoice();
+                        ((TestMain) getActivity()).startVoice();
                         dismiss();
                     }
                 });
             }
-		}
-		else if (ID == 2) { //Dialog for when the wrong text was entered
-			dialog = inflater.inflate(R.layout.wrongdialoglayout, container, false);
+        } else if (ID == 2) { //Dialog for when the wrong text was entered
+            dialog = inflater.inflate(R.layout.wrongdialoglayout, container, false);
             if (dialog != null) {
                 getDialog().setTitle(R.string.WTitleEnter);
                 TextView error = (TextView) dialog.findViewById(R.id.errortext);
@@ -178,14 +182,13 @@ public class DialogsFragment extends DialogFragment {
                 retry.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((TestMain)getActivity()).startText();
+                        ((TestMain) getActivity()).startText();
                         dismiss();
                     }
                 });
             }
-		}
-		else if (ID == 3) { //Dialog for the user to enter their name
-			dialog = inflater.inflate(R.layout.namedialoglayout, container, false);
+        } else if (ID == 3) { //Dialog for the user to enter their name
+            dialog = inflater.inflate(R.layout.namedialoglayout, container, false);
             if (dialog != null) {
                 getDialog().setTitle(R.string.NTitle);
                 final EditText text = (EditText) dialog.findViewById(R.id.editName);
@@ -203,7 +206,7 @@ public class DialogsFragment extends DialogFragment {
                                 if (words != null) {
                                     if (words.length() != 0) {
                                         userTyped = words.toString().trim();
-                                        ((TestSelect)getActivity()).addUser(userTyped);
+                                        ((TestSelect) getActivity()).addUser(userTyped);
                                         dismiss();
                                     }
                                     return true;
@@ -222,7 +225,7 @@ public class DialogsFragment extends DialogFragment {
                         if (words != null) {
                             if (words.length() != 0) {
                                 userTyped = words.toString().trim();
-                                ((TestSelect)getActivity()).addUser(userTyped);
+                                ((TestSelect) getActivity()).addUser(userTyped);
                                 dismiss();
                             }
                         }
@@ -235,9 +238,8 @@ public class DialogsFragment extends DialogFragment {
                     }
                 });
             }
-		}
-		else if (ID == 4) { //Dialog for when the user wants to see the hint in the word list
-			dialog = inflater.inflate(R.layout.hintdialoglayout, container, false);
+        } else if (ID == 4) { //Dialog for when the user wants to see the hint in the word list
+            dialog = inflater.inflate(R.layout.hintdialoglayout, container, false);
             if (dialog != null) {
                 Button done = (Button) dialog.findViewById(R.id.hintOkButton);
                 ToggleButton mark = (ToggleButton) dialog.findViewById(R.id.hintMarkButton);
@@ -274,9 +276,8 @@ public class DialogsFragment extends DialogFragment {
                     }
                 });
             }
-		}
-		else if (ID == 5) { //Dialog to ask user if they want to install a TTS
-			dialog = inflater.inflate(R.layout.nottsdialoglayout, container, false);
+        } else if (ID == 5) { //Dialog to ask user if they want to install a TTS
+            dialog = inflater.inflate(R.layout.nottsdialoglayout, container, false);
             if (dialog != null) {
                 getDialog().setTitle(R.string.NoTtsTitle);
 
@@ -303,9 +304,8 @@ public class DialogsFragment extends DialogFragment {
                     }
                 });
             }
-		}
-		else if (ID == 6) { //Dialog for when the user wants to see the hint in the word search
-			dialog = inflater.inflate(R.layout.hintdialoglayout, container, false);
+        } else if (ID == 6) { //Dialog for when the user wants to see the hint in the word search
+            dialog = inflater.inflate(R.layout.hintdialoglayout, container, false);
             if (dialog != null) {
                 Button done = (Button) dialog.findViewById(R.id.hintOkButton);
                 final ToggleButton mark = (ToggleButton) dialog.findViewById(R.id.hintMarkButton);
@@ -343,7 +343,7 @@ public class DialogsFragment extends DialogFragment {
                     }
                 });
             }
-		}
-		return dialog;
-	}
+        }
+        return dialog;
+    }
 }
