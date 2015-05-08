@@ -6,6 +6,7 @@ package com.haleysoft.spanish.databases;
  * Cleaned by Mike Haley on 9/6/13.
  */
 
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -15,7 +16,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.haleysoft.spanish.R;
 import com.haleysoft.spanish.WordSwapHelper;

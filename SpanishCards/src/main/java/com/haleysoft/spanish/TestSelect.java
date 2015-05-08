@@ -5,6 +5,8 @@ package com.haleysoft.spanish;
  * Cleaned by Mike Haley on 8/29/13.
  */
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -12,11 +14,6 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,10 +31,10 @@ import com.haleysoft.spanish.dialogs.DialogsFragment;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class TestSelect extends FragmentActivity implements OnItemSelectedListener, View.OnClickListener {
+public class TestSelect extends Activity implements OnItemSelectedListener, View.OnClickListener {
     private static final String MASTER_SETTINGS = "haley_master_set";
     private boolean analytics = false;
-    FragmentManager theManager = getSupportFragmentManager();
+    FragmentManager theManager = getFragmentManager();
     private static final int SETTING_REQUEST_CODE = 2010;
     public String userName = "Guest";
     private ArrayAdapter<CharSequence> hideAdapter = null;
